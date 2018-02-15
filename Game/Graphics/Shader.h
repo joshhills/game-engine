@@ -21,7 +21,7 @@ _-_-_-_-_-_-_-""  ""
 #include <iostream>
 #include <fstream>
 
-#include <GLEW\include\GL\glew.h>
+#include "GL/glew.h"
 
 
 enum ShaderStage {

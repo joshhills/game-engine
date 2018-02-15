@@ -1,5 +1,5 @@
 #pragma once
-#include <nclgl/OGLRenderer.h>
+#include "../nclgl/OGLRenderer.h"
 
 #include "RenderObject.h"
 
@@ -25,7 +25,7 @@ public:
 	GLuint LoadTexture(const string& filename);
 
 protected:
-
+	float time;
 	vector<RenderObject*> renderObjects;
 };
 

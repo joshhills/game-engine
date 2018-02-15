@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
 Renderer::Renderer(Window &parent) : OGLRenderer(parent)	{
-
+	time = 0;
 	glEnable(GL_DEPTH_TEST);
 }
 
@@ -18,12 +18,15 @@ void	Renderer::RenderScene() {
 void	Renderer::Render(const RenderObject &o) {
 	modelMatrix = o.GetWorldTransform();
 
+	time += 0.1f;
+
 	if(o.GetShader() && o.GetMesh()) {
 		GLuint program = o.GetShader()->GetShaderProgram();
 		
 		glUseProgram(program);
 
 		UpdateShaderMatrices(program);
+		glUniform1f(glGetUniformLocation(program, "time"), time);
 
 		o.Draw();
 	}
