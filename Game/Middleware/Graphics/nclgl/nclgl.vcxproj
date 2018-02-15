@@ -96,8 +96,8 @@
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\GLEW\include;..\SOIL;$(IncludePath)</IncludePath>
-    <LibraryPath>..\GLEW\lib;..\SOIL;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\GLEW\include;..\SOIL;../;$(IncludePath)</IncludePath>
+    <LibraryPath>..\GLEW\lib;..\SOIL;../;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
