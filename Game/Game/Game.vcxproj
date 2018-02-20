@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>../Middleware\Graphics\;../;../Middleware\Graphics\GLEW\include;$(IncludePath)</IncludePath>
-    <LibraryPath>../;../Middleware\Graphics\;../Middleware\Graphics\GLEW\include;../Middleware\Graphics\GLEW\libx64;$(LibraryPath)</LibraryPath>
+    <IncludePath>../Middleware\Physics\Box2D;../Middleware\Graphics\;../;../Middleware\Graphics\GLEW\include;$(IncludePath)</IncludePath>
+    <LibraryPath>../Middleware\Physics\Box2D\Build\vs2017\bin\Debug;../;../Middleware\Graphics\;../Middleware\Graphics\GLEW\include;../Middleware\Graphics\GLEW\libx64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,7 +92,7 @@
       </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>nclgl.lib;graphics.lib;physics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nclgl.lib;graphics.lib;physics.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>H:\Computer Games Development\game-engine\Game\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
