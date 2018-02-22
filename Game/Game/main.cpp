@@ -16,6 +16,16 @@ int main() {
 	Physics physics(eventManager);
 	HumanInterface humanInterface(eventManager);
 
+	/*
+	
+	FOR WHEN YOU COME BACK TO THIS:
+	- Add an entity list
+	- Move graphics inside graphics
+	- Add a camera
+	- Remove dependencies that are not needed from this class
+	- Get WASD movement working
+	
+	*/
 
 	//Mesh*	m = Mesh::LoadMeshFile("cube.asciimesh");
 	//Shader* s = new Shader("basicvert.glsl", "basicFrag.glsl");

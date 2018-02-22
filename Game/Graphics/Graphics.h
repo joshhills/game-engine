@@ -19,6 +19,9 @@ public:
 
 	const Window & GetWindow() const;
 	const Renderer & GetRenderer() const;
+
+	void CheckForEvents();
+	void HandleEvent(Event * event);
 private:
 	EventManager * eventManager;
 

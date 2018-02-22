@@ -33,3 +33,12 @@ const Renderer & Graphics::GetRenderer() const
 {
 	return renderer;
 }
+
+void Graphics::CheckForEvents()
+{
+	cout << "Checking for messages in graphics subsystem." << endl;
+}
+
+void Graphics::HandleEvent(Event * e) {
+	cout << "Handling event." << endl;
+}

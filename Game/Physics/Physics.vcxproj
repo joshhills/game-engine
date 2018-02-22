@@ -70,7 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>../;$(IncludePath)</IncludePath>
+    <IncludePath>../;../Middleware\Physics\Box2D;$(IncludePath)</IncludePath>
+    <LibraryPath>../Middleware\Physics\Box2D\Build\vs2017\bin\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

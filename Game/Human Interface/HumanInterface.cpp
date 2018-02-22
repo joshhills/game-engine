@@ -1,5 +1,6 @@
 #include "HumanInterface.h"
 
+#include <Common/Event.h>
 #include <nclgl/Window.h>
 #include <nclgl/Keyboard.h>
 
@@ -20,13 +21,25 @@ void HumanInterface::Update()
 {
 	cout << "Updating human interface subsystem." << endl;
 
-	checkForDeviceInput();
+	CheckForEvents();
+	CheckForDeviceInput();
 }
 
-void HumanInterface::checkForDeviceInput() {
+void HumanInterface::CheckForEvents()
+{
+	cout << "Checking for messages in human interface subsystem." << endl;
+}
+
+void HumanInterface::HandleEvent(Event * e) {
+
+}
+
+void HumanInterface::CheckForDeviceInput() {
 	// Check keyboard.
-	if (Window::GetKeyboard()->KeyDown(KEYBOARD_W)) {
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_W)) {
 		// Create event.
-		cout << "Pressed W"<< endl;
+		Event e = Event();
+		e.type = Event::EventType::MOVE_UP;
+		e.subsystems.push_back(Event::Subsystem::PHYSICS);
 	}
 }

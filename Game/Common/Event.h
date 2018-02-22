@@ -5,26 +5,26 @@
 
 using namespace std;
 
-enum SubSystem {
-	PHYSICS,
-	GRAPHICS,
-	HUMAN_INTERFACE
-};
-
-enum EventType {
-	MOVE_UP,
-	MOVE_DOWN,
-	MOVE_LEFT,
-	MOVE_RIGHT
-};
-
 class Event {
 public: 
-	Event(const EventType type);
-	~Event();
+	enum Subsystem {
+		PHYSICS,
+		GRAPHICS,
+		HUMAN_INTERFACE
+	};
 
+	enum EventType {
+		MOVE_UP,
+		MOVE_DOWN,
+		MOVE_LEFT,
+		MOVE_RIGHT
+	};
+
+	Event();
+	~Event();
+	
 	// Releated subsystems to be informed of the event.
-	vector<SubSystem> subsystems;
+	vector<Subsystem> subsystems;
 
 	vector<Entity *> entities;
 

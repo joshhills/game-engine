@@ -16,5 +16,7 @@ public:
 private:
 	EventManager * eventManager;
 
-	void checkForDeviceInput();
+	void CheckForEvents();
+	void HandleEvent(Event * e);
+	void CheckForDeviceInput();
 };

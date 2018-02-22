@@ -1,6 +1,6 @@
 #include "Event.h"
 
-Event::Event(const EventType type)
+Event::Event()
 {
 	this->type = type;
 }
