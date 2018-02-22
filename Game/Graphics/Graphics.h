@@ -1,9 +1,27 @@
 #pragma once
 
-class Graphics {
+#include <Common/Subsystem.h>
+#include <Common/EventManager.h>
+
+#include <iostream>
+#include <nclgl/Window.h>
+#include "Renderer.h"
+
+using namespace std;
+
+class Graphics : Subsystem {
 public:
-	Graphics();
+	Graphics::Graphics();
+	Graphics(EventManager * eventManager);
 	~Graphics();
 
-	void update();
+	void Update();
+
+	const Window & GetWindow() const;
+	const Renderer & GetRenderer() const;
+private:
+	EventManager * eventManager;
+
+	Window window;
+	Renderer renderer;
 };

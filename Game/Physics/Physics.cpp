@@ -2,6 +2,13 @@
 
 Physics::Physics() {}
 
+Physics::Physics(EventManager * eventManager)
+{
+	this->eventManager = eventManager;
+}
+
 Physics::~Physics() {}
 
-void Physics::update(float msec) {}
+void Physics::Update() {
+	cout << "Updating graphics subsystem." << endl;
+}
