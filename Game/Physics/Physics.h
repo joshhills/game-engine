@@ -19,6 +19,10 @@ public:
 	void HandleEvent(Event * e);
 
 	void HandleMovementEvent(Event * e);
+
+	// TODO: Is there a better way to attach entities to a world?
+	// Pre-requisites.
+	static b2World world;
 private:
 	// Engine utility.
 	LoggerInstance logger;
@@ -31,7 +35,4 @@ private:
 	float32 timeStep = 1.0f / 60.0f;
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
-
-	// Pre-requisites.
-	b2World world;
 };

@@ -4,8 +4,10 @@
 
 class PhysicsData {
 public:
-	PhysicsData();
+	PhysicsData(b2Body * body);
 	~PhysicsData();
+
+	b2Body * GetBody();
 private:
 	b2Body * body;
 };

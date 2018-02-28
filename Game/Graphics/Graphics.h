@@ -4,6 +4,8 @@
 #include <Common/LoggerInstance.h>
 #include <Common/EventManager.h>
 
+#include <Box2D/Box2D.h>
+
 #include <iostream>
 #include <nclgl/Window.h>
 #include "Renderer.h"

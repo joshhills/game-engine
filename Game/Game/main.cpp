@@ -1,3 +1,5 @@
+#include <string>
+
 #include <nclgl/Window.h>
 
 #include <Common/EventManager.h>
@@ -9,7 +11,15 @@
 
 #include <Common/Logger.h>
 
+#include "CubeEntity.h"
+#include "FloorEntity.h"
+
 int main() {
+	// Set logger settings for debugging purposes.
+	Logger::SetLevel(Logger::DEBUG);
+	Logger::SetLevelExclusive(true);
+	Logger::SetFilter("Graphics");
+
 	// Create reference to events system.
 	EventManager * eventManager = new EventManager();
 
@@ -21,30 +31,21 @@ int main() {
 	Physics physics(eventManager, &entities);
 	HumanInterface humanInterface(eventManager, &entities);
 
-	// Set logger settings for debugging purposes.
-	Logger::SetLevel(Logger::INFO);
-	Logger::SetLevelExclusive(true);
-	Logger::SetFilter("Event Manager");
+	// Create entities.
+	entities.push_back(new FloorEntity());
+	entities.push_back(new CubeEntity());
 
 	/*
-	
 	FOR WHEN YOU COME BACK TO THIS:
-	- Add an entity list
-	- Move graphics inside graphics
+	- Add an entity list XXX
+	- Move graphics inside graphics XXX
 	- Add a camera
 	- Remove dependencies that are not needed from this class
 	- Get WASD movement working
-	
 	*/
 
 	//Mesh*	m = Mesh::LoadMeshFile("cube.asciimesh");
 	//Shader* s = new Shader("basicvert.glsl", "basicFrag.glsl");
-
-	//if (s->UsingDefaultShader()) {
-	//	cout << "Warning: Using default shader! Your shader probably hasn't worked..." << endl;
-	//	cout << "Press any key to continue." << endl;
-	//	std::cin.get();
-	//}
 
 	//RenderObject o(m, s);
 	//o.SetModelMatrix(Matrix4::Translation(Vector3(0, 0, -10)) * Matrix4::Scale(Vector3(1, 1, 1)));
@@ -151,10 +152,4 @@ int main() {
 
 	//delete m;
 	//delete s;
-
-	/*Physics * physics = new Physics();
-
-	while (true) {
-		physics->update(1.0f);
-	}*/
 }

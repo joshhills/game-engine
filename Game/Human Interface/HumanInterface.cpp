@@ -33,10 +33,34 @@ void HumanInterface::HandleEvent(Event * e) {
 
 void HumanInterface::CheckForDeviceInput() {
 	// Check keyboard.
-	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_W)) {
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_W)) {
 		// Create event.
 		Event * e = new Event();
 		e->type = Event::EventType::MOVE_UP;
+		e->subsystems.push_back(Event::Subsystem::PHYSICS);
+
+		eventManager->AddEvent(e);
+	}
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_A)) {
+		// Create event.
+		Event * e = new Event();
+		e->type = Event::EventType::MOVE_LEFT;
+		e->subsystems.push_back(Event::Subsystem::PHYSICS);
+
+		eventManager->AddEvent(e);
+	}
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_S)) {
+		// Create event.
+		Event * e = new Event();
+		e->type = Event::EventType::MOVE_DOWN;
+		e->subsystems.push_back(Event::Subsystem::PHYSICS);
+
+		eventManager->AddEvent(e);
+	}
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_D)) {
+		// Create event.
+		Event * e = new Event();
+		e->type = Event::EventType::MOVE_RIGHT;
 		e->subsystems.push_back(Event::Subsystem::PHYSICS);
 
 		eventManager->AddEvent(e);

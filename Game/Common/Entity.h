@@ -10,7 +10,7 @@ public:
 
 	GraphicsData * GetGraphicsData();
 	PhysicsData * GetPhysicsData();
-private:
+protected:
 	GraphicsData * graphicsData;
 	PhysicsData * physicsData;
 };

@@ -38,7 +38,7 @@ void	Renderer::Render(const RenderObject &o) {
 
 void	Renderer::UpdateScene(float msec) {
 	for(vector<RenderObject*>::iterator i = renderObjects.begin(); i != renderObjects.end(); ++i ) {
-		(*i)->Update(msec);
+		(*i)->Update();
 	}
 }
 

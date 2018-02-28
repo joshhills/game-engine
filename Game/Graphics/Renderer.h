@@ -22,6 +22,12 @@ public:
 		renderObjects.push_back(&r);
 	}
 
+	// Edit
+	void ClearRenderObjects() {
+		renderObjects.clear();
+	}
+	// End edit
+
 	GLuint LoadTexture(const string& filename);
 
 protected:
