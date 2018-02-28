@@ -7,4 +7,6 @@ public:
 	virtual void Update() = 0;
 	virtual void CheckForEvents() = 0;
 	virtual void HandleEvent(Event * event) = 0;
+
+	// TODO: Do startup / shutdown
 };

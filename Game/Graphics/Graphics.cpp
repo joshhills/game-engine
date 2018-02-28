@@ -1,16 +1,17 @@
 #include "Graphics.h"
 
-Graphics::Graphics(): window("Game Engine", 800, 600, false), renderer(window) {}
-
-Graphics::Graphics(EventManager * eventManager) : Graphics()
-{
-	this->eventManager = eventManager;
-}
+Graphics::Graphics(EventManager * eventManager, vector<Entity *> * entities) :
+	eventManager(eventManager),
+	entities(entities),
+	window("Game Engine", 800, 600, false),
+	renderer(window),
+	logger("Graphics")
+{}
 
 Graphics::~Graphics() {}
 
 void Graphics::Update() {
-	cout << "Updating graphics subsystem." << endl;
+	logger.Info("Updating graphics subsystem.");
 
 	// Get the time since last change.
 
@@ -36,9 +37,9 @@ const Renderer & Graphics::GetRenderer() const
 
 void Graphics::CheckForEvents()
 {
-	cout << "Checking for messages in graphics subsystem." << endl;
+	logger.Info("Checking for messages in graphics subsystem.");
 }
 
 void Graphics::HandleEvent(Event * e) {
-	cout << "Handling event." << endl;
+	logger.Debug("Handling event.");
 }

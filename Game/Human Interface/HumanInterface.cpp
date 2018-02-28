@@ -4,14 +4,11 @@
 #include <nclgl/Window.h>
 #include <nclgl/Keyboard.h>
 
-HumanInterface::HumanInterface()
-{
-}
-
-HumanInterface::HumanInterface(EventManager * eventManager)
-{
-	this->eventManager = eventManager;
-}
+HumanInterface::HumanInterface(EventManager * eventManager, vector<Entity *> * entities) :
+	eventManager(eventManager),
+	entities(entities),
+	logger("Human Interface")
+{}
 
 HumanInterface::~HumanInterface()
 {
@@ -19,7 +16,7 @@ HumanInterface::~HumanInterface()
 
 void HumanInterface::Update()
 {
-	cout << "Updating human interface subsystem." << endl;
+	logger.Info("Updating human interface subsystem.");
 
 	CheckForEvents();
 	CheckForDeviceInput();
@@ -27,19 +24,21 @@ void HumanInterface::Update()
 
 void HumanInterface::CheckForEvents()
 {
-	cout << "Checking for messages in human interface subsystem." << endl;
+	logger.Info("Checking for messages in human interface subsystem.");
 }
 
 void HumanInterface::HandleEvent(Event * e) {
-
+	logger.Debug("Handling an event.");
 }
 
 void HumanInterface::CheckForDeviceInput() {
 	// Check keyboard.
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_W)) {
 		// Create event.
-		Event e = Event();
-		e.type = Event::EventType::MOVE_UP;
-		e.subsystems.push_back(Event::Subsystem::PHYSICS);
+		Event * e = new Event();
+		e->type = Event::EventType::MOVE_UP;
+		e->subsystems.push_back(Event::Subsystem::PHYSICS);
+
+		eventManager->addEvent(e);
 	}
 }

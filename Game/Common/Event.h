@@ -8,16 +8,16 @@ using namespace std;
 class Event {
 public: 
 	enum Subsystem {
-		PHYSICS,
-		GRAPHICS,
-		HUMAN_INTERFACE
+		PHYSICS = 0,
+		GRAPHICS = 1,
+		HUMAN_INTERFACE = 2
 	};
 
 	enum EventType {
-		MOVE_UP,
-		MOVE_DOWN,
-		MOVE_LEFT,
-		MOVE_RIGHT
+		MOVE_UP = 0,
+		MOVE_DOWN = 1,
+		MOVE_LEFT = 2,
+		MOVE_RIGHT = 3
 	};
 
 	Event();
@@ -26,6 +26,7 @@ public:
 	// Releated subsystems to be informed of the event.
 	vector<Subsystem> subsystems;
 
+	// Entities associated with this event.
 	vector<Entity *> entities;
 
 	// The explicit type of event that occured.

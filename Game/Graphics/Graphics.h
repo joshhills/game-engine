@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Common/Subsystem.h>
+#include <Common/LoggerInstance.h>
 #include <Common/EventManager.h>
 
 #include <iostream>
@@ -11,8 +12,7 @@ using namespace std;
 
 class Graphics : Subsystem {
 public:
-	Graphics::Graphics();
-	Graphics(EventManager * eventManager);
+	Graphics(EventManager * eventManager, vector<Entity *> * entities);
 	~Graphics();
 
 	void Update();
@@ -23,7 +23,12 @@ public:
 	void CheckForEvents();
 	void HandleEvent(Event * event);
 private:
+	// Engine utility.
+	LoggerInstance logger;
+
+	// Store engine state.
 	EventManager * eventManager;
+	vector<Entity*> * entities;
 
 	Window window;
 	Renderer renderer;

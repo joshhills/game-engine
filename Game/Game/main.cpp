@@ -7,14 +7,22 @@
 
 #include <Box2D\Box2D.h>
 
+#include <Common/Logger.h>
+
 int main() {
 	// Create reference to events system.
 	EventManager * eventManager = new EventManager();
 
+	// Create a list of all game objects.
+	vector<Entity *> entities;
+
 	// Create references to subsystems.
-	Graphics graphics(eventManager);
-	Physics physics(eventManager);
-	HumanInterface humanInterface(eventManager);
+	Graphics graphics(eventManager, &entities);
+	Physics physics(eventManager, &entities);
+	HumanInterface humanInterface(eventManager, &entities);
+
+	// Set logger settings for debugging purposes.
+	Logger::SetLevel(Logger::INFO);
 
 	/*
 	
@@ -119,6 +127,8 @@ int main() {
 
 		// Update the physics subsystem.
 		physics.Update();
+
+		eventManager->purgeEvents();
 
 		// Handle quitting.
 
