@@ -2,10 +2,13 @@
 
 #include <vector>
 #include "Event.h"
+#include "LoggerInstance.h"
 #include <iostream>
 
 using namespace std;
 
+/* Not static as we may want multiple event streams.
+ */
 class EventManager {
 public:
 	EventManager();
@@ -25,19 +28,30 @@ public:
 	 * 
 	 * @param e	The event to be added.
 	 */
-	void addEvent(Event * e);
+	void AddEvent(Event * e);
+
+	/**
+	 * Shortcut to mark an event as having been handled.
+	 *
+	 * @param e			The event to mark as completed.
+	 * @param subsystem	The subsystem that has finished dealing with it.
+	 */
+	void MarkAsHandled(Event * e, Event::Subsystem subsystem);
 
 	/**
 	 * Remove events that have been handled
 	 * by all relevant subsystems.
 	 */
-	void removeFinishedEvents();
+	void RemoveFinishedEvents();
 
 	/**
 	 * Remove all events in the queue.
 	 */
-	void purgeEvents();
+	void PurgeEvents();
 private:
+	// Engine utility.
+	LoggerInstance logger;
+
 	/* Queue of events for running application;
 	 * they represent messages between subsystems.
 	 */

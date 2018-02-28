@@ -17,6 +17,8 @@ public:
 
 	void CheckForEvents();
 	void HandleEvent(Event * e);
+
+	void HandleMovementEvent(Event * e);
 private:
 	// Engine utility.
 	LoggerInstance logger;

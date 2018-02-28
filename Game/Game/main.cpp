@@ -23,6 +23,8 @@ int main() {
 
 	// Set logger settings for debugging purposes.
 	Logger::SetLevel(Logger::INFO);
+	Logger::SetLevelExclusive(true);
+	Logger::SetFilter("Event Manager");
 
 	/*
 	
@@ -128,7 +130,7 @@ int main() {
 		// Update the physics subsystem.
 		physics.Update();
 
-		eventManager->purgeEvents();
+		eventManager->RemoveFinishedEvents();
 
 		// Handle quitting.
 

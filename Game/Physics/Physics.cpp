@@ -34,8 +34,13 @@ void Physics::CheckForEvents()
 void Physics::HandleEvent(Event * e) {
 	logger.Debug("Handling event.");
 	
-	//switch (e->type) {
-	//case Event::EventType::MOVE_UP:
-	//	
-	//}
+	switch (e->type) {
+	case Event::EventType::MOVE_UP:
+		HandleMovementEvent(e);
+		break;
+	}
+}
+
+void Physics::HandleMovementEvent(Event * e) {
+	eventManager->MarkAsHandled(e, Event::Subsystem::PHYSICS);
 }

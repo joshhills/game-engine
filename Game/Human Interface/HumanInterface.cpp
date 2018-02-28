@@ -39,6 +39,6 @@ void HumanInterface::CheckForDeviceInput() {
 		e->type = Event::EventType::MOVE_UP;
 		e->subsystems.push_back(Event::Subsystem::PHYSICS);
 
-		eventManager->addEvent(e);
+		eventManager->AddEvent(e);
 	}
 }
