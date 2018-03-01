@@ -5,9 +5,8 @@
 #include <nclgl/Keyboard.h>
 
 HumanInterface::HumanInterface(EventManager * eventManager, vector<Entity *> * entities) :
-	eventManager(eventManager),
-	entities(entities),
-	logger("Human Interface")
+	Subsystem("Human Interface", Event::HUMAN_INTERFACE, eventManager),
+	entities(entities)
 {}
 
 HumanInterface::~HumanInterface()
@@ -18,13 +17,8 @@ void HumanInterface::Update()
 {
 	logger.Info("Updating human interface subsystem.");
 
-	CheckForEvents();
+	HandleEvents();
 	CheckForDeviceInput();
-}
-
-void HumanInterface::CheckForEvents()
-{
-	logger.Info("Checking for messages in human interface subsystem.");
 }
 
 void HumanInterface::HandleEvent(Event * e) {

@@ -1,11 +1,10 @@
 #include "Graphics.h"
 
 Graphics::Graphics(EventManager * eventManager, vector<Entity *> * entities) :
-	eventManager(eventManager),
+	Subsystem("Graphics", Event::GRAPHICS, eventManager),
 	entities(entities),
 	window("Game Engine", 800, 600, false),
-	renderer(window),
-	logger("Graphics")
+	renderer(window)
 {
 	// Renderer settings.
 	renderer.SetProjectionMatrix(Matrix4::Perspective(1, 100, 1.33f, 90.0f));
@@ -19,6 +18,8 @@ Graphics::~Graphics() {}
 void Graphics::Update() {
 	logger.Info("Updating graphics subsystem.");
 
+	HandleEvents();
+
 	window.UpdateWindow();
 	
 	// Update the graphics objects based of their entity (physics, currently -) data.
@@ -28,23 +29,23 @@ void Graphics::Update() {
 		// If there is graphics data to enact upon.
 		if (entity->GetGraphicsData() != nullptr)
 		{
-			// Extract the current position and rotation.
-			b2Vec2 position = entity->GetPhysicsData()->GetBody()->GetPosition();
-			float32 angle = entity->GetPhysicsData()->GetBody()->GetAngle();
-
-			logger.Debug("Position is x: " + to_string(position.x) + ", y: " + to_string(position.y));
+			GameObject * gameObject = entity->GetGameObject();
+			RenderObject * renderObject = &(entity->GetGraphicsData()->GetRenderObject());
 
 			// Set the graphics data accordingly.
+			// TODO: Make a constructor in nclgl Matrix4 to take in a game object.
 			Matrix4 newPosition = Matrix4::Translation(
-				Vector3(position.x, position.y, 0))
-				* Matrix4::Rotation(angle, Vector3(0, 0, 1))
+				Vector3(gameObject->x, gameObject->y, 0))
+				* Matrix4::Rotation(gameObject->rotation, Vector3(0, 0, 1))
 				* Matrix4::Scale(Vector3(1, 1, 1));
 
-			entity->GetGraphicsData()->GetRenderObject().SetModelMatrix(
+			// Update the local position.
+			renderObject->SetModelMatrix(
 				newPosition
 			);
 
-			entity->GetGraphicsData()->GetRenderObject().Update();
+			// Update the world position relative to scene graph.
+			renderObject->Update();
 		}
 	}
 
@@ -71,11 +72,6 @@ const Window & Graphics::GetWindow() const
 const Renderer & Graphics::GetRenderer() const
 {
 	return renderer;
-}
-
-void Graphics::CheckForEvents()
-{
-	logger.Info("Checking for messages in graphics subsystem.");
 }
 
 void Graphics::HandleEvent(Event * e) {

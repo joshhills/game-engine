@@ -14,14 +14,9 @@ public:
 
 	void Update();
 private:
-	// Engine utility.
-	LoggerInstance logger;
-
 	// Engine state.
-	EventManager * eventManager;
 	vector<Entity*> * entities;
 
-	void CheckForEvents();
 	void HandleEvent(Event * e);
 	void CheckForDeviceInput();
 };

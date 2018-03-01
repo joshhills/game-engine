@@ -3,41 +3,36 @@
 Physics::~Physics() {}
 
 // Initialize statically accessible entities.
+// TODO: Comment describe what these are used for.
 b2World Physics::world = b2World(b2Vec2(0.0f, -10.0f));
 
 Physics::Physics(EventManager * eventManager, vector<Entity *> * entities) :
-	eventManager(eventManager),
-	entities(entities),
-	logger("Physics")
+	Subsystem("Physics", Event::PHYSICS, eventManager),
+	entities(entities)
 {}
 
 void Physics::Update() {
 	logger.Info("Updating physics subsystem.");
 
-	// TODO: Rename 'HandleEvents'?
-	CheckForEvents();
+	HandleEvents();
 
-	// Update physics objects attached to the world (which is all entities with physics data).
-	int32 velocityIterations = 6;
-	int32 positionIterations = 2;
-
-	float32 timeStep = 1.0f / 60.0f;
+	// Update physics objects attached to the world (ergo all physics data by proxy of 'world').
 	world.Step(timeStep, velocityIterations, positionIterations);
-}
 
-void Physics::CheckForEvents()
-{
-	logger.Info("Checking for messages in physics subsystem.");
+	// Update common interface.
+	// TODO: Create method?
+	for (auto entity : *entities) {
+		// TODO: Make a constructor for gameobject that takes a physics data?
+		GameObject * gameObject = entity->GetGameObject();
+		PhysicsData * physicsData = entity->GetPhysicsData();
 
-	// Search event queue for messages that pertain to this sub-system.
-	vector<Event *> eventQueue = eventManager->GetEventQueue();
-	for (int i = 0; i < eventQueue.size(); i++) {
-		Event * e = eventQueue.at(i);
-		vector<Event::Subsystem> subsystems = e->subsystems;
-		
-		if (find(subsystems.begin(), subsystems.end(), Event::Subsystem::PHYSICS) != subsystems.end()) {
-			HandleEvent(e);
-		}
+		// Position.
+		b2Vec2 position = physicsData->GetBody()->GetPosition();
+		gameObject->x = position.x;
+		gameObject->y = position.y;
+
+		// Rotation.
+		gameObject->rotation = physicsData->GetBody()->GetAngle();
 	}
 }
 
@@ -45,17 +40,18 @@ void Physics::HandleEvent(Event * e) {
 	logger.Debug("Handling event.");
 	
 	// TODO: Switch to interfaced mapping of event codes to functions.
-	switch (e->type) {
-	case Event::EventType::MOVE_UP:
-	case Event::EventType::MOVE_LEFT:
-	case Event::EventType::MOVE_DOWN:
-	case Event::EventType::MOVE_RIGHT:
-		HandleMovementEvent(e);
-		break;
+	switch (e->type)
+	{
+		case Event::EventType::MOVE_UP:
+		case Event::EventType::MOVE_LEFT:
+		case Event::EventType::MOVE_DOWN:
+		case Event::EventType::MOVE_RIGHT:
+			HandleMovementEvent(e);
+			break;
 	}
 
 	// Inform the manager that we are finished with the event.
-	eventManager->MarkAsHandled(e, Event::Subsystem::PHYSICS);
+	eventManager->MarkAsHandled(e, Event::PHYSICS);
 }
 
 void Physics::HandleMovementEvent(Event * e) {

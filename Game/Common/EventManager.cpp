@@ -12,6 +12,18 @@ vector<Event *>& EventManager::GetEventQueue()
 	return queue;
 }
 
+vector<Event *> EventManager::GetEventQueue(Event::Subsystem subsystem)
+{
+	vector<Event *> filteredEvents;
+	for (Event * e : queue)
+	{
+		if (find(e->subsystems.begin(), e->subsystems.end(), subsystem) != e->subsystems.end()) {
+			filteredEvents.push_back(e);
+		}
+	}
+	return filteredEvents;
+}
+
 void EventManager::AddEvent(Event * e)
 {
 	queue.push_back(e);

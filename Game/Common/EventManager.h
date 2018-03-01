@@ -24,6 +24,16 @@ public:
 	vector<Event *> & GetEventQueue();
 
 	/**
+	* Return a reference to all events in the queue
+	* that pertain to a specific subsystem.
+	*
+	* @param	A subsystem to filter events on.
+	* @return	A vector of event pointers representing
+	*			all messages in the engine.
+	*/
+	vector<Event *> GetEventQueue(Event::Subsystem subsystem);
+
+	/**
 	 * Add an event to the event queue.
 	 * 
 	 * @param e	The event to be added.

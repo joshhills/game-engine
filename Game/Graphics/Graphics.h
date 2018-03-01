@@ -22,14 +22,9 @@ public:
 	const Window & GetWindow() const;
 	const Renderer & GetRenderer() const;
 
-	void CheckForEvents();
-	void HandleEvent(Event * event);
+	void HandleEvent(Event * event) override;
 private:
-	// Engine utility.
-	LoggerInstance logger;
-
 	// Store engine state.
-	EventManager * eventManager;
 	vector<Entity*> * entities;
 
 	Window window;

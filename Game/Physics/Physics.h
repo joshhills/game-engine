@@ -15,24 +15,19 @@ public:
 
 	void Update();
 
-	void CheckForEvents();
-	void HandleEvent(Event * e);
+	void HandleEvent(Event * e) override;
 
+	/* Bespoke Event Handlers */
 	void HandleMovementEvent(Event * e);
 
 	// TODO: Is there a better way to attach entities to a world?
-	// Pre-requisites.
+	// Middleware prerequisite.
 	static b2World world;
 private:
-	// Engine utility.
-	LoggerInstance logger;
-
 	// Engine state.
-	EventManager * eventManager;
 	vector<Entity*> * entities;
 
-	// Configuration.
-	float32 timeStep = 1.0f / 60.0f;
-	int32 velocityIterations = 6;
-	int32 positionIterations = 2;
+	float32 timeStep = 1.0f / 60.0f; // The delta time the system should update each frame.
+	int32 velocityIterations = 6;	 // The number of velocity calculation passes. 
+	int32 positionIterations = 2;	 // The number of position calculation passes. 
 };
