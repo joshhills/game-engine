@@ -7,22 +7,38 @@ using namespace std;
 
 class Event {
 public: 
+	// Enum describing available subsystems.
 	enum Subsystem {
 		PHYSICS = 0,
 		GRAPHICS = 1,
 		HUMAN_INTERFACE = 2
 	};
 
+	// Enum describing kinds of events that may occur.
 	enum EventType {
-		MOVE_UP = 0,
-		MOVE_DOWN = 1,
-		MOVE_LEFT = 2,
-		MOVE_RIGHT = 3
+		// Controls
+		CONTROL_UP,
+		CONTROL_DOWN,
+		CONTROL_LEFT,
+		CONTROL_RIGHT,
+
+		// Physics
+		MOVE_UP,
+		MOVE_DOWN,
+		MOVE_LEFT, 
+		MOVE_RIGHT
 	};
 
 	Event();
+	Event(EventType type);
+	Event(EventType type, Subsystem subsystem, Entity * entity);
+
 	~Event();
-	
+
+	// Builder pattern for simple event creation.
+	Event * AddSubsystem(Subsystem subsystem);
+	Event * AddEntity(Entity * entity);
+
 	// Releated subsystems to be informed of the event.
 	vector<Subsystem> subsystems;
 

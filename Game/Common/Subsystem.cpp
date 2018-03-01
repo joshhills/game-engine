@@ -1,8 +1,8 @@
 #include "Subsystem.h"
 
-Subsystem::Subsystem(string id, Event::Subsystem eventType, EventManager * eventManager) :
-	eventType(eventType),
+Subsystem::Subsystem(string id, Event::Subsystem subSystemType, EventManager * eventManager) :
 	id(id),
+	subSystemType(subSystemType),
 	eventManager(eventManager),
 	logger(id)
 {}

@@ -41,6 +41,14 @@ public:
 	void AddEvent(Event * e);
 
 	/**
+	 * Shortcut method to remove an
+	 * event from the queue.
+     * 
+	 * @param e The event to remove.
+	 */
+	void RemoveEvent(Event * e);
+
+	/**
 	 * Shortcut to mark an event as having been handled.
 	 *
 	 * @param e			The event to mark as completed.

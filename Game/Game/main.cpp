@@ -22,9 +22,9 @@ int main() {
 	*/
 
 	// Set logger settings for debugging purposes.
-	Logger::SetLevel(Logger::DEBUG);
-	Logger::SetLevelExclusive(true);
-	//Logger::SetFilter("Physics");
+	Logger::SetLevel(Logger::WARN);
+	//Logger::SetLevelExclusive(true);
+	Logger::SetFilter("Physics");
 
 	// Create reference to events system.
 	EventManager * eventManager = new EventManager();
@@ -38,8 +38,10 @@ int main() {
 	HumanInterface humanInterface(eventManager, &entities);
 
 	// Create entities.
+	CubeEntity * player = new CubeEntity();
+
 	entities.push_back(new FloorEntity());
-	entities.push_back(new CubeEntity());
+	entities.push_back(player);
 
 	// Main game loop.
 	while (true) {
@@ -50,9 +52,38 @@ int main() {
 		humanInterface.Update();
 
 		// React to input.
-		for (auto e : eventManager->GetEventQueue())
+		vector<Event *> newEvents;
+		for (Event * e : eventManager->GetEventQueue())
 		{
+			// TODO: Make this a subsystem itself?
+			switch (e->type)
+			{
+				case Event::CONTROL_UP:
+					newEvents.push_back(
+						(new Event(Event::MOVE_UP))->AddEntity(player)->AddSubsystem(Event::PHYSICS)
+					);
+					break;
+				case Event::CONTROL_DOWN:
+					newEvents.push_back(
+						(new Event(Event::MOVE_DOWN))->AddEntity(player)->AddSubsystem(Event::PHYSICS)
+					);
+					break;
+				case Event::CONTROL_LEFT:
+					newEvents.push_back(
+						(new Event(Event::MOVE_LEFT))->AddEntity(player)->AddSubsystem(Event::PHYSICS)
+					);
+					break;
+				case Event::CONTROL_RIGHT:
+					newEvents.push_back(
+						(new Event(Event::MOVE_RIGHT))->AddEntity(player)->AddSubsystem(Event::PHYSICS)
+					);
+					break;
+			}
+		}
 
+		for (Event * e : newEvents)
+		{
+			eventManager->AddEvent(e);
 		}
 
 		// Update the physics subsystem.

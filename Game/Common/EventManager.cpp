@@ -29,6 +29,13 @@ void EventManager::AddEvent(Event * e)
 	queue.push_back(e);
 }
 
+void EventManager::RemoveEvent(Event * e)
+{
+	int index = find(queue.begin(), queue.end(), e) - queue.begin();
+	queue.erase(queue.begin() + index);
+	delete e;
+}
+
 void EventManager::MarkAsHandled(Event * e, Event::Subsystem subsystem)
 {
 	// Defensive check that subsystem is part of array.

@@ -26,37 +26,25 @@ void HumanInterface::HandleEvent(Event * e) {
 }
 
 void HumanInterface::CheckForDeviceInput() {
-	// Check keyboard.
+	// Check keyboard...
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_W)) {
-		// Create event.
-		Event * e = new Event();
-		e->type = Event::EventType::MOVE_UP;
-		e->subsystems.push_back(Event::Subsystem::PHYSICS);
-
-		eventManager->AddEvent(e);
+		eventManager->AddEvent(
+			new Event(Event::CONTROL_UP)
+		);
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_A)) {
-		// Create event.
-		Event * e = new Event();
-		e->type = Event::EventType::MOVE_LEFT;
-		e->subsystems.push_back(Event::Subsystem::PHYSICS);
-
-		eventManager->AddEvent(e);
+		eventManager->AddEvent(
+			new Event(Event::CONTROL_LEFT)
+		);
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_S)) {
-		// Create event.
-		Event * e = new Event();
-		e->type = Event::EventType::MOVE_DOWN;
-		e->subsystems.push_back(Event::Subsystem::PHYSICS);
-
-		eventManager->AddEvent(e);
+		eventManager->AddEvent(
+			new Event(Event::CONTROL_DOWN)
+		);
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_D)) {
-		// Create event.
-		Event * e = new Event();
-		e->type = Event::EventType::MOVE_RIGHT;
-		e->subsystems.push_back(Event::Subsystem::PHYSICS);
-
-		eventManager->AddEvent(e);
+		eventManager->AddEvent(
+			new Event(Event::CONTROL_RIGHT)
+		);
 	}
 }

@@ -15,10 +15,20 @@ public:
 
 	void Update();
 
-	void HandleEvent(Event * e) override;
-
 	/* Bespoke Event Handlers */
-	void HandleMovementEvent(Event * e);
+	void MoveUp(Event * e);
+	void MoveDown(Event * e);
+	void MoveLeft(Event * e);
+	void MoveRight(Event * e);
+
+	/**
+	 * Shortcut method for altering the
+	 * physics data of an entity.
+	 *
+	 * @param e		The entity to move.
+	 * @param force	The vector to apply force.
+	 */
+	static void Move(Entity * e, b2Vec2 force);
 
 	// TODO: Is there a better way to attach entities to a world?
 	// Middleware prerequisite.
