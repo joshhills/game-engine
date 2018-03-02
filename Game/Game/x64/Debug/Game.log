@@ -1,2 +1,16 @@
-﻿  Game.vcxproj -> H:\Computer Games Development\game-engine\Game\x64\Debug\Game.exe
-  Game.vcxproj -> H:\Computer Games Development\game-engine\Game\x64\Debug\Game.pdb (Partial PDB)
+﻿Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewAttachShader imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewBindAttribLocation imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewCompileShader imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewCreateProgram imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewCreateShader imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewDeleteProgram imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewDeleteShader imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewDetachShader imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewGetProgramInfoLog imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewGetProgramiv imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewGetShaderiv imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewLinkProgram imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewShaderSource imported
+Graphics.lib(Shader.obj) : warning LNK4049: locally defined symbol __glewGetInfoLogARB imported
+glew32sd.lib(glew.obj) : warning LNK4099: PDB 'glew_static.pdb' was not found with 'glew32sd.lib(glew.obj)' or at 'C:\Users\Josh\Documents\GitHub\game-engine\Game\x64\Debug\glew_static.pdb'; linking object as if no debug info
+  Game.vcxproj -> C:\Users\Josh\Documents\GitHub\game-engine\Game\x64\Debug\Game.exe

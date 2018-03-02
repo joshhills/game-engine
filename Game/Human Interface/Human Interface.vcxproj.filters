@@ -18,9 +18,15 @@
     <ClInclude Include="HumanInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="XboxController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HumanInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XboxController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

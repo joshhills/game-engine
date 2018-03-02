@@ -1,5 +1,1 @@
-﻿  Subsystem.cpp
-  EventManager.cpp
-h:\computer games development\game-engine\game\common\eventmanager.cpp(35): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
-  Generating Code...
-  Common.vcxproj -> H:\Computer Games Development\game-engine\Game\x64\Debug\Common.lib
+﻿  Common.vcxproj -> C:\Users\Josh\Documents\GitHub\game-engine\Game\x64\Debug\Common.lib
