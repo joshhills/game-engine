@@ -11,7 +11,7 @@ public:
 	Subsystem(string id, Event::Subsystem subSystemType, EventManager * eventManager);
 	virtual ~Subsystem();
 
-	virtual void Update() = 0;
+	virtual void Update();
 	
 	/**
 	 * Delegate event handling based

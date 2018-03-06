@@ -16,9 +16,7 @@ Graphics::Graphics(EventManager * eventManager, vector<Entity *> * entities) :
 Graphics::~Graphics() {}
 
 void Graphics::Update() {
-	logger.Info("Updating graphics subsystem.");
-
-	HandleEvents();
+	Subsystem::Update();
 
 	window.UpdateWindow();
 	

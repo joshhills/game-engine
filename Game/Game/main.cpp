@@ -1,11 +1,14 @@
 #include <string>
 
 #include <nclgl/Window.h>
+#include <SFML/Audio.hpp>
 
 #include <Common/EventManager.h>
 #include <Graphics/Graphics.h>
 #include <Human Interface/HumanInterface.h>
 #include <Physics/Physics.h>
+#include <Audio/Audio.h>
+#include <Audio/AudioData.h>
 
 #include <Box2D\Box2D.h>
 
@@ -19,12 +22,13 @@ int main() {
 	TODO:
 	- Add a camera
 	- Remove dependencies that are not needed from this class
+	- Create resources folder for all resources (shaders, audio etc.)
 	*/
 
 	// Set logger settings for debugging purposes.
-	Logger::SetLevel(Logger::WARN);
+	Logger::SetLevel(Logger::DEBUG);
 	//Logger::SetLevelExclusive(true);
-	Logger::SetFilter("Physics");
+	Logger::SetFilter("Audio");
 
 	// Create reference to events system.
 	EventManager * eventManager = new EventManager();
@@ -36,6 +40,7 @@ int main() {
 	Graphics graphics(eventManager, &entities);
 	Physics physics(eventManager, &entities);
 	HumanInterface humanInterface(eventManager, &entities);
+	Audio audio(eventManager, &entities);
 
 	// Create entities.
 	CubeEntity * player = new CubeEntity();
@@ -61,6 +66,9 @@ int main() {
 				case Event::CONTROL_UP:
 					newEvents.push_back(
 						(new Event(Event::MOVE_UP))->AddEntity(player)->AddSubsystem(Event::PHYSICS)
+					);
+					newEvents.push_back(
+						(new Event(Event::PLAY_SOUND))->AddEntity(player)->AddSubsystem(Event::AUDIO)
 					);
 					break;
 				case Event::CONTROL_DOWN:
@@ -89,25 +97,14 @@ int main() {
 		// Update the physics subsystem.
 		physics.Update();
 
+		// Update the audio subsystem.
+		audio.Update();
+
 		eventManager->RemoveFinishedEvents();
 
 		// Handle quitting.
 
-
-		// Box2D
-		/*world.Step(timeStep, velocityIterations, positionIterations);
-		b2Vec2 position = body->GetPosition();
-		float32 angle = body->GetAngle();
-
-		b2Vec2 position2 = body->GetPosition();
-		float32 angle2 = body->GetAngle();
-
-		o.SetModelMatrix(Matrix4::Translation(Vector3(position.x, position.y, -10)) * Matrix4::Scale(Vector3(1, 1, 1)));
-		o.SetModelMatrix(Matrix4::Translation(Vector3(position2.x, position2.y, -10)) * Matrix4::Scale(Vector3(1, 1, 1)));*/
 	}
 
-	/**/
-
-	//delete m;
-	//delete s;
+	// TODO: Delete things...
 }

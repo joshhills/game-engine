@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>../Middleware\Graphics\GLEW\include;../Middleware\Graphics;../;../Middleware\Physics\Box2D;$(IncludePath)</IncludePath>
+    <IncludePath>../Middleware\Audio\SFML-2.4.2\include;../Middleware\Graphics\GLEW\include;../Middleware\Graphics;../;../Middleware\Physics\Box2D;$(IncludePath)</IncludePath>
     <LibraryPath>../Middleware\Graphics;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

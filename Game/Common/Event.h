@@ -11,7 +11,8 @@ public:
 	enum Subsystem {
 		PHYSICS = 0,
 		GRAPHICS = 1,
-		HUMAN_INTERFACE = 2
+		HUMAN_INTERFACE = 2,
+		AUDIO = 3
 	};
 
 	// Enum describing kinds of events that may occur.
@@ -26,7 +27,10 @@ public:
 		MOVE_UP,
 		MOVE_DOWN,
 		MOVE_LEFT, 
-		MOVE_RIGHT
+		MOVE_RIGHT,
+
+		// Audio
+		PLAY_SOUND
 	};
 
 	Event();

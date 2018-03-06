@@ -1,6 +1,8 @@
 #include "Physics.h"
 
-Physics::~Physics() {}
+Physics::~Physics() {
+	// TODO: Delete function map?...
+}
 
 // Initialize statically accessible entities.
 // TODO: Comment describe what these are used for.
@@ -18,9 +20,7 @@ Physics::Physics(EventManager * eventManager, vector<Entity *> * entities) :
 }
 
 void Physics::Update() {
-	logger.Info("Updating physics subsystem.");
-
-	HandleEvents();
+	Subsystem::Update();
 
 	// Update physics objects attached to the world (ergo all physics data by proxy of 'world').
 	world.Step(timeStep, velocityIterations, positionIterations);
@@ -28,7 +28,7 @@ void Physics::Update() {
 	// Update common interface.
 	// TODO: Create method?
 	for (auto entity : *entities) {
-		// TODO: Make a constructor for gameobject that takes a physics data?
+		// TODO: Make a constructor for gameobject that takes a physics data (to get middleware marks)?
 		GameObject * gameObject = entity->GetGameObject();
 		PhysicsData * physicsData = entity->GetPhysicsData();
 

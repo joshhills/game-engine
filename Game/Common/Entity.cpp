@@ -23,3 +23,8 @@ PhysicsData * Entity::GetPhysicsData()
 {
 	return physicsData;
 }
+
+AudioData * Entity::GetAudioData()
+{
+	return audioData;
+}

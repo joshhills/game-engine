@@ -7,7 +7,7 @@ CubeEntity::CubeEntity()
 	Mesh * mesh = Mesh::LoadMeshFile("cube.asciimesh");
 	Shader * shader = new Shader("basicvert.glsl", "basicFrag.glsl");
 
-	this->graphicsData = new GraphicsData(mesh, shader);
+	graphicsData = new GraphicsData(mesh, shader);
 
 	// Create physical representation.
 	b2BodyDef bodyDef;
@@ -25,7 +25,13 @@ CubeEntity::CubeEntity()
 
 	body->CreateFixture(&fixtureDef);
 
-	this->physicsData = new PhysicsData(body);
+	physicsData = new PhysicsData(body);
+
+	// Set audio information.
+	audioData = new AudioData();
+	sf::SoundBuffer * buffer = new sf::SoundBuffer();
+	buffer->loadFromFile("jump.wav");
+	audioData->SetSoundBuffer(buffer);
 }
 
 CubeEntity::~CubeEntity()
