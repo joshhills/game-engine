@@ -1,1 +1,10 @@
-﻿C:\Users\Josh\Documents\GitHub\game-engine\Game\Middleware\Graphics\nclgl\nclgl.vcxproj : error MSB4057: The target "Deploy" does not exist in the project.
+﻿  Window.cpp
+  Quaternion.cpp
+  OGLRenderer.cpp
+  Mouse.cpp
+  Matrix4.cpp
+  Matrix3.cpp
+  Keyboard.cpp
+  GameTimer.cpp
+  Generating Code...
+  nclgl.vcxproj -> H:\Computer Games Development\game-engine\Game\x64\Debug\nclgl.lib

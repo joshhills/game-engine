@@ -1,1 +1,10 @@
-﻿  Common.vcxproj -> C:\Users\Josh\Documents\GitHub\game-engine\Game\x64\Debug\Common.lib
+﻿  Subsystem.cpp
+  LoggerInstance.cpp
+  Logger.cpp
+  EventManager.cpp
+h:\computer games development\game-engine\game\common\eventmanager.cpp(34): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+h:\computer games development\game-engine\game\common\eventmanager.cpp(42): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+  Event.cpp
+  Entity.cpp
+  Generating Code...
+  Common.vcxproj -> H:\Computer Games Development\game-engine\Game\x64\Debug\Common.lib

@@ -1,1 +1,10 @@
-﻿  Graphics.vcxproj -> C:\Users\Josh\Documents\GitHub\game-engine\Game\x64\Debug\Graphics.lib
+﻿  Shader.cpp
+h:\computer games development\game-engine\game\middleware\graphics\glew\include\gl\wglew.h(79): warning C4005: 'GLEWAPI': macro redefinition
+  h:\computer games development\game-engine\game\middleware\graphics\glew\include\gl\glew.h(206): note: see previous definition of 'GLEWAPI'
+  RenderObject.cpp
+  Renderer.cpp
+  Mesh.cpp
+  GraphicsData.cpp
+  Graphics.cpp
+  Generating Code...
+  Graphics.vcxproj -> H:\Computer Games Development\game-engine\Game\x64\Debug\Graphics.lib
