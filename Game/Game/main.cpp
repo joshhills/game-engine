@@ -26,7 +26,7 @@ int main() {
 	*/
 
 	// Set logger settings for debugging purposes.
-	Logger::SetLevel(Logger::DEBUG);
+	Logger::SetLevel(Logger::WARN);
 	//Logger::SetLevelExclusive(true);
 	Logger::SetFilter("Audio");
 
