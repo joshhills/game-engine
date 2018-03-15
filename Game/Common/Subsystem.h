@@ -11,7 +11,12 @@ public:
 	Subsystem(string id, Event::Subsystem subSystemType, EventManager * eventManager);
 	virtual ~Subsystem();
 
-	virtual void Update();
+	virtual void Update()
+	{
+		logger.Info("Updating subsystem.");
+
+		HandleEvents();
+	}
 	
 	/**
 	 * Delegate event handling based
@@ -26,7 +31,6 @@ public:
 			HandleEvent(e);
 		}
 	};
-
 
 	virtual void HandleEvent(Event * e) {
 		logger.Debug("Handling event.");

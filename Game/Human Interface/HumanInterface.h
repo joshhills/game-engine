@@ -25,5 +25,5 @@ private:
 	// TODO: Store input devices
 	XboxController xboxController;
 
-	vector<Controller> controllers;
+	//vector<Controller> controllers;
 };

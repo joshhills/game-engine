@@ -12,7 +12,8 @@ public:
 		PHYSICS = 0,
 		GRAPHICS = 1,
 		HUMAN_INTERFACE = 2,
-		AUDIO = 3
+		AUDIO = 3,
+		FILE = 4
 	};
 
 	// Enum describing kinds of events that may occur.

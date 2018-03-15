@@ -15,14 +15,9 @@ HumanInterface::~HumanInterface()
 
 void HumanInterface::Update()
 {
-	logger.Info("Updating human interface subsystem.");
+	Subsystem::Update();
 
-	HandleEvents();
 	CheckForDeviceInput();
-}
-
-void HumanInterface::HandleEvent(Event * e) {
-	logger.Debug("Handling an event.");
 }
 
 void HumanInterface::CheckForDeviceInput() {

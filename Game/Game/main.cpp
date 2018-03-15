@@ -20,9 +20,38 @@
 int main() {
 	/*
 	TODO:
+	- Miscellaneous:
 	- Add a camera
 	- Remove dependencies that are not needed from this class
 	- Create resources folder for all resources (shaders, audio etc.)
+	- Comment properly
+	- Comment extended bits
+	
+	- Profiler:
+	- Time spent in each subsystem, framerate, toggle on/off
+
+	- Memory Manager:
+	- Store bins of common objects (entity, level, controller settings); use article
+	
+	- Human Interface:
+	- Controller background states
+
+	- Graphics:
+	- Extend constructor
+	- Load .obj files into mesh
+
+	- File:
+	- Load level
+	- Look into the idea of a 'manifest'
+
+	- Game:
+	- Rename to core
+	
+	- Game:
+	- Create a gameplay subsystem
+
+	- Physics:
+	- Figure out collision?!
 	*/
 
 	// Set logger settings for debugging purposes.
