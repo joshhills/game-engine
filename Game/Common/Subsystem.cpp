@@ -9,10 +9,3 @@ Subsystem::Subsystem(string id, Event::Subsystem subSystemType, EventManager * e
 
 Subsystem::~Subsystem()
 {}
-
-void Subsystem::Update()
-{
-	logger.Info("Updating subsystem.");
-
-	HandleEvents();
-}
