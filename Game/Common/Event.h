@@ -18,10 +18,7 @@ public:
 	// Enum describing kinds of events that may occur.
 	enum EventType {
 		// Controls
-		CONTROL_UP,
-		CONTROL_DOWN,
-		CONTROL_LEFT,
-		CONTROL_RIGHT,
+		INPUT,
 
 		// Physics
 		MOVE_UP,

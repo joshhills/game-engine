@@ -5,6 +5,7 @@
 #include <Common/EventManager.h>
 #include <iostream>
 
+#include "Controller.h"
 #include "XboxController.h"
 
 using namespace std;
@@ -18,12 +19,11 @@ public:
 private:
 	// Engine state.
 	vector<Entity*> * entities;
-
 	void HandleEvent(Event * e);
+
+	// Create events.
 	void CheckForDeviceInput();
+	void HandleDeviceInput(Controller::Input input);
 
-	// TODO: Store input devices
-	XboxController xboxController;
-
-	vector<Controller> controllers;
+	vector<Controller *> controllers;
 };

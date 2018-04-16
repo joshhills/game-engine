@@ -4,6 +4,7 @@
 #include <SFML/Audio.hpp>
 
 #include <Common/EventManager.h>
+#include <Common/InputEvent.h>
 #include <Graphics/Graphics.h>
 #include <Human Interface/HumanInterface.h>
 #include <Physics/Physics.h>
@@ -63,28 +64,13 @@ int main() {
 			// TODO: Make this a subsystem itself?
 			switch (e->type)
 			{
-				case Event::CONTROL_UP:
+				case Event::INPUT:
+					InputEvent * t = static_cast<InputEvent *>(e);
+
 					newEvents.push_back(
-						(new Event(Event::MOVE_UP))->AddEntity(player)->AddSubsystem(Event::PHYSICS)
+						(new InputEvent(t->input))->AddEntity(player)->AddSubsystem(Event::PHYSICS)
 					);
-					newEvents.push_back(
-						(new Event(Event::PLAY_SOUND))->AddEntity(player)->AddSubsystem(Event::AUDIO)
-					);
-					break;
-				case Event::CONTROL_DOWN:
-					newEvents.push_back(
-						(new Event(Event::MOVE_DOWN))->AddEntity(player)->AddSubsystem(Event::PHYSICS)
-					);
-					break;
-				case Event::CONTROL_LEFT:
-					newEvents.push_back(
-						(new Event(Event::MOVE_LEFT))->AddEntity(player)->AddSubsystem(Event::PHYSICS)
-					);
-					break;
-				case Event::CONTROL_RIGHT:
-					newEvents.push_back(
-						(new Event(Event::MOVE_RIGHT))->AddEntity(player)->AddSubsystem(Event::PHYSICS)
-					);
+
 					break;
 			}
 		}

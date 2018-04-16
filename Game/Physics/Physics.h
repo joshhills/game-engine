@@ -3,6 +3,7 @@
 #include <Common/Subsystem.h>
 #include <Common/LoggerInstance.h>
 #include <Common/EventManager.h>
+#include <Common/InputEvent.h>
 #include <iostream>
 #include <Box2D/Box2D.h>
 
@@ -16,10 +17,7 @@ public:
 	void Update();
 
 	/* Bespoke Event Handlers */
-	void MoveUp(Event * e);
-	void MoveDown(Event * e);
-	void MoveLeft(Event * e);
-	void MoveRight(Event * e);
+	void HandleMoveEvent(Event * e);
 
 	/**
 	 * Shortcut method for altering the

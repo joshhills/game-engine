@@ -1,23 +1,31 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 using namespace std;
 
+/**
+ * Not interrupt driven, no concept of multi-user.
+ */
 class Controller {
 public:
+	// Engine-wide controls.
 	enum Control {
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT,
-		PRIMARY,
-		SECONDARY,
-		PAUSE,
-		SELECT
+		UP = 0,
+		DOWN = 1,
+		LEFT = 2,
+		RIGHT = 3,
+		PRIMARY = 4,
+		SECONDARY = 5,
+		PAUSE = 6,
+		SELECT = 7,
+		MAX = 8
 	};
 
-	enum ControlState {
+	// Variations of engine-wide controls.
+	enum class ControlState {
+		NONE,
 		DOWN,
 		HELD,
 		TRIGGERED
@@ -34,11 +42,34 @@ public:
 		float amount = -1;
 	};
 
-	Controller();
-	~Controller();
+	Controller() : isEnabled(true), isConnected(false) {}
+	virtual ~Controller() {}
 
-	// Accessors
+	// Accessors.
+	bool IsEnabled() const
+	{
+		return isEnabled;
+	}
 
+	void SetEnabled(bool isEnabled)
+	{
+		this->isEnabled = isEnabled;
+	}
+
+	bool IsConnected() const
+	{
+		return isConnected;
+	}
+
+	void SetConnected(bool isConnected)
+	{
+		this->isConnected = isConnected;
+	}
+
+	/**
+	 * Update the internal historic state of the inputs.
+	 */
+	virtual void UpdateInput() = 0;
 
 	/**
 	 * Shortcut for retrieving input in an extensible manner. 
@@ -46,28 +77,55 @@ public:
 	 * @param control	The abstract control to query.
 	 * @param state		The state to check if it is in.
 	 */
-	virtual Input GetInput(Control control, ControlState state) {
+	virtual bool IsInput(Control control, ControlState state)
+	{
 		switch (state) {
 		case ControlState::DOWN:
-			return GetInputDown(control);
+			return IsInputDown(control);
 			break;
 		case ControlState::HELD:
-			return GetInputHeld(control);
+			return IsInputHeld(control);
 			break;
 		case ControlState::TRIGGERED:
-			return GetInputTriggered(control);
+			return IsInputTriggered(control);
 			break;
 		}
 	};
 
-	virtual Input GetInputDown(Control control);
-	virtual Input GetInputHeld(Control control);
-	virtual Input GetInputTriggered(Control control);
+	virtual bool IsInputDown(Control control) {
+		return inputDownStates[control];
+	};
+	virtual bool IsInputHeld(Control control) {
+		return inputHoldStates[control];
+	};
+	virtual bool IsInputTriggered(Control control) {
+		return inputTriggeredStates[control];
+	};
 
-	virtual vector<Input> GetInputSnapshot();
+	/**
+	 * Construct a list of active inputs.
+	 * TODO: Do I also want to return the inactive to track changes?
+	 */
+	virtual vector<Controller::Input> ComputeInputSnapshot() = 0;
 	
-private:
-	bool isEnabled;
+	vector<Controller::Input> GetInputSnapshot()
+	{
+		return lastInputSnapshot;
+	}
 
-	// Make an input map, int-to-Control or other way around.
+protected:
+	bool isEnabled;
+	bool isConnected;
+
+	// Store last input state snapshot.
+	vector<Controller::Input> lastInputSnapshot;
+
+	// Store historical bitmap of input changes.
+	bool inputTriggeredStates[Control::MAX];
+	bool inputDownStates[Control::MAX];
+	bool inputHoldStates[Control::MAX];
+
+	// Store input maps per controller.
+	map<int, int> defaultControls;
+	map<int, int> customControls;
 };

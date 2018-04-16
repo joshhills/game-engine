@@ -1,13 +1,18 @@
 #include "HumanInterface.h"
 
 #include <Common/Event.h>
+#include <Common/InputEvent.h>
 #include <nclgl/Window.h>
 #include <nclgl/Keyboard.h>
 
 HumanInterface::HumanInterface(EventManager * eventManager, vector<Entity *> * entities) :
 	Subsystem("Human Interface", Event::HUMAN_INTERFACE, eventManager),
 	entities(entities)
-{}
+{
+	// Add controllers.
+	// TODO: Deal with disconnects.
+	controllers.push_back(new XboxController());
+}
 
 HumanInterface::~HumanInterface()
 {
@@ -25,23 +30,31 @@ void HumanInterface::HandleEvent(Event * e) {
 	logger.Debug("Handling an event.");
 }
 
-void HumanInterface::CheckForDeviceInput() {
-	// TODO: Sequester into a new class.
-	// Check keyboard and xbox controller...
+void HumanInterface::CheckForDeviceInput() {	
+	for (Controller * controller : controllers)
+	{
+		if (controller->IsEnabled())
+		{
+			vector<Controller::Input> snapshot = controller->ComputeInputSnapshot();
 
-	// Get Xbox controller input...
-	XINPUT_STATE controllerState = xboxController.GetControllerState();
-	// Normalise the thumb stick.
-	float normLX = fmaxf(-1, (float)controllerState.Gamepad.sThumbLX / 32767);
-	float normLY = fmaxf(-1, (float)controllerState.Gamepad.sThumbLY / 32767);
+			for (Controller::Input input : snapshot)
+			{
+				HandleDeviceInput(input);
+			}
+		}
+	}
 
-	float deadzoneX = 0.15f;
-	float deadzoneY = 0.02f;
+	//// Normalise the thumb stick.
+	//float normLX = fmaxf(-1, (float)controllerState.Gamepad.sThumbLX / 32767);
+	//float normLY = fmaxf(-1, (float)controllerState.Gamepad.sThumbLY / 32767);
 
-	float leftStickX = (abs(normLX) < deadzoneX ? 0 : normLX);
-	float leftStickY = (abs(normLY) < deadzoneY ? 0 : normLY);
+	//float deadzoneX = 0.15f;
+	//float deadzoneY = 0.02f;
 
-	if (Window::GetKeyboard()->KeyDown(KEYBOARD_W)
+	//float leftStickX = (abs(normLX) < deadzoneX ? 0 : normLX);
+	//float leftStickY = (abs(normLY) < deadzoneY ? 0 : normLY);
+
+	/*if (Window::GetKeyboard()->KeyDown(KEYBOARD_W)
 		|| (controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_A) != 0) {
 		eventManager->AddEvent(
 			new Event(Event::CONTROL_UP)
@@ -63,5 +76,12 @@ void HumanInterface::CheckForDeviceInput() {
 		eventManager->AddEvent(
 			new Event(Event::CONTROL_RIGHT)
 		);
-	}
+	}*/
+}
+
+void HumanInterface::HandleDeviceInput(Controller::Input input)
+{
+	eventManager->AddEvent(
+		new InputEvent(input)
+	);
 }
