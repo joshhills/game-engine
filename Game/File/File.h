@@ -1,27 +1,27 @@
 #pragma once
 
-#include <Common/Subsystem.h>
+#include <map>
+
 #include <Common/LoggerInstance.h>
-#include <Common/EventManager.h>
 
 using namespace std;
 
-class File : Subsystem {
+class File {
 public:
-	File(EventManager * eventManager, vector<Entity *> * entities);
-	~File();
-
-	void Update();
-private:
-	// Engine state.
-	vector<Entity*> * entities;
+	static const string RESOURCE_ROOT_PATH;
 
 	/**
 	 * Base function to load file-stream.
 	 *
 	 * @param filePath	The relative path to the resource on the host system.
 	 */
-	void LoadPlainTextFile(string filePath);
+	//static void LoadPlainTextFile(string filePath);
+
+	/**
+	* Load config files
+	*/
+	static std::map<int, int> LoadControlMap(string relativeFilePath);
 
 	// TODO: Return references to class objects.
+
 };

@@ -2,16 +2,32 @@
 
 #include <Common/Event.h>
 
-File::File(EventManager * eventManager, vector<Entity *> * entities) :
-	Subsystem("File", Event::FILE, eventManager),
-	entities(entities)
-{}
+// Initialize statically accessible entities.
+const string File::RESOURCE_ROOT_PATH = "./Resources/";
 
-File::~File()
+// Inspired by SO 13262568.
+std::map<int, int> File::LoadControlMap(string relativeFilePath)
 {
-}
+	ifstream file(RESOURCE_ROOT_PATH + relativeFilePath);
+	string line;
 
-void File::Update()
-{
-	Subsystem::Update();
+	std::map<int, int> controlMap;
+
+	while (std::getline(file, line))
+	{
+		int pos = line.find('=');
+		if (pos != string::npos)
+		{
+			// TODO: Error handling.
+			string keyString = line.substr(0, pos);
+			string valueString = line.substr(pos + 1);
+			
+			int key = std::stoi(keyString);
+			int value = std::stoi(valueString);
+
+			controlMap[key] = value;
+		}
+	}
+
+	return controlMap;
 }

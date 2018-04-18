@@ -83,14 +83,14 @@ public:
 	virtual bool IsInput(Control control, ControlState state)
 	{
 		switch (state) {
-		case ControlState::DOWN:
-			return IsInputDown(control);
-			break;
 		case ControlState::HELD:
 			return IsInputHeld(control);
 			break;
 		case ControlState::TRIGGERED:
 			return IsInputTriggered(control);
+			break;
+		default:
+			return IsInputDown(control);
 			break;
 		}
 	};
@@ -123,7 +123,7 @@ public:
 
 		// Determine control.
 		// TODO: Error-handling?
-		int mapping = defaultControls[control];
+		int mapping = customControls[control];
 		input.control = static_cast<Controller::Control>(mapping);
 
 		// Determine the state.
@@ -151,7 +151,7 @@ public:
 	{
 		Controller::Input input;
 
-		int mapping = defaultControls[control];
+		int mapping = customControls[control];
 		input.control = static_cast<Controller::Control>(mapping);
 		input.amount = 0;
 		input.state = Controller::ControlState::NONE;

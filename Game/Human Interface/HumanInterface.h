@@ -3,6 +3,7 @@
 #include <Common/Subsystem.h>
 #include <Common/SubsystemLifecycle.h>
 #include <Common/Event.h>
+#include <File/File.h>
 #include <Common/InputEvent.h>
 #include <Common/LoggerInstance.h>
 #include <Common/EventManager.h>

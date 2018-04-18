@@ -12,7 +12,7 @@ HumanInterface::~HumanInterface()
 void HumanInterface::StartUp()
 {
 	// Initialise controllers.
-	controllers.push_back(new XboxController());
+	controllers.push_back(new XboxController(true, File::LoadControlMap("Settings/XboxController.cfg")));
 	controllers.push_back(new KeyboardController());
 }
 

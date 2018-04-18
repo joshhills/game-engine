@@ -1,7 +1,7 @@
 #include "XboxController.h"
 #include <iostream>
 
-XboxController::XboxController()
+XboxController::XboxController(bool isEnabled, std::map<int, int> customControls)
 {
 	// Define default controls (explicitly namespaced for clarity).
 	defaultControls = {
@@ -19,12 +19,25 @@ XboxController::XboxController()
 		{ XboxController::Control::BACK,			 Controller::Control::SELECT }
 	};
 
-	// TODO: Load in custom from file.
-	customControls = defaultControls;
+	if (customControls.empty())
+	{
+		this->customControls = defaultControls;
+	}
+	else
+	{
+		this->customControls = customControls;
+	}
 
+	// Set connection.
 	GetHardwareControllerState();
 	isConnected = XInputGetState(0, &controllerState) == ERROR_SUCCESS;
+
+	// Set enabled.
+	this->isEnabled = isEnabled;
 }
+
+XboxController::XboxController() : XboxController(true, std::map<int, int>())
+{}
 
 XboxController::~XboxController()
 {}

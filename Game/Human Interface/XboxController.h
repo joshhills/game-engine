@@ -25,6 +25,7 @@ public:
 	};
 
 	XboxController();
+	XboxController(bool isEnabled, std::map<int, int> customControls);
 	~XboxController();
 
 	vector<Controller::Input> ComputeInputSnapshot() override;
