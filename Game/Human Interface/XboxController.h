@@ -16,18 +16,18 @@ public:
 		DPAD_DOWN = 3,
 		DPAD_LEFT = 4,
 		DPAD_RIGHT = 5,
-		LEFT_STICK_HORIZONTAL = 6,
-		LEFT_STICK_VERTICAL = 7,
-		BACK = 8,
-		START = 9
+		LEFT_STICK_UP = 6,
+		LEFT_STICK_DOWN = 7,
+		LEFT_STICK_LEFT = 8,
+		LEFT_STICK_RIGHT = 9,
+		BACK = 10,
+		START = 11
 	};
 
 	XboxController();
 	~XboxController();
 
-	void UpdateInput() override;
-
-	vector<Input> ComputeInputSnapshot() override;
+	vector<Controller::Input> ComputeInputSnapshot() override;
 private:
 	// Object to act as vessel.
 	XINPUT_STATE controllerState;

@@ -121,6 +121,7 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LoggerInstance.h" />
     <ClInclude Include="Subsystem.h" />
+    <ClInclude Include="SubsystemLifecycle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />

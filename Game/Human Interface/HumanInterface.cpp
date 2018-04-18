@@ -1,28 +1,30 @@
 #include "HumanInterface.h"
 
-#include <Common/Event.h>
-#include <Common/InputEvent.h>
-#include <nclgl/Window.h>
-#include <nclgl/Keyboard.h>
-
 HumanInterface::HumanInterface(EventManager * eventManager, vector<Entity *> * entities) :
 	Subsystem("Human Interface", Event::HUMAN_INTERFACE, eventManager),
 	entities(entities)
-{
-	// Add controllers.
-	// TODO: Deal with disconnects.
-	controllers.push_back(new XboxController());
-}
+{}
 
 HumanInterface::~HumanInterface()
 {
 }
 
+void HumanInterface::StartUp()
+{
+	// Initialise controllers.
+	controllers.push_back(new XboxController());
+	controllers.push_back(new KeyboardController());
+}
+
+void HumanInterface::ShutDown()
+{
+
+}
+
 void HumanInterface::Update()
 {
-	logger.Info("Updating human interface subsystem.");
+	Subsystem::Update();
 
-	HandleEvents();
 	CheckForDeviceInput();
 }
 

@@ -1,17 +1,22 @@
 #include "XboxController.h"
+#include <iostream>
 
 XboxController::XboxController()
 {
 	// Define default controls (explicitly namespaced for clarity).
 	defaultControls = {
-		{ XboxController::Control::DPAD_UP, Controller::Control::UP },
-		{ XboxController::Control::DPAD_DOWN, Controller::Control::DOWN },
-		{ XboxController::Control::DPAD_LEFT, Controller::Control::LEFT },
-		{ XboxController::Control::DPAD_RIGHT, Controller::Control::RIGHT },
-		{ XboxController::Control::A, Controller::Control::PRIMARY },
-		{ XboxController::Control::B, Controller::Control::SECONDARY },
-		{ XboxController::Control::START, Controller::Control::PAUSE },
-		{ XboxController::Control::BACK, Controller::Control::SELECT }
+		{ XboxController::Control::DPAD_UP,			 Controller::Control::UP },
+		{ XboxController::Control::DPAD_LEFT,		 Controller::Control::LEFT },
+		{ XboxController::Control::DPAD_DOWN,		 Controller::Control::DOWN },
+		{ XboxController::Control::DPAD_RIGHT,		 Controller::Control::RIGHT },
+		{ XboxController::Control::LEFT_STICK_UP,	 Controller::Control::UP },
+		{ XboxController::Control::LEFT_STICK_LEFT,	 Controller::Control::LEFT },
+		{ XboxController::Control::LEFT_STICK_DOWN,	 Controller::Control::DOWN },
+		{ XboxController::Control::LEFT_STICK_RIGHT, Controller::Control::RIGHT },
+		{ XboxController::Control::A,				 Controller::Control::PRIMARY },
+		{ XboxController::Control::B,				 Controller::Control::SECONDARY },
+		{ XboxController::Control::START,			 Controller::Control::PAUSE },
+		{ XboxController::Control::BACK,			 Controller::Control::SELECT }
 	};
 
 	// TODO: Load in custom from file.
@@ -31,58 +36,109 @@ vector<Controller::Input> XboxController::ComputeInputSnapshot()
 	// Get hardware snapshot.
 	GetHardwareControllerState();
 
-	// For every kind of input, create a response object.
-	if ((controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_A) != 0)
-	{
-		Controller::Input input;
+	/* For every kind of input, create a response object. */
 
-		// Determine control.
-		// TODO: Error-handling?
-		int mapping = defaultControls[XboxController::Control::A];
-		input.control = static_cast<Controller::Control>(mapping);
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::A,
+			(controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_A) != 0
+		)
+	);
 
-		// Determine the state.
-		if (!IsInputDown(input.control))
-		{
-			inputTriggeredStates[input.control] = true;
-			inputDownStates[input.control] = true;
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::B,
+			(controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_B) != 0
+		)
+	);
 
-			input.state = Controller::ControlState::TRIGGERED;
-		}
-		else
-		{
-			inputTriggeredStates[input.control] = false;
-			inputHoldStates[input.control] = true;
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::DPAD_UP,
+			(controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) != 0
+		)
+	);
 
-			input.state = Controller::ControlState::HELD;
-		}
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::DPAD_LEFT,
+			(controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) != 0
+		)
+	);
+	
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::DPAD_DOWN,
+			(controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) != 0
+		)
+	);
 
-		// Determine amount.
-		input.amount = 1;
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::DPAD_RIGHT,
+			(controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) != 0
+		)
+	);
 
-		inputSnapshot.push_back(input);
-	}
-	else
-	{
-		Controller::Input input;
-		int mapping = defaultControls[XboxController::Control::A];
-		input.control = static_cast<Controller::Control>(mapping);
-		input.amount = 0;
-		input.state = Controller::ControlState::NONE;
-		inputSnapshot.push_back(input);
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::BACK,
+			(controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) != 0
+		)
+	);
 
-		// Reset the state.
-		inputTriggeredStates[input.control] = false;
-		inputDownStates[input.control] = false;
-		inputHoldStates[input.control] = false;
-	}
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::START,
+			(controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_START) != 0
+		)
+	);
+
+	// Analog stick.
+	float normLX = fmaxf(-1, (float)controllerState.Gamepad.sThumbLX / 32767);
+	float normLY = fmaxf(-1, (float)controllerState.Gamepad.sThumbLY / 32767);
+
+	// TODO: Make class constants.
+	float deadzoneX = 0.15f;
+	float deadzoneY = 0.05f;
+
+	float leftStickX = (abs(normLX) < deadzoneX ? 0 : normLX);
+	float leftStickY = (abs(normLY) < deadzoneY ? 0 : normLY);
+
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::LEFT_STICK_UP,
+			leftStickY > 0,
+			abs(leftStickY)
+		)
+	);
+
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::LEFT_STICK_DOWN,
+			leftStickY < 0,
+			abs(leftStickY)
+		)
+	);
+
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::LEFT_STICK_LEFT,
+			leftStickX < 0,
+			abs(leftStickX)
+		)
+	);
+
+	inputSnapshot.push_back(
+		SetInput(
+			XboxController::Control::LEFT_STICK_RIGHT,
+			leftStickX > 0,
+			abs(leftStickX)
+		)
+	);
 
 	// Store it as latest input.
+	// Note that duplicates are not handled here as assumptions cannot be made about the game logic.
 	lastInputSnapshot = inputSnapshot;
 	return lastInputSnapshot;
-}
-
-void XboxController::UpdateInput()
-{
-	lastInputSnapshot = GetInputSnapshot();
 }

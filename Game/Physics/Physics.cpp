@@ -13,10 +13,7 @@ Physics::Physics(EventManager * eventManager, vector<Entity *> * entities) :
 	entities(entities)
 {
 	// Create function map using lambdas to handle events.
-	eventMap[Event::MOVE_UP] =		[this](Event * e) {	MoveUp(e);		};
-	eventMap[Event::MOVE_DOWN] =	[this](Event * e) { MoveDown(e);	};
-	eventMap[Event::MOVE_LEFT] =	[this](Event * e) { MoveLeft(e);	};
-	eventMap[Event::MOVE_RIGHT] =	[this](Event * e) { MoveRight(e);	};
+	eventMap[Event::INPUT] = [this](Event * e) { HandleMoveEvent(e); };
 }
 
 void Physics::Update() {
@@ -42,33 +39,28 @@ void Physics::Update() {
 	}
 }
 
-// TODO: Magic numbers; also ask Will if this is an appropriate way to do physics.
-void Physics::MoveUp(Event * e) {
-	Move(
-		e->entities.at(0), // The only entity in this definition.
-		b2Vec2(0, 50)
-	);
-}
+void Physics::HandleMoveEvent(Event * e) {
+	InputEvent * t = static_cast<InputEvent *>(e);
+	Entity * entity = t->entities.at(0);
 
-void Physics::MoveDown(Event * e) {
-	Move(
-		e->entities.at(0), // The only entity in this definition.
-		b2Vec2(0, -50)
-	);
-}
+	// TODO: Magic number, should form part of input payload from game.
+	const float moveSpeed = 50 * t->input.amount;
 
-void Physics::MoveLeft(Event * e) {
-	Move(
-		e->entities.at(0), // The only entity in this definition.
-		b2Vec2(50, 0)
-	);
-}
-
-void Physics::MoveRight(Event * e) {
-	Move(
-		e->entities.at(0), // The only entity in this definition.
-		b2Vec2(-50, 0)
-	);
+	switch (t->input.control)
+	{
+		case Controller::Control::UP:
+			Move(entity, b2Vec2(0, moveSpeed));
+			break;
+		case Controller::Control::DOWN:
+			Move(entity, b2Vec2(0, -moveSpeed));
+			break;
+			case Controller::Control::LEFT:
+			Move(entity, b2Vec2(moveSpeed, 0));
+			break;
+		case Controller::Control::RIGHT:
+			Move(entity, b2Vec2(-moveSpeed, 0));
+			break;
+	}
 }
 
 void Physics::Move(Entity * entity, b2Vec2 force) {

@@ -69,7 +69,10 @@ public:
 	/**
 	 * Update the internal historic state of the inputs.
 	 */
-	virtual void UpdateInput() = 0;
+	virtual void UpdateInput()
+	{
+		lastInputSnapshot = GetInputSnapshot();
+	}
 
 	/**
 	 * Shortcut for retrieving input in an extensible manner. 
@@ -108,7 +111,60 @@ public:
 	 */
 	virtual vector<Controller::Input> ComputeInputSnapshot() = 0;
 	
-	vector<Controller::Input> GetInputSnapshot()
+	virtual Controller::Input SetInput(int control, bool isActive = true, float amount = 1)
+	{
+		// Check if this is an empty change.
+		if (!isActive)
+		{
+			return ZeroInput(control);
+		}
+
+		Controller::Input input;
+
+		// Determine control.
+		// TODO: Error-handling?
+		int mapping = defaultControls[control];
+		input.control = static_cast<Controller::Control>(mapping);
+
+		// Determine the state.
+		if (!IsInputDown(input.control))
+		{
+			inputTriggeredStates[input.control] = true;
+			inputDownStates[input.control] = true;
+
+			input.state = Controller::ControlState::TRIGGERED;
+		}
+		else
+		{
+			inputTriggeredStates[input.control] = false;
+			inputHoldStates[input.control] = true;
+
+			input.state = Controller::ControlState::HELD;
+		}
+
+		input.amount = amount;
+
+		return input;
+	}
+
+	virtual Controller::Input ZeroInput(int control)
+	{
+		Controller::Input input;
+
+		int mapping = defaultControls[control];
+		input.control = static_cast<Controller::Control>(mapping);
+		input.amount = 0;
+		input.state = Controller::ControlState::NONE;
+
+		// Reset the state.
+		inputTriggeredStates[input.control] = false;
+		inputDownStates[input.control] = false;
+		inputHoldStates[input.control] = false;
+
+		return input;
+	}
+
+	virtual vector<Controller::Input> GetInputSnapshot()
 	{
 		return lastInputSnapshot;
 	}

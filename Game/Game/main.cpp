@@ -72,11 +72,15 @@ int main() {
 	HumanInterface humanInterface(eventManager, &entities);
 	Audio audio(eventManager, &entities);
 
-	// Create entities.
+	//// Create entities.
 	CubeEntity * player = new CubeEntity();
 
 	entities.push_back(new FloorEntity());
 	entities.push_back(player);
+	////
+
+	// Startup
+	humanInterface.StartUp();
 
 	// Main game loop.
 	while (true) {

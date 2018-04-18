@@ -116,10 +116,12 @@
   <ItemGroup>
     <ClInclude Include="Controller.h" />
     <ClInclude Include="HumanInterface.h" />
+    <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="XboxController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HumanInterface.cpp" />
+    <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="XboxController.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
