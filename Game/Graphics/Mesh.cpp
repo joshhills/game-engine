@@ -1,4 +1,6 @@
 #include "Mesh.h"
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "../Middleware/Graphics/tinyobjloader/tiny_obj_loader.h"
 
 Mesh::Mesh(void)	{
 	//Most objects in OpenGL are represented as 'names' - an unsigned int
@@ -101,6 +103,70 @@ Mesh* Mesh::GenerateTriangle()	{
 
 	return m;
 }
+
+// Begin modifications to 3rd party code.
+// Josh Hills
+// 140177712
+Mesh * Mesh::LoadObjFile(const string &filename)
+{
+	ifstream f(filename);
+
+	if (!f) {
+		return NULL;
+	}
+
+	// Library requirements.
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+
+	std::string err;
+	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filename.c_str());
+
+	Mesh * m = new Mesh();
+
+	// Calculate number of vertices in total (for every shape).
+	int numVertices = 0;
+	for (size_t s = 0; s < shapes.size(); s++)
+	{
+		numVertices += shapes[s].mesh.num_face_vertices.size() * 3;
+	}
+	m->numVertices = numVertices;
+	m->vertices = new Vector3[m->numVertices];
+
+	// Read in the vertex attribute information.
+	for (size_t s = 0; s < shapes.size(); s++)
+	{
+		size_t index_offset = 0;
+		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+			int fv = shapes[s].mesh.num_face_vertices[f];
+			for (size_t v = 0; v < fv; v++) {
+				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+				
+				tinyobj::real_t vx = attrib.vertices[3 * idx.vertex_index + 0];
+				tinyobj::real_t vy = attrib.vertices[3 * idx.vertex_index + 1];
+				tinyobj::real_t vz = attrib.vertices[3 * idx.vertex_index + 2];
+
+				if (attrib.texcoords.size() > 2 * idx.texcoord_index + 1)
+				{
+					std::cout << "Hey!";
+					tinyobj::real_t tx = attrib.texcoords[2 * idx.texcoord_index + 0];
+					tinyobj::real_t ty = attrib.texcoords[2 * idx.texcoord_index + 1];
+				}
+
+				// Convert to NCLGL format.
+				m->vertices[index_offset + v].x = vx;
+				m->vertices[index_offset + v].y = vy;
+				m->vertices[index_offset + v].z = vz;
+			}
+			index_offset += fv;
+		}
+	}
+
+	m->BufferData();
+	return m;
+}
+// End modifications.
 
 Mesh*	Mesh::LoadMeshFile(const string &filename) {
 	ifstream f(filename);

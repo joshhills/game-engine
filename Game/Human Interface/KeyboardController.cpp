@@ -1,6 +1,6 @@
 #include "KeyboardController.h"
 
-KeyboardController::KeyboardController()
+KeyboardController::KeyboardController(bool isEnabled, std::map<int, int> customControls) : Controller("KeyboardController")
 {
 	// Define default controls (explicitly namespaced for clarity).
 	defaultControls = {
@@ -14,12 +14,26 @@ KeyboardController::KeyboardController()
 		{ KeyboardController::Control::RETURN,		Controller::Control::SELECT		}
 	};
 
-	// TODO: Load in custom from file.
-	customControls = defaultControls;
+	if (customControls.empty())
+	{
+		this->customControls = defaultControls;
+	}
+	else
+	{
+		if (customControls.size() < NUM_CONTROLS)
+		{
+			logger.Warn("There may be unbound controls.");
+		}
+
+		this->customControls = customControls;
+	}
 
 	// Assumed to be connected, does not break if not.
 	isConnected = true;
 }
+
+KeyboardController::KeyboardController() : KeyboardController(true, std::map<int, int>())
+{}
 
 KeyboardController::~KeyboardController()
 {}

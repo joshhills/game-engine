@@ -3,6 +3,8 @@
 #include <vector>
 #include <map>
 
+#include <Common/LoggerInstance.h>
+
 using namespace std;
 
 /**
@@ -20,7 +22,8 @@ public:
 		SECONDARY = 5,
 		PAUSE = 6,
 		SELECT = 7,
-		MAX = 8
+		MAX = 8,
+		NUM_CONTROLS = 9
 	};
 
 	// Variations of engine-wide controls.
@@ -42,7 +45,7 @@ public:
 		float amount = -1;
 	};
 
-	Controller() : isEnabled(true), isConnected(false) {}
+	Controller(string controllerName) : logger(controllerName), isEnabled(true), isConnected(false) {}
 	virtual ~Controller() {}
 
 	// Accessors.
@@ -170,6 +173,8 @@ public:
 	}
 
 protected:
+	LoggerInstance logger;
+
 	bool isEnabled;
 	bool isConnected;
 

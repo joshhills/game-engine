@@ -22,7 +22,7 @@ int main() {
 	/*
 	TODO:
 	- Miscellaneous:
-	- Add a camera
+	- Add a camera (follow)?
 	- Remove dependencies that are not needed from this class
 	- Create resources folder for all resources (shaders, audio etc.)
 	- Comment properly
@@ -32,7 +32,7 @@ int main() {
 	- Time spent in each subsystem, framerate, toggle on/off
 
 	- Memory Manager:
-	- Store bins of common objects (entity, level, controller settings); use article
+	- Store bins of common objects (entity, event); use article
 	
 	- Human Interface:
 	- Controller background states
@@ -58,7 +58,7 @@ int main() {
 	// Set logger settings for debugging purposes.
 	Logger::SetLevel(Logger::WARN);
 	//Logger::SetLevelExclusive(true);
-	Logger::SetFilter("Audio");
+	//Logger::SetFilter("Audio");
 
 	// Create reference to events system.
 	EventManager * eventManager = new EventManager();

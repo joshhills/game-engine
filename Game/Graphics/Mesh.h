@@ -50,6 +50,12 @@ public:
 	static Mesh*	GenerateTriangle();
 	static Mesh*	LoadMeshFile(const string &filename);
 
+	// Begin modifications to 3rd party code.
+	// Josh Hills
+	// 140177712
+	static Mesh*	LoadObjFile(const string &filename);
+	// End modifications to 3rd party code.
+
 	GLuint	type;	//Primitive type for this mesh (GL_TRIANGLES...etc)
 
 protected:

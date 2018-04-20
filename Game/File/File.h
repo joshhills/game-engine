@@ -3,6 +3,9 @@
 #include <map>
 
 #include <Common/LoggerInstance.h>
+#include <Common/Event.h>
+
+#include <Game/Level.h>
 
 using namespace std;
 
@@ -22,6 +25,8 @@ public:
 	*/
 	static std::map<int, int> LoadControlMap(string relativeFilePath);
 
-	// TODO: Return references to class objects.
+	static Level LoadLevel(string relativeFilePath);
 
+private:
+	static LoggerInstance logger;
 };

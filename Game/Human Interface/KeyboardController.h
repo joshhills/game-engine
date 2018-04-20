@@ -21,6 +21,7 @@ public:
 	};
 
 	KeyboardController();
+	KeyboardController(bool isEnabled, std::map<int, int> customControls);
 	~KeyboardController();
 
 	vector<Input> ComputeInputSnapshot() override;

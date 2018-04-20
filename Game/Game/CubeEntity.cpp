@@ -4,7 +4,9 @@ CubeEntity::CubeEntity()
 {
 	// Set things up in a bespoke manner for a demo cube.
 	// Create graphical representation.
-	Mesh * mesh = Mesh::LoadMeshFile("cube.asciimesh");
+	//Mesh * mesh = Mesh::LoadMeshFile("cube.asciimesh");
+	Mesh * mesh = Mesh::LoadObjFile("Resources/Models/textured-cube.obj");
+
 	Shader * shader = new Shader("basicvert.glsl", "basicFrag.glsl");
 
 	graphicsData = new GraphicsData(mesh, shader);
@@ -28,6 +30,7 @@ CubeEntity::CubeEntity()
 	physicsData = new PhysicsData(body);
 
 	// Set audio information.
+	// TODO: Don't do audio like this.
 	audioData = new AudioData();
 	sf::SoundBuffer * buffer = new sf::SoundBuffer();
 	buffer->loadFromFile("jump.wav");

@@ -1,9 +1,10 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
+
 #include "Event.h"
 #include "LoggerInstance.h"
-#include <iostream>
 
 using namespace std;
 

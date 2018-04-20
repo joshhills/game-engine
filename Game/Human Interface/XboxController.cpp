@@ -1,7 +1,7 @@
 #include "XboxController.h"
 #include <iostream>
 
-XboxController::XboxController(bool isEnabled, std::map<int, int> customControls)
+XboxController::XboxController(bool isEnabled, std::map<int, int> customControls) : Controller("XboxController")
 {
 	// Define default controls (explicitly namespaced for clarity).
 	defaultControls = {
@@ -25,6 +25,11 @@ XboxController::XboxController(bool isEnabled, std::map<int, int> customControls
 	}
 	else
 	{
+		if (customControls.size() < NUM_CONTROLS)
+		{
+			logger.Warn("There may be unbound controls.");
+		}
+
 		this->customControls = customControls;
 	}
 
