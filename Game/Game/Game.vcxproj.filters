@@ -24,9 +24,6 @@
     <ClCompile Include="FloorEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LevelEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeEntity.h">
@@ -35,7 +32,13 @@
     <ClInclude Include="FloorEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LevelEntity.h">
+    <ClInclude Include="Level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TileEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockTileEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

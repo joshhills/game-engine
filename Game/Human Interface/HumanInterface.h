@@ -17,7 +17,7 @@ using namespace std;
 
 class HumanInterface : Subsystem, SubsystemLifecycle {
 public:
-	HumanInterface(EventManager * eventManager, vector<Entity *> * entities);
+	HumanInterface(EventManager * eventManager);
 	~HumanInterface();
 
 	void StartUp() override;
@@ -25,13 +25,10 @@ public:
 
 	void Update() override;
 private:
-	// Engine state.
-	vector<Entity*> * entities;
-	void HandleEvent(Event * e);
-
-	// Create events.
 	void CheckForDeviceInput();
+	void CheckDeviceConnection();
 	void HandleDeviceInput(Controller::Input input);
 
 	vector<Controller *> controllers;
+	map<int, bool> connectionStates;
 };

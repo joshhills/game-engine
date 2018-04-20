@@ -42,6 +42,15 @@
     <ClInclude Include="SubsystemLifecycle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ControllerConnectionEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SubsystemUpdateEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Event.cpp">
@@ -60,9 +69,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Subsystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

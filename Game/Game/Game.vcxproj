@@ -126,13 +126,14 @@
   <ItemGroup>
     <ClCompile Include="CubeEntity.cpp" />
     <ClCompile Include="FloorEntity.cpp" />
-    <ClCompile Include="LevelEntity.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlockTileEntity.h" />
     <ClInclude Include="CubeEntity.h" />
     <ClInclude Include="FloorEntity.h" />
-    <ClInclude Include="LevelEntity.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="TileEntity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,7 @@
 #include "XboxController.h"
 #include <iostream>
 
-XboxController::XboxController(bool isEnabled, std::map<int, int> customControls) : Controller("XboxController")
+XboxController::XboxController(bool isEnabled, std::map<int, int> customControls) : Controller(ControllerType::XBOX, "XboxController")
 {
 	// Define default controls (explicitly namespaced for clarity).
 	defaultControls = {

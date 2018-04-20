@@ -13,14 +13,13 @@ public:
 		GRAPHICS = 1,
 		HUMAN_INTERFACE = 2,
 		AUDIO = 3,
-		FILE = 4
+		FILE = 4,
+		RESOURCE_MANAGEMENT = 5,
+		PROFILING = 6
 	};
 
 	// Enum describing kinds of events that may occur.
 	enum EventType {
-		// Controls
-		INPUT,
-
 		// Physics
 		MOVE_UP,
 		MOVE_DOWN,
@@ -28,7 +27,15 @@ public:
 		MOVE_RIGHT,
 
 		// Audio
-		PLAY_SOUND
+		AUDIO_PLAY_SOUND,
+
+		// Human Interface
+		HUMAN_INTERFACE_INPUT,
+		HUMAN_INTERFACE_CONTROLLER_CONNECTION,
+
+		// Profiling
+		PROFILING_FPS,
+		PROFILING_SUBSYSTEM_UPDATE
 	};
 
 	Event();

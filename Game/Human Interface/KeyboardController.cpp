@@ -1,6 +1,6 @@
 #include "KeyboardController.h"
 
-KeyboardController::KeyboardController(bool isEnabled, std::map<int, int> customControls) : Controller("KeyboardController")
+KeyboardController::KeyboardController(bool isEnabled, std::map<int, int> customControls) : Controller(ControllerType::KEYBOARD, "KeyboardController")
 {
 	// Define default controls (explicitly namespaced for clarity).
 	defaultControls = {

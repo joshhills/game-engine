@@ -34,6 +34,12 @@ public:
 		TRIGGERED
 	};
 
+	// For profiling.
+	enum ControllerType {
+		KEYBOARD = 0,
+		XBOX = 1
+	};
+
 	/**
 	 * Multi-purpose solution for both analog
 	 * and digital control - amount is a percentage
@@ -45,7 +51,7 @@ public:
 		float amount = -1;
 	};
 
-	Controller(string controllerName) : logger(controllerName), isEnabled(true), isConnected(false) {}
+	Controller(ControllerType type, string controllerName) : type(type), logger(controllerName), isEnabled(true), isConnected(false) {}
 	virtual ~Controller() {}
 
 	// Accessors.
@@ -67,6 +73,11 @@ public:
 	void SetConnected(bool isConnected)
 	{
 		this->isConnected = isConnected;
+	}
+
+	ControllerType GetType()
+	{
+		return type;
 	}
 
 	/**
@@ -174,6 +185,7 @@ public:
 
 protected:
 	LoggerInstance logger;
+	ControllerType type;
 
 	bool isEnabled;
 	bool isConnected;
