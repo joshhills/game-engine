@@ -3,6 +3,8 @@
 #include <Common/Subsystem.h>
 #include <Common/LoggerInstance.h>
 #include <Common/EventManager.h>
+#include <Common/FPSEvent.h>
+#include <Common/SubsystemUpdateEvent.h>
 
 #include <Box2D/Box2D.h>
 
@@ -29,4 +31,6 @@ private:
 
 	Window window;
 	Renderer renderer;
+
+	float ComputeFPS();
 };

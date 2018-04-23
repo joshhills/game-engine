@@ -13,7 +13,7 @@ Physics::Physics(EventManager * eventManager, vector<Entity *> * entities) :
 	entities(entities)
 {
 	// Create function map using lambdas to handle events.
-	eventMap[Event::INPUT] = [this](Event * e) { HandleMoveEvent(e); };
+	eventMap[Event::HUMAN_INTERFACE_INPUT] = [this](Event * e) { HandleMoveEvent(e); };
 }
 
 void Physics::Update() {

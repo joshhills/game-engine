@@ -16,12 +16,15 @@ Graphics::Graphics(EventManager * eventManager, vector<Entity *> * entities) :
 Graphics::~Graphics() {}
 
 void Graphics::Update() {
+	// Measure time taken.
+	clock_t start = clock();
+
 	Subsystem::Update();
 
+	// Update the 3rd party library.
 	window.UpdateWindow();
 	
 	// Update the graphics objects based of their entity (physics, currently -) data.
-	// TODO: Decouple this..
 	for (auto entity : *entities)
 	{
 		// If there is graphics data to enact upon.
@@ -60,6 +63,20 @@ void Graphics::Update() {
 	}
 
 	renderer.SwapBuffers();
+
+	/* Profiling operations. */
+
+	// Send an FPS update event to profiler.
+	eventManager->AddEvent(new FPSEvent(ComputeFPS()));
+
+	// Send time taken to complete function.
+	clock_t stop = clock();
+	float elapsed = (float)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
+	eventManager->AddEvent(new SubsystemUpdateEvent(subSystemType, elapsed));
+}
+
+float Graphics::ComputeFPS() {
+	return 1000 / window.GetTimer()->GetTimedMS();
 }
 
 const Window & Graphics::GetWindow() const

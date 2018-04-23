@@ -2,10 +2,10 @@
 
 #include "Event.h"
 
-class SubSystemUpdateEvent : public Event {
+class SubsystemUpdateEvent : public Event {
 public:
-	SubSystemUpdateEvent(Subsystem subsystem, int msElapsed) :
-		Event(Event::PROFILING_SUBSYSTEM_UPDATE),
+	SubsystemUpdateEvent(Subsystem subsystem, int msElapsed) :
+		Event(Event::PROFILING_SUBSYSTEM_UPDATE, Event::Subsystem::PROFILING),
 		subsystem(subsystem),
 		msElapsed(msElapsed)
 	{}

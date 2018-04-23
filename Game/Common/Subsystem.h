@@ -2,6 +2,9 @@
 
 #include <map>
 #include <functional>
+#include <time.h>
+#include <stdio.h>
+
 #include "Event.h"
 #include "EventManager.h"
 #include "LoggerInstance.h"

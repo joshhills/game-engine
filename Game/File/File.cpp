@@ -63,3 +63,21 @@ Level File::LoadLevel(string relativeFilePath)
 
 	return Level(tiles);
 }
+
+void File::WriteToFile(string relativeFilePath, string contents, size_t maxFileSize)
+{
+	ofstream file(RESOURCE_ROOT_PATH + relativeFilePath, ios_base::app);
+
+	// Read contents into file (to retrieve pointer to position).
+	file << '\n' << contents;
+
+	// Start from the start if simply overwrite the contents.
+	// This could be extended to incorporate a cyclical buffer.
+	size_t fileSize = file.tellp();
+	if (fileSize > maxFileSize)
+	{
+		ofstream fileOverwrite(RESOURCE_ROOT_PATH + relativeFilePath, ios_base::trunc);
+
+		fileOverwrite << contents;
+	}
+}

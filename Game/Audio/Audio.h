@@ -9,7 +9,7 @@ using namespace std;
 
 class Audio : Subsystem {
 public:
-	Audio(EventManager * eventManager, vector<Entity *> * entities);
+	Audio(EventManager * eventManager);
 	~Audio();
 
 	void Update();
@@ -18,8 +18,6 @@ public:
 	void PlaySound(Event * e);
 
 private:
-	// Engine state.
-	vector<Entity*> * entities;
 
 	// TODO: Needs a listener (attached to the camera?)
 };

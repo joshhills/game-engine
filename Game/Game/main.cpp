@@ -9,6 +9,7 @@
 #include <Human Interface/HumanInterface.h>
 #include <Physics/Physics.h>
 #include <Audio/Audio.h>
+#include <Profiling/Profiling.h>
 #include <Audio/AudioData.h>
 
 #include <Box2D\Box2D.h>
@@ -24,7 +25,8 @@ int main() {
 	- Miscellaneous:
 	- Add a camera (follow)?
 	- Remove dependencies that are not needed from this class
-	- Create resources folder for all resources (shaders, audio etc.)
+	- Create resources folder for all resources (shaders, audio etc.) X
+		- Move things there.
 	- Comment properly
 	- Comment extended bits
 	
@@ -33,13 +35,10 @@ int main() {
 
 	- Memory Manager:
 	- Store bins of common objects (entity, event); use article
-	
-	- Human Interface:
-	- Controller background states
 
 	- Graphics:
 	- Extend constructor
-	- Load .obj files into mesh
+	- Make shaders for different objects.
 
 	- File:
 	- Load level
@@ -56,9 +55,9 @@ int main() {
 	*/
 
 	// Set logger settings for debugging purposes.
-	Logger::SetLevel(Logger::WARN);
+	Logger::SetLevel(Logger::INFO);
 	//Logger::SetLevelExclusive(true);
-	//Logger::SetFilter("Audio");
+	Logger::SetFilter("Profiling");
 
 	// Create reference to events system.
 	EventManager * eventManager = new EventManager();
@@ -69,8 +68,9 @@ int main() {
 	// Create references to subsystems.
 	Graphics graphics(eventManager, &entities);
 	Physics physics(eventManager, &entities);
-	HumanInterface humanInterface(eventManager, &entities);
-	Audio audio(eventManager, &entities);
+	HumanInterface humanInterface(eventManager);
+	Audio audio(eventManager);
+	Profiling profiling(eventManager);
 
 	//// Create entities.
 	CubeEntity * player = new CubeEntity();
@@ -97,7 +97,7 @@ int main() {
 			// TODO: Make this a subsystem itself?
 			switch (e->type)
 			{
-				case Event::INPUT:
+				case Event::HUMAN_INTERFACE_INPUT:
 					InputEvent * t = static_cast<InputEvent *>(e);
 
 					newEvents.push_back(
@@ -107,7 +107,6 @@ int main() {
 					break;
 			}
 		}
-
 		for (Event * e : newEvents)
 		{
 			eventManager->AddEvent(e);
@@ -117,7 +116,11 @@ int main() {
 		physics.Update();
 
 		// Update the audio subsystem.
+		// TODO: Remove.
 		audio.Update();
+
+		// Update the profiling subsystem.
+		profiling.Update();
 
 		eventManager->RemoveFinishedEvents();
 

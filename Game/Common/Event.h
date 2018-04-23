@@ -34,12 +34,14 @@ public:
 		HUMAN_INTERFACE_CONTROLLER_CONNECTION,
 
 		// Profiling
+		PROFILING_TOGGLE,
 		PROFILING_FPS,
 		PROFILING_SUBSYSTEM_UPDATE
 	};
 
 	Event();
 	Event(EventType type);
+	Event(EventType type, Subsystem subsystem);
 	Event(EventType type, Subsystem subsystem, Entity * entity);
 
 	~Event();
