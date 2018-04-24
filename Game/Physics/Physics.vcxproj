@@ -118,6 +118,7 @@
     <ClCompile Include="PhysicsData.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ContactListener.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PhysicsData.h" />
   </ItemGroup>

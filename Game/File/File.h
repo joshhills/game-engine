@@ -7,6 +7,16 @@
 #include <Common/Event.h>
 
 #include <Game/Level.h>
+#include <Game/TileEntity.h>
+#include <Game/BlockTileEntity.h>
+#include <Game/BumperTileEntity.h>
+#include <Game/FinishTileEntity.h>
+#include <Game/FlipperBlockTileEntity.h>
+#include <Game/FlipperWedgeTileEntity.h>
+#include <Game/HoleEnterTileEntity.h>
+#include <Game/HoleExitTileEntity.h>
+#include <Game/SpawnTileEntity.h>
+#include <Game/WedgeTileEntity.h>
 
 using namespace std;
 
@@ -30,7 +40,7 @@ public:
 	static std::map<int, int> LoadControlMap(string relativeFilePath);
 
 	// TODO: Comment.
-	static Level LoadLevel(string relativeFilePath);
+	static Level LoadLevel(string relativeFilePath, vector<Entity *> * entities);
 
 	static void WriteToFile(string relativeFilePath, string contents, size_t maxFileSize = 30000);
 private:

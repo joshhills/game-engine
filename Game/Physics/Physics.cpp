@@ -6,12 +6,15 @@ Physics::~Physics() {
 
 // Initialize statically accessible entities.
 // TODO: Comment describe what these are used for.
-b2World Physics::world = b2World(b2Vec2(0.0f, -10.0f));
+b2World Physics::world = b2World(b2Vec2(0.0f, -40.0f));
 
 Physics::Physics(EventManager * eventManager, vector<Entity *> * entities) :
 	Subsystem("Physics", Event::PHYSICS, eventManager),
 	entities(entities)
 {
+	// Middleware prerequisite.
+	world.SetContactListener(&i);
+
 	// Create function map using lambdas to handle events.
 	eventMap[Event::HUMAN_INTERFACE_INPUT] = [this](Event * e) { HandleMoveEvent(e); };
 }
@@ -23,28 +26,44 @@ void Physics::Update() {
 	world.Step(timeStep, velocityIterations, positionIterations);
 
 	// Update common interface.
-	// TODO: Create method?
-	for (auto entity : *entities) {
-		// TODO: Make a constructor for gameobject that takes a physics data (to get middleware marks)?
-		GameObject * gameObject = entity->GetGameObject();
-		PhysicsData * physicsData = entity->GetPhysicsData();
+	for (Entity * entity : *entities)
+	{
+		// If there is physics data to enact upon.
+		if (entity->GetPhysicsData() != nullptr)
+		{
+			// TODO: Make a constructor for gameobject that takes a physics data (to get middleware marks)?
+			GameObject * gameObject = entity->GetGameObject();
+			PhysicsData * physicsData = entity->GetPhysicsData();
 
-		// Position.
-		b2Vec2 position = physicsData->GetBody()->GetPosition();
-		gameObject->x = position.x;
-		gameObject->y = position.y;
+			// Position.
+			b2Vec2 position = physicsData->GetBody()->GetPosition();
 
-		// Rotation.
-		gameObject->rotation = physicsData->GetBody()->GetAngle();
+			// Check for changes in position (accounting for floating-point precision).
+			if (abs(gameObject->x - position.x) > numeric_limits<float>::epsilon()
+				|| abs(gameObject->y - position.y) > numeric_limits<float>::epsilon())
+			{
+				// Check if it implements a listener.
+				if (Movement * movement = dynamic_cast<Movement *>(entity))
+				{
+					movement->OnMove(eventManager, gameObject->x, gameObject->y, position.x, position.y);
+				}
+			}
+			gameObject->x = position.x;
+			gameObject->y = position.y;
+
+			// Rotation (convert from radians to degrees).
+			gameObject->rotation = RadToDeg(physicsData->GetBody()->GetAngle());
+		}
 	}
 }
 
+// TODO: Make this not a human interface event.
 void Physics::HandleMoveEvent(Event * e) {
 	InputEvent * t = static_cast<InputEvent *>(e);
 	Entity * entity = t->entities.at(0);
 
 	// TODO: Magic number, should form part of input payload from game.
-	const float moveSpeed = 50 * t->input.amount;
+	const float moveSpeed = 250 * t->input.amount;
 
 	switch (t->input.control)
 	{

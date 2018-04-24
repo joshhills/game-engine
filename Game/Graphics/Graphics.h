@@ -5,6 +5,7 @@
 #include <Common/EventManager.h>
 #include <Common/FPSEvent.h>
 #include <Common/SubsystemUpdateEvent.h>
+#include <Common/CameraTrackEvent.h>
 
 #include <Box2D/Box2D.h>
 
@@ -23,8 +24,6 @@ public:
 
 	const Window & GetWindow() const;
 	const Renderer & GetRenderer() const;
-
-	void HandleEvent(Event * event) override;
 private:
 	// Store engine state.
 	vector<Entity*> * entities;
@@ -32,5 +31,8 @@ private:
 	Window window;
 	Renderer renderer;
 
+	// TODO: Comment
 	float ComputeFPS();
+
+	void HandleCameraTrackEvent(Event * e);
 };

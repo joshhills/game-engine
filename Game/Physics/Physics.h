@@ -1,11 +1,14 @@
 #pragma once
 
+#include <iostream>
+#include <Box2D/Box2D.h>
+
 #include <Common/Subsystem.h>
+#include <Common/Movement.h>
 #include <Common/LoggerInstance.h>
 #include <Common/EventManager.h>
 #include <Common/InputEvent.h>
-#include <iostream>
-#include <Box2D/Box2D.h>
+#include "ContactListener.h"
 
 using namespace std;
 
@@ -28,12 +31,15 @@ public:
 	 */
 	static void Move(Entity * e, b2Vec2 force);
 
-	// TODO: Is there a better way to attach entities to a world?
 	// Middleware prerequisite.
 	static b2World world;
 private:
 	// Engine state.
 	vector<Entity*> * entities;
+
+	// TODO: Comment properly.
+	// Instance of contact listener.
+	ContactListener i;
 
 	float32 timeStep = 1.0f / 60.0f; // The delta time the system should update each frame.
 	int32 velocityIterations = 6;	 // The number of velocity calculation passes. 

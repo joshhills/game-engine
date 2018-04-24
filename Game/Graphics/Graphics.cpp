@@ -6,11 +6,12 @@ Graphics::Graphics(EventManager * eventManager, vector<Entity *> * entities) :
 	window("Game Engine", 800, 600, false),
 	renderer(window)
 {
+	// Create function map using lambdas to handle events.
+	eventMap[Event::CAMERA_TRACK] = [this](Event * e) { HandleCameraTrackEvent(e); };
+
 	// Renderer settings.
 	renderer.SetProjectionMatrix(Matrix4::Perspective(1, 100, 1.33f, 90.0f));
-	renderer.SetViewMatrix(Matrix4::BuildViewMatrix(Vector3(0, 10, -15), Vector3(0, 10, -10)));
-
-	// TODO: Camera!
+	renderer.SetViewMatrix(Matrix4::BuildViewMatrix(Vector3(0, 10, -15), Vector3(0, 10, -14)));
 }
 
 Graphics::~Graphics() {}
@@ -79,6 +80,14 @@ float Graphics::ComputeFPS() {
 	return 1000 / window.GetTimer()->GetTimedMS();
 }
 
+void Graphics::HandleCameraTrackEvent(Event * e)
+{
+	// Convert the event pointer to the correct format.
+	CameraTrackEvent * ce = static_cast<CameraTrackEvent *>(e);
+
+	renderer.SetViewMatrix(Matrix4::BuildViewMatrix(Vector3(ce->x, ce->y, -15), Vector3(ce->x, ce->y, -14)));
+}
+
 const Window & Graphics::GetWindow() const
 {
 	return window;
@@ -87,8 +96,4 @@ const Window & Graphics::GetWindow() const
 const Renderer & Graphics::GetRenderer() const
 {
 	return renderer;
-}
-
-void Graphics::HandleEvent(Event * e) {
-	logger.Debug("Handling event.");
 }

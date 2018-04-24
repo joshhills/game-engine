@@ -20,6 +20,9 @@ public:
 
 	// Enum describing kinds of events that may occur.
 	enum EventType {
+		// Graphics
+		CAMERA_TRACK,
+
 		// Physics
 		MOVE_UP,
 		MOVE_DOWN,
@@ -36,7 +39,7 @@ public:
 		// Profiling
 		PROFILING_TOGGLE,
 		PROFILING_FPS,
-		PROFILING_SUBSYSTEM_UPDATE
+		PROFILING_SUBSYSTEM_UPDATE,
 	};
 
 	Event();

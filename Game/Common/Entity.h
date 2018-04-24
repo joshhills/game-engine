@@ -8,7 +8,7 @@
 class Entity {
 public:
 	Entity();
-	~Entity();
+	virtual ~Entity();
 
 	GameObject * GetGameObject();
 	GraphicsData * GetGraphicsData();

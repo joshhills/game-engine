@@ -16,22 +16,22 @@
 
 #include <Common/Logger.h>
 
-#include "CubeEntity.h"
-#include "FloorEntity.h"
+#include "PinballEntity.h"
 
 int main() {
 	/*
 	TODO:
 	- Miscellaneous:
-	- Add a camera (follow)?
+	- Make the screen better?
 	- Remove dependencies that are not needed from this class
 	- Create resources folder for all resources (shaders, audio etc.) X
 		- Move things there.
 	- Comment properly
 	- Comment extended bits
+	- Make example settings and level files
 	
 	- Profiler:
-	- Time spent in each subsystem, framerate, toggle on/off
+	- Toggle on/off
 
 	- Memory Manager:
 	- Store bins of common objects (entity, event); use article
@@ -41,7 +41,6 @@ int main() {
 	- Make shaders for different objects.
 
 	- File:
-	- Load level
 	- Look into the idea of a 'manifest'
 
 	- Game:
@@ -50,14 +49,12 @@ int main() {
 	- Game:
 	- Create a gameplay subsystem
 
-	- Physics:
-	- Figure out collision?!
 	*/
 
 	// Set logger settings for debugging purposes.
 	Logger::SetLevel(Logger::INFO);
 	//Logger::SetLevelExclusive(true);
-	Logger::SetFilter("Profiling");
+	Logger::SetFilter("awdawd");
 
 	// Create reference to events system.
 	EventManager * eventManager = new EventManager();
@@ -73,10 +70,11 @@ int main() {
 	Profiling profiling(eventManager);
 
 	//// Create entities.
-	CubeEntity * player = new CubeEntity();
+	Level l = File::LoadLevel("Levels/test.lvl", &entities);
+	SpawnTileEntity * s = dynamic_cast<SpawnTileEntity *>(l.GetSpawnTile());
+	PinballEntity * pinball = new PinballEntity(s->gridPositionX, s->gridPositionY);
 
-	entities.push_back(new FloorEntity());
-	entities.push_back(player);
+	entities.push_back(pinball);
 	////
 
 	// Startup
@@ -101,7 +99,7 @@ int main() {
 					InputEvent * t = static_cast<InputEvent *>(e);
 
 					newEvents.push_back(
-						(new InputEvent(t->input))->AddEntity(player)->AddSubsystem(Event::PHYSICS)
+						(new InputEvent(t->input))->AddEntity(pinball)->AddSubsystem(Event::PHYSICS)
 					);
 
 					break;

@@ -1,18 +1,19 @@
 #pragma once
 
 #include <Common/Entity.h>
+#include <Physics/Physics.h>
 
 /**
  * Wrapper class for tile entities.
  */
-class TileEntity : Entity {
+class TileEntity : public Entity {
 public:
 
 	/**
 	 * Tile types and embedded orientation used for
 	 * serialisation in file operations.
 	 */
-	enum class TileTypes {
+	enum class TileType {
 		NOTHING = 0,
 		BLOCK = 1,
 		WEDGE_BOTTOM_LEFT = 2,
@@ -37,10 +38,17 @@ public:
 	/**
 	* Constructor to create a tile entity.
 	*
+	* @param type			The type of the tile as embedded data.
 	* @param gridPositionX	The position on the grid this entity should be positioned horizontally.
 	* @param gridPositionX	The position on the grid this entity should be positioned vertically.
 	*/
-	TileEntity(int gridPositionX, int gridPositionY) {};
+	TileEntity(TileType type, int gridPositionX, int gridPositionY)
+		: type(type), gridPositionX(gridPositionX * 2), gridPositionY(gridPositionY * 2)
+	{};
 
 	virtual ~TileEntity() {}
+
+	TileType type;
+	int gridPositionX;
+	int gridPositionY;
 };
