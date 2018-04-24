@@ -1,4 +1,6 @@
 #include "Event.h"
+#include <Resource Management/ResourceManagement.h>
+
 
 Event::Event()
 {}
@@ -20,7 +22,13 @@ Event::Event(EventType type, Subsystem subsystem, Entity * entity) : Event(type)
 
 Event::~Event()
 {
+	//ResourceManagement::eventStore.Remove(this);
 }
+
+//void * Event::operator new(size_t count)
+//{
+//	return ResourceManagement::eventStore.Add();
+//}
 
 Event * Event::AddSubsystem(Subsystem subsystem)
 {

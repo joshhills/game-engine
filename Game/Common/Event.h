@@ -3,6 +3,7 @@
 #include <vector>
 #include "Entity.h"
 
+
 using namespace std;
 
 class Event {
@@ -48,6 +49,9 @@ public:
 	Event(EventType type, Subsystem subsystem, Entity * entity);
 
 	~Event();
+
+	// Override new for resource management.
+	//void * operator new (size_t count);
 
 	// Builder pattern for simple event creation.
 	Event * AddSubsystem(Subsystem subsystem);

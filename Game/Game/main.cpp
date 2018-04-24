@@ -7,6 +7,7 @@
 #include <Common/InputEvent.h>
 #include <Graphics/Graphics.h>
 #include <Human Interface/HumanInterface.h>
+#include <Resource Management/ResourceManagement.h>
 #include <Physics/Physics.h>
 #include <Audio/Audio.h>
 #include <Profiling/Profiling.h>
@@ -68,6 +69,7 @@ int main() {
 	HumanInterface humanInterface(eventManager);
 	Audio audio(eventManager);
 	Profiling profiling(eventManager);
+	ResourceManagement resourceManagement(eventManager);
 
 	//// Create entities.
 	Level l = File::LoadLevel("Levels/test.lvl", &entities);
