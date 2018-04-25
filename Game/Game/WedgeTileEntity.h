@@ -4,7 +4,7 @@
 
 class WedgeTileEntity : public TileEntity {
 public:
-	WedgeTileEntity(TileType type, int gridPositionX, int gridPositionY) : TileEntity(type, gridPositionX, gridPositionY) {
+	WedgeTileEntity(EventManager * eventManager, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY) {
 		// Store default graphical settings.
 		Mesh * mesh = Mesh::LoadObjFile("Resources/Models/block-half-diagonal.obj");
 		Shader * shader = new Shader("basicvert.glsl", "basicFrag.glsl");

@@ -1,10 +1,11 @@
 #pragma once
 
 #include "TileEntity.h"
+#include <Common/Collider.h>
 
 class BumperTileEntity : public TileEntity {
 public:
-	BumperTileEntity(TileType type, int gridPositionX, int gridPositionY) : TileEntity(type, gridPositionX, gridPositionY) {
+	BumperTileEntity(EventManager * eventManager, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY) {
 		// Store default graphical settings.
 		Mesh * mesh = Mesh::LoadObjFile("Resources/Models/bumper.obj");
 		Shader * shader = new Shader("basicvert.glsl", "basicFrag.glsl");
@@ -21,9 +22,8 @@ public:
 		fixtureDef.shape = &tile;
 
 		b2Body* body = Physics::world.CreateBody(&bodyDef);
+		body->SetUserData(this);
 		body->CreateFixture(&fixtureDef);
 		physicsData = new PhysicsData(body);
 	}
-private:
-
 };

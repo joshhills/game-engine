@@ -10,6 +10,11 @@ Store::Store(size_t size, int count)
 
 Store::~Store()
 {
+	// Free memory bins.
+	for (char * bin : bins)
+	{
+		delete bin;
+	}
 }
 
 void * Store::Add()
@@ -58,9 +63,14 @@ void Store::Remove(void * location)
 	// Remove from mapping.
 	memoryStates[l].state = MemoryState::FREE;
 
-	// Set the last free space to the newly freed memory.
-	lastFreeIndex = memoryStates[l].index;
-	lastFreeSpace = bins[memoryStates[l].binIndex] + size * lastFreeIndex;
+	// If this newly freed space is earlier sequentially than the last free space, overwrite it.
+	if ((memoryStates[l].binIndex < lastActiveBinIndex)
+		|| (memoryStates[l].binIndex == lastActiveBinIndex && memoryStates[l].index < lastFreeIndex))
+	{
+		lastFreeIndex = memoryStates[l].index;
+		lastActiveBinIndex = memoryStates[l].binIndex;
+		lastFreeSpace = bins[lastActiveBinIndex] + size * lastFreeIndex;
+	}
 }
 
 Store::MemoryState Store::GetMemoryState(char * location) const
@@ -80,7 +90,9 @@ char * Store::AllocateNewBin()
 
 	bins.push_back(lastFreeSpace);
 
-	FreeMemoryStatesForBin(bins.size() - 1);
+	lastActiveBinIndex = bins.size() - 1;
+
+	FreeMemoryStatesForBin(lastActiveBinIndex);
 
 	return lastFreeSpace;
 }

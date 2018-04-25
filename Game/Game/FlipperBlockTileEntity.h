@@ -4,7 +4,7 @@
 
 class FlipperBlockTileEntity : public TileEntity {
 public:
-	FlipperBlockTileEntity(TileType type, int gridPositionX, int gridPositionY) : TileEntity(type, gridPositionX, gridPositionY) {
+	FlipperBlockTileEntity(EventManager * eventManager, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY) {
 		// Store default graphical settings.
 		Mesh * mesh = Mesh::LoadObjFile("Resources/Models/flipper-block.obj");
 		Shader * shader = new Shader("basicvert.glsl", "basicFrag.glsl");

@@ -60,6 +60,12 @@
     <ClInclude Include="CameraTrackEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlaySoundEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StopSoundEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Event.cpp">

@@ -4,38 +4,64 @@ Audio::Audio(EventManager * eventManager) :
 	Subsystem("Audio", Event::AUDIO, eventManager)
 {
 	// Create function map using lambdas to handle events.
-	eventMap[Event::AUDIO_PLAY_SOUND] = [this](Event * e) { PlaySound(e); };
+	eventMap[Event::AUDIO_PLAY_SOUND] = [this](Event * e) { HandlePlaySoundEvent(e); };
+	eventMap[Event::AUDIO_STOP_SOUND] = [this](Event * e) { HandlePlaySoundEvent(e); };
+	//eventMap[Event::AUDIO_PLAY_MUSIC] = [this](Event * e) { HandlePlayMusicEvent(e); };
+	//eventMap[Event::AUDIO_STOP_MUSIC] = [this](Event * e) { HandleStopMusicEvent(e); };
 }
 
 Audio::~Audio()
+{}
+
+void Audio::HandlePlaySoundEvent(Event * e)
 {
+	cout << "Hey?";
+	//PlaySoundEvent * pse = static_cast<PlaySoundEvent *>(e);
+
+	//try {
+	//	if (pse->canStack)
+	//	{
+	//		sounds.at(pse->relativePathToAudioFile).Play();
+	//	}
+
+	//} catch (out_of_range e)
+	//{
+	//	// Create a sound buffer.
+	//	AudioData ad(pse->relativePathToAudioFile);
+	//	
+	//	// TODO: Clean
+	//	//if (!buffer.loadFromFile(pse->relativePathToAudioFile))
+	//	//{
+	//	//	logger.Error("Could not open audio file " + pse->relativePathToAudioFile);
+	//	//}
+
+	//	// Play it.
+	//	ad.Play();
+
+	//	// And add it to map.
+	//	sounds[pse->relativePathToAudioFile] = ad;
+	//}
+
+	
 }
 
-void Audio::Update()
+void Audio::HandleStopSoundEvent(Event * e)
 {
-	Subsystem::Update();
+	//StopSoundEvent * sse = static_cast<StopSoundEvent *>(e);
 
-	// Update the audio objects based of their entity (physics, currently -) data.
-	// TODO: Decouple this..
-	//for (auto entity : *entities)
+	//try {
+	//	sounds.at(sse->relativePathToAudioFile).Stop();
+	//}
+	//catch (out_of_range e)
 	//{
-	//	// If there is graphics data to enact upon.
-	//	if (entity->GetAudioData() != nullptr)
-	//	{
-	//		GameObject * gameObject = entity->GetGameObject();
-	//		AudioData * audioData = entity->GetAudioData();
-
-	//		// Set the audio data accordingly.
-	//		audioData->GetSound().setPosition(
-	//			-gameObject->x,
-	//			-gameObject->y,
-	//			1.0f
-	//		);
-	//	}
+	//	logger.Warn("Attempting to stop a sound that does not exist: " + sse->relativePathToAudioFile);
 	//}
 }
 
-void Audio::PlaySound(Event * e)
-{
-	e->entities[0]->GetAudioData()->Play();
-}
+//void Audio::StopAllSounds()
+//{
+//	for (map<string, sf::Sound>::iterator it = sounds.begin(); it != sounds.end(); ++it)
+//	{
+//		it->second.stop();
+//	}
+//}

@@ -6,9 +6,11 @@
 #include <Common/CameraTrackEvent.h>
 #include <Physics/Physics.h>
 
+#include <Common/PlaySoundEvent.h>
+
 class PinballEntity : public Entity, public Movement, public Collider {
 public:
-	PinballEntity(int spawnX = 0, int spawnY = 0);
+	PinballEntity(EventManager * eventManager, int spawnX = 0, int spawnY = 0);
 	virtual ~PinballEntity();
 
 	/**
@@ -16,13 +18,15 @@ public:
 	 */
 	void OnMove(EventManager * eventManager, float oldX, float oldY, float newX, float newY) override;
 
-	/**
-	 * Make noise.
-	 */
-	void OnCollisionStart() override;
+	void OnCollisionStart()
+	{
+		cout << "\nPinball has collided with something!";
+		
+		eventManager->AddEvent(new PlaySoundEvent("jump.wav", true));
+	}
 
-	/**
-	* Make noise.
-	*/
-	void OnCollisionEnd() override {};
+	void OnCollisionEnd()
+	{
+		cout << "\nEnd pinball!";
+	}
 };

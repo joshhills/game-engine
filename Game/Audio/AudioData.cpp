@@ -1,32 +1,35 @@
 #include "AudioData.h"
 
 AudioData::AudioData()
+{}
+
+AudioData::AudioData(string relativePathToAudioFile)
 {
+	LoadSound(relativePathToAudioFile);
 }
 
 AudioData::~AudioData()
 {
-	delete this->buffer;
 }
 
-sf::Sound & AudioData::GetSound()
+void AudioData::LoadSound(string relativePathToAudioFile)
 {
-	return sound;
-}
+	buffer.loadFromFile(relativePathToAudioFile);
 
-void AudioData::SetSoundBuffer(sf::SoundBuffer * buffer)
-{
-	if (this->buffer != nullptr)
-	{
-		delete this->buffer;
-	}
-
-	this->buffer = buffer;
-
-	sound.setBuffer(*buffer);
+	sound.setBuffer(buffer);
 }
 
 void AudioData::Play()
 {
 	sound.play();
+}
+
+void AudioData::Stop()
+{
+	sound.stop();
+}
+
+sf::SoundBuffer & AudioData::GetBuffer()
+{
+	return buffer;
 }

@@ -9,7 +9,16 @@
 */
 class ResourceManager {
 public:
+	/*
+	* Managed stores - theoretically everything
+	* could be memory-managed, however these are
+	* the most duplicitous.
+	*/
+
+	// Manage events.
 	static Store eventStore;
+	// Manage entities.
+	static Store entityStore;
 
 	ResourceManager();
 	~ResourceManager();
@@ -23,13 +32,4 @@ public:
 
 private:
 	//Manifest * manifest;
-
-	//Store gameObjectStore;
-	//Store meshStore;
-	//Store audioStore;
-
-	// Store bins for all types of information.
-	// Entity bin
-	// Level bin
-	// Controller settings bin
 };

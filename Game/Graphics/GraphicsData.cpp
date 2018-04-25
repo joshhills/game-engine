@@ -6,7 +6,6 @@ GraphicsData::GraphicsData(Mesh * mesh, Shader * shader) :
 	renderObject(mesh, shader)
 {
 	// Make scale the same as physics bounding scale.
-	// TODO: This mightn't be necessary?
 	renderObject.SetModelMatrix(Matrix4::Translation(Vector3(0, 0, 0)) * Matrix4::Scale(Vector3(1, 1, 1)));
 	renderObject.Update();
 }

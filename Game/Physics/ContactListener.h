@@ -10,6 +10,8 @@ class ContactListener : public b2ContactListener
 	{
 		// Only entities are passed as userdata.
 		Entity * bodyUserDataA = (Entity *)contact->GetFixtureA()->GetBody()->GetUserData();
+		Entity * bodyUserDataB = (Entity *)contact->GetFixtureB()->GetBody()->GetUserData();
+
 		if (bodyUserDataA)
 		{
 			Collider * c = dynamic_cast<Collider *>(bodyUserDataA);
@@ -19,8 +21,6 @@ class ContactListener : public b2ContactListener
 			}
 		}
 
-		// Only entities are passed as userdata.
-		Entity * bodyUserDataB = (Entity *)contact->GetFixtureB()->GetBody()->GetUserData();
 		if (bodyUserDataB)
 		{
 			Collider * c = dynamic_cast<Collider *>(bodyUserDataB);
@@ -35,6 +35,8 @@ class ContactListener : public b2ContactListener
 	{
 		// Only entities are passed as userdata.
 		Entity * bodyUserDataA = (Entity *)contact->GetFixtureA()->GetBody()->GetUserData();
+		Entity * bodyUserDataB = (Entity *)contact->GetFixtureB()->GetBody()->GetUserData();
+
 		if (bodyUserDataA)
 		{
 			Collider * c = dynamic_cast<Collider *>(bodyUserDataA);
@@ -44,8 +46,6 @@ class ContactListener : public b2ContactListener
 			}
 		}
 
-		// Only entities are passed as userdata.
-		Entity * bodyUserDataB = (Entity *)contact->GetFixtureB()->GetBody()->GetUserData();
 		if (bodyUserDataB)
 		{
 			Collider * c = dynamic_cast<Collider *>(bodyUserDataB);

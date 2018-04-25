@@ -1,7 +1,5 @@
 #pragma once
 
-#include "GameObject.h"
-
 /**
  * Denote entities that have collision enabled.
  */

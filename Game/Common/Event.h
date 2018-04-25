@@ -30,7 +30,10 @@ public:
 		MOVE_RIGHT,
 
 		// Audio
+		AUDIO_PLAY_MUSIC,
+		AUDIO_STOP_MUSIC,
 		AUDIO_PLAY_SOUND,
+		AUDIO_STOP_SOUND,
 
 		// Human Interface
 		HUMAN_INTERFACE_INPUT,
@@ -47,10 +50,11 @@ public:
 	Event(EventType type, Subsystem subsystem);
 	Event(EventType type, Subsystem subsystem, Entity * entity);
 
-	// Override new for resource management.
-	void * operator new (size_t count);
+	// Override 'new' and 'delete' for resource management.
+	void * operator new(size_t count);
+	void operator delete(void * ptr);
 
-	~Event();
+	virtual ~Event();
 
 	// Builder pattern for simple event creation.
 	Event * AddSubsystem(Subsystem subsystem);

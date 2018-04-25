@@ -25,10 +25,13 @@ void * Event::operator new(size_t count)
 	return ResourceManager::eventStore.Add();
 }
 
-Event::~Event()
+void Event::operator delete(void * ptr)
 {
-	ResourceManager::eventStore.Remove(this);
+	ResourceManager::eventStore.Remove(ptr);
 }
+
+Event::~Event()
+{}
 
 Event * Event::AddSubsystem(Subsystem subsystem)
 {

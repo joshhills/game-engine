@@ -48,7 +48,7 @@ std::map<int, int> File::LoadControlMap(string relativeFilePath)
 	return controlMap;
 }
 
-Level File::LoadLevel(string relativeFilePath, vector<Entity *> * entities)
+Level File::LoadLevel(EventManager * eventManager, string relativeFilePath, vector<Entity *> * entities)
 {
 	vector<TileEntity *> tiles;
 
@@ -85,43 +85,43 @@ Level File::LoadLevel(string relativeFilePath, vector<Entity *> * entities)
 				switch (type)
 				{
 					case TileEntity::TileType::BLOCK:
-						tiles.push_back(new BlockTileEntity(type, width - j, height - i));
+						tiles.push_back(new BlockTileEntity(eventManager, type, width - j, height - i));
 						break;
 					case TileEntity::TileType::BUMPER:
-						tiles.push_back(new BumperTileEntity(type, width - j, height - i));
+						tiles.push_back(new BumperTileEntity(eventManager, type, width - j, height - i));
 						break;
 					case TileEntity::TileType::FINISH:
-						tiles.push_back(new FinishTileEntity(type, width - j, height - i));
+						tiles.push_back(new FinishTileEntity(eventManager, type, width - j, height - i));
 						break;
 					case TileEntity::TileType::FLIPPER_TOP:
 					case TileEntity::TileType::FLIPPER_LEFT:
 					case TileEntity::TileType::FLIPPER_BOTTOM:
 					case TileEntity::TileType::FLIPPER_RIGHT:
-						tiles.push_back(new FlipperBlockTileEntity(type, width - j, height - i));
+						tiles.push_back(new FlipperBlockTileEntity(eventManager, type, width - j, height - i));
 						break;
 					case TileEntity::TileType::FLIPPER_TOP_LEFT:
 					case TileEntity::TileType::FLIPPER_TOP_RIGHT:
 					case TileEntity::TileType::FLIPPER_BOTTOM_LEFT:
 					case TileEntity::TileType::FLIPPER_BOTTOM_RIGHT:
-						tiles.push_back(new FlipperWedgeTileEntity(type, width - j, height - i));
+						tiles.push_back(new FlipperWedgeTileEntity(eventManager, type, width - j, height - i));
 						break;
 					case TileEntity::TileType::HOLE_ENTER:
-						holeEnterTile = new HoleEnterTileEntity(type, width - j, height - i);
+						holeEnterTile = new HoleEnterTileEntity(eventManager, type, width - j, height - i);
 						tiles.push_back(holeEnterTile);
 						break;
 					case TileEntity::TileType::HOLE_EXIT:
-						holeExitTile = new HoleExitTileEntity(type, width - j, height - i);
+						holeExitTile = new HoleExitTileEntity(eventManager, type, width - j, height - i);
 						tiles.push_back(holeExitTile);
 						break;
 					case TileEntity::TileType::SPAWN:
-						spawnTile = new SpawnTileEntity(type, width - j, height - i);
+						spawnTile = new SpawnTileEntity(eventManager, type, width - j, height - i);
 						tiles.push_back(spawnTile);
 						break;
 					case TileEntity::TileType::WEDGE_BOTTOM_LEFT:
 					case TileEntity::TileType::WEDGE_BOTTOM_RIGHT:
 					case TileEntity::TileType::WEDGE_TOP_LEFT:
 					case TileEntity::TileType::WEDGE_TOP_RIGHT:
-						tiles.push_back(new WedgeTileEntity(type, width - j, height - i));
+						tiles.push_back(new WedgeTileEntity(eventManager, type, width - j, height - i));
 						break;
 				}
 			}

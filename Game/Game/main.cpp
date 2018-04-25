@@ -1,7 +1,6 @@
 #include <string>
 
 #include <nclgl/Window.h>
-#include <SFML/Audio.hpp>
 
 #include <Common/EventManager.h>
 #include <Common/InputEvent.h>
@@ -10,7 +9,6 @@
 #include <Physics/Physics.h>
 #include <Audio/Audio.h>
 #include <Profiling/Profiling.h>
-#include <Audio/AudioData.h>
 #include <Resources/ResourceManager.h>
 
 #include <Box2D\Box2D.h>
@@ -23,23 +21,25 @@ int main() {
 	/*
 	TODO:
 	- Miscellaneous:
-	- Make the screen better?
 	- Remove dependencies that are not needed from this class
 	- Create resources folder for all resources (shaders, audio etc.) X
 		- Move things there.
 	- Comment properly
 	- Comment extended bits
 	- Make example settings and level files
+	- Overload those constructors for extending.
 	
 	- Profiler:
 	- Toggle on/off
 
-	- Memory Manager:
-	- Store bins of common objects (entity, event); use article
+
+	- Memory Management:
+	- Ensure everything is being deleted appropriately
 
 	- Graphics:
+	- Make window resizeable
 	- Extend constructor
-	- Make shaders for different objects.
+	- Make shaders for different objects
 
 	- File:
 	- Look into the idea of a 'manifest'
@@ -49,6 +49,9 @@ int main() {
 	
 	- Game:
 	- Create a gameplay subsystem
+
+	- Audio:
+	- Sort events.
 
 	*/
 
@@ -71,74 +74,62 @@ int main() {
 	Profiling profiling(eventManager);
 	ResourceManager resourceManager();
 
-	Event * e1 = new Event(Event::AUDIO_PLAY_SOUND);
-	Event * e2 = new Event(Event::CAMERA_TRACK);
-	Event * e3 = new Event(Event::HUMAN_INTERFACE_CONTROLLER_CONNECTION);
-	Event * e4 = new Event(Event::HUMAN_INTERFACE_INPUT);
-	Event * e5 = new Event(Event::MOVE_DOWN);
+	// Create entities.
+	Level l = File::LoadLevel(eventManager, "Levels/test.lvl", &entities);
+	SpawnTileEntity * s = dynamic_cast<SpawnTileEntity *>(l.GetSpawnTile());
+	PinballEntity * pinball = new PinballEntity(eventManager, s->gridPositionX, s->gridPositionY);
 
-	delete e1;
-	delete e2;
-	delete e3;
-	delete e4;
-	delete e5;
+	entities.push_back(pinball);
+	////
 
-	//// Create entities.
-	//Level l = File::LoadLevel("Levels/test.lvl", &entities);
-	//SpawnTileEntity * s = dynamic_cast<SpawnTileEntity *>(l.GetSpawnTile());
-	//PinballEntity * pinball = new PinballEntity(s->gridPositionX, s->gridPositionY);
+	// Startup
+	humanInterface.StartUp();
 
-	//entities.push_back(pinball);
-	//////
+	// Main game loop.
+	while (true) {
+		// Update the graphics subsystem.
+		graphics.Update();
 
-	//// Startup
-	//humanInterface.StartUp();
+		// Update the input device subsystem.
+		humanInterface.Update();
 
-	//// Main game loop.
-	//while (true) {
-	//	// Update the graphics subsystem.
-	//	graphics.Update();
+		// React to input.
+		vector<Event *> newEvents;
+		for (Event * e : eventManager->GetEventQueue())
+		{
+			// TODO: Make this a subsystem itself?
+			switch (e->type)
+			{
+				case Event::HUMAN_INTERFACE_INPUT:
+					InputEvent * t = static_cast<InputEvent *>(e);
 
-	//	// Update the input device subsystem.
-	//	humanInterface.Update();
+					newEvents.push_back(
+						(new InputEvent(t->input))->AddEntity(pinball)->AddSubsystem(Event::PHYSICS)
+					);
 
-	//	// React to input.
-	//	vector<Event *> newEvents;
-	//	for (Event * e : eventManager->GetEventQueue())
-	//	{
-	//		// TODO: Make this a subsystem itself?
-	//		switch (e->type)
-	//		{
-	//			case Event::HUMAN_INTERFACE_INPUT:
-	//				InputEvent * t = static_cast<InputEvent *>(e);
+					break;
+			}
+		}
+		for (Event * e : newEvents)
+		{
+			eventManager->AddEvent(e);
+		}
 
-	//				newEvents.push_back(
-	//					(new InputEvent(t->input))->AddEntity(pinball)->AddSubsystem(Event::PHYSICS)
-	//				);
+		// Update the physics subsystem.
+		physics.Update();
 
-	//				break;
-	//		}
-	//	}
-	//	for (Event * e : newEvents)
-	//	{
-	//		eventManager->AddEvent(e);
-	//	}
+		// Update the audio subsystem.
+		// TODO: Remove.
+		audio.Update();
 
-	//	// Update the physics subsystem.
-	//	physics.Update();
+		// Update the profiling subsystem.
+		profiling.Update();
 
-	//	// Update the audio subsystem.
-	//	// TODO: Remove.
-	//	audio.Update();
+		eventManager->RemoveFinishedEvents();
 
-	//	// Update the profiling subsystem.
-	//	profiling.Update();
+		// Handle quitting.
 
-	//	eventManager->RemoveFinishedEvents();
-
-	//	// Handle quitting.
-
-	//}
+	}
 
 	// TODO: Delete things...
 }

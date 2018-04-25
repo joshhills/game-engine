@@ -19,18 +19,6 @@ public:
 
 	void Update();
 
-	/* Bespoke Event Handlers */
-	void HandleMoveEvent(Event * e);
-
-	/**
-	 * Shortcut method for altering the
-	 * physics data of an entity.
-	 *
-	 * @param e		The entity to move.
-	 * @param force	The vector to apply force.
-	 */
-	static void Move(Entity * e, b2Vec2 force);
-
 	// Middleware prerequisite.
 	static b2World world;
 private:
@@ -44,4 +32,16 @@ private:
 	float32 timeStep = 1.0f / 60.0f; // The delta time the system should update each frame.
 	int32 velocityIterations = 6;	 // The number of velocity calculation passes. 
 	int32 positionIterations = 2;	 // The number of position calculation passes. 
+	
+	/* Bespoke Event Handlers */
+	void HandleMoveEvent(Event * e);
+
+	/**
+	* Shortcut method for altering the
+	* physics data of an entity.
+	*
+	* @param e		The entity to move.
+	* @param force	The vector to apply force.
+	*/
+	static void Move(Entity * e, b2Vec2 force);
 };

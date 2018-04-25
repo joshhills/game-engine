@@ -4,7 +4,7 @@
 
 class FlipperWedgeTileEntity : public TileEntity {
 public:
-	FlipperWedgeTileEntity(TileType type, int gridPositionX, int gridPositionY) : TileEntity(type, gridPositionX, gridPositionY) {
+	FlipperWedgeTileEntity(EventManager * eventManager, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY) {
 		// Store default graphical settings.
 		Mesh * mesh = Mesh::LoadObjFile("Resources/Models/flipper-block-half-diagonal.obj");
 		Shader * shader = new Shader("basicvert.glsl", "basicFrag.glsl");

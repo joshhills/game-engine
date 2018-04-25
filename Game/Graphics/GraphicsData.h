@@ -6,7 +6,6 @@
 
 class GraphicsData {
 public:
-	// TODO: Do these need to be pointers?
 	GraphicsData(Mesh * mesh, Shader * shader);
 	~GraphicsData();
 

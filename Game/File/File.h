@@ -5,6 +5,7 @@
 
 #include <Common/LoggerInstance.h>
 #include <Common/Event.h>
+#include <Common/EventManager.h>
 
 #include <Game/Level.h>
 #include <Game/TileEntity.h>
@@ -40,7 +41,7 @@ public:
 	static std::map<int, int> LoadControlMap(string relativeFilePath);
 
 	// TODO: Comment.
-	static Level LoadLevel(string relativeFilePath, vector<Entity *> * entities);
+	static Level LoadLevel(EventManager * eventManager, string relativeFilePath, vector<Entity *> * entities);
 
 	static void WriteToFile(string relativeFilePath, string contents, size_t maxFileSize = 30000);
 private:

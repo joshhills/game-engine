@@ -6,7 +6,7 @@
 /**
  * Wrapper class for tile entities.
  */
-class TileEntity : public Entity {
+class TileEntity : public Entity, public Collider {
 public:
 
 	/**
@@ -42,8 +42,11 @@ public:
 	* @param gridPositionX	The position on the grid this entity should be positioned horizontally.
 	* @param gridPositionX	The position on the grid this entity should be positioned vertically.
 	*/
-	TileEntity(TileType type, int gridPositionX, int gridPositionY)
-		: type(type), gridPositionX(gridPositionX * 2), gridPositionY(gridPositionY * 2)
+	TileEntity(EventManager * eventManager, TileType type, int gridPositionX, int gridPositionY)
+		: Entity(eventManager),
+		type(type),
+		gridPositionX(gridPositionX * 2),
+		gridPositionY(gridPositionY * 2)
 	{};
 
 	virtual ~TileEntity() {}
@@ -51,4 +54,15 @@ public:
 	TileType type;
 	int gridPositionX;
 	int gridPositionY;
+
+	void OnCollisionStart()
+	{
+		if (type == TileType::FINISH)
+		{
+			cout << "Congratulations, you win!";
+		}
+	}
+
+	void OnCollisionEnd()
+	{}
 };

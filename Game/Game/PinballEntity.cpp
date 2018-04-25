@@ -1,6 +1,7 @@
 #include "PinballEntity.h"
 
-PinballEntity::PinballEntity(int spawnX, int spawnY)
+PinballEntity::PinballEntity(EventManager * eventManager, int spawnX, int spawnY)
+	: Entity(eventManager)
 {
 	// Set things up in a bespoke manner for a demo cube.
 	// Create graphical representation.
@@ -29,10 +30,10 @@ PinballEntity::PinballEntity(int spawnX, int spawnY)
 
 	// Set audio information.
 	// TODO: Don't do audio like this.
-	audioData = new AudioData();
-	sf::SoundBuffer * buffer = new sf::SoundBuffer();
-	buffer->loadFromFile("jump.wav");
-	audioData->SetSoundBuffer(buffer);
+	//audioData = new AudioData();
+	//sf::SoundBuffer * buffer = new sf::SoundBuffer();
+	//buffer->loadFromFile("jump.wav");
+	//audioData->SetSoundBuffer(buffer);
 }
 
 PinballEntity::~PinballEntity()
@@ -41,9 +42,4 @@ PinballEntity::~PinballEntity()
 void PinballEntity::OnMove(EventManager * eventManager, float oldX, float oldY, float newX, float newY)
 {
 	eventManager->AddEvent(new CameraTrackEvent(newX, newY));
-}
-
-void PinballEntity::OnCollisionStart()
-{
-	cout << "Pinball OnCollisionStart";
 }

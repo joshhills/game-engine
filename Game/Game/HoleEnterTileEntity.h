@@ -4,7 +4,7 @@
 
 class HoleEnterTileEntity : public TileEntity {
 public:
-	HoleEnterTileEntity(TileType type, int gridPositionX, int gridPositionY) : TileEntity(type, gridPositionX, gridPositionY) {
+	HoleEnterTileEntity(EventManager * eventManager, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY) {
 		// Store default graphical settings.
 		Mesh * mesh = Mesh::LoadObjFile("Resources/Models/hole-enter.obj");
 		Shader * shader = new Shader("basicvert.glsl", "basicFrag.glsl");

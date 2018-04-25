@@ -4,7 +4,7 @@
 
 class SpawnTileEntity : public TileEntity {
 public:
-	SpawnTileEntity(TileType type, int gridPositionX, int gridPositionY) : TileEntity(type, gridPositionX, gridPositionY) {}
+	SpawnTileEntity(EventManager * eventManager, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY) {}
 private:
 
 };

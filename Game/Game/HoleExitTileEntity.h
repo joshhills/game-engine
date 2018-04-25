@@ -4,7 +4,7 @@
 
 class HoleExitTileEntity : public TileEntity {
 public:
-	HoleExitTileEntity(TileType type, int gridPositionX, int gridPositionY) : TileEntity(type, gridPositionX, gridPositionY) {
+	HoleExitTileEntity(EventManager * eventManager, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY) {
 		// Store default graphical settings.
 		Mesh * mesh = Mesh::LoadObjFile("Resources/Models/hole-exit.obj");
 		Shader * shader = new Shader("basicvert.glsl", "basicFrag.glsl");
