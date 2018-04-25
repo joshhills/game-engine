@@ -11,6 +11,7 @@
 #include <Audio/Audio.h>
 #include <Profiling/Profiling.h>
 #include <Audio/AudioData.h>
+#include <Resources/ResourceManager.h>
 
 #include <Box2D\Box2D.h>
 
@@ -68,63 +69,76 @@ int main() {
 	HumanInterface humanInterface(eventManager);
 	Audio audio(eventManager);
 	Profiling profiling(eventManager);
+	ResourceManager resourceManager();
+
+	Event * e1 = new Event();
+	Event * e2 = new Event();
+	Event * e3 = new Event();
+	Event * e4 = new Event();
+	Event * e5 = new Event();
+
+	delete e1;
+	delete e2;
+	delete e3;
+	delete e4;
+	delete e5;
 
 	//// Create entities.
-	Level l = File::LoadLevel("Levels/test.lvl", &entities);
-	SpawnTileEntity * s = dynamic_cast<SpawnTileEntity *>(l.GetSpawnTile());
-	PinballEntity * pinball = new PinballEntity(s->gridPositionX, s->gridPositionY);
+	//Level l = File::LoadLevel("Levels/test.lvl", &entities);
+	//SpawnTileEntity * s = dynamic_cast<SpawnTileEntity *>(l.GetSpawnTile());
+	//PinballEntity * pinball = new PinballEntity(s->gridPositionX, s->gridPositionY);
 
-	entities.push_back(pinball);
-	////
+	//entities.push_back(pinball);
+	//////
 
-	// Startup
-	humanInterface.StartUp();
+	//// Startup
+	//humanInterface.StartUp();
 
-	// Main game loop.
-	while (true) {
-		// Update the graphics subsystem.
-		graphics.Update();
+	//// Main game loop.
+	//while (true) {
+	//	// Update the graphics subsystem.
+	//	graphics.Update();
 
-		// Update the input device subsystem.
-		humanInterface.Update();
+	//	// Update the input device subsystem.
+	//	humanInterface.Update();
 
-		// React to input.
-		vector<Event *> newEvents;
-		for (Event * e : eventManager->GetEventQueue())
-		{
-			// TODO: Make this a subsystem itself?
-			switch (e->type)
-			{
-				case Event::HUMAN_INTERFACE_INPUT:
-					InputEvent * t = static_cast<InputEvent *>(e);
+	//	// React to input.
+	//	vector<Event *> newEvents;
+	//	for (Event * e : eventManager->GetEventQueue())
+	//	{
+	//		// TODO: Make this a subsystem itself?
+	//		switch (e->type)
+	//		{
+	//			case Event::HUMAN_INTERFACE_INPUT:
+	//				InputEvent * t = static_cast<InputEvent *>(e);
 
-					newEvents.push_back(
-						(new InputEvent(t->input))->AddEntity(pinball)->AddSubsystem(Event::PHYSICS)
-					);
+	//				newEvents.push_back(
+	//					(new InputEvent(t->input))->AddEntity(pinball)->AddSubsystem(Event::PHYSICS)
+	//				);
 
-					break;
-			}
-		}
-		for (Event * e : newEvents)
-		{
-			eventManager->AddEvent(e);
-		}
+	//				break;
+	//		}
+	//	}
+	//	for (Event * e : newEvents)
+	//	{
+	//		eventManager->AddEvent(e);
+	//	}
 
-		// Update the physics subsystem.
-		physics.Update();
+	//	// Update the physics subsystem.
+	//	physics.Update();
 
-		// Update the audio subsystem.
-		// TODO: Remove.
-		audio.Update();
+	//	// Update the audio subsystem.
+	//	// TODO: Remove.
+	//	audio.Update();
 
-		// Update the profiling subsystem.
-		profiling.Update();
+	//	// Update the profiling subsystem.
+	//	profiling.Update();
 
-		eventManager->RemoveFinishedEvents();
+	//	eventManager->RemoveFinishedEvents();
 
-		// Handle quitting.
+	//	// Handle quitting.
 
-	}
+	//}
 
 	// TODO: Delete things...
 }

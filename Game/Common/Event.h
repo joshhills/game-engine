@@ -47,6 +47,9 @@ public:
 	Event(EventType type, Subsystem subsystem);
 	Event(EventType type, Subsystem subsystem, Entity * entity);
 
+	// Override new for resource management.
+	void * operator new (size_t count);
+
 	~Event();
 
 	// Builder pattern for simple event creation.

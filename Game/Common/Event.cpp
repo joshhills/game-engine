@@ -1,4 +1,6 @@
 #include "Event.h"
+#include <Physics/Physics.h>
+#include <Resources/ResourceManager.h>
 
 Event::Event()
 {}
@@ -18,8 +20,14 @@ Event::Event(EventType type, Subsystem subsystem, Entity * entity) : Event(type)
 	AddSubsystem(subsystem)->AddEntity(entity);
 }
 
+void * Event::operator new(size_t count)
+{
+	return ResourceManager::eventStore.Add();
+}
+
 Event::~Event()
 {
+	ResourceManager::eventStore.Remove(this);
 }
 
 Event * Event::AddSubsystem(Subsystem subsystem)

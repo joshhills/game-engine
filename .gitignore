@@ -59,9 +59,9 @@ StyleCopReport.xml
 *_i.h
 *.ilk
 *.meta
-*.obj
-*.pch
+*.pch 
 *.pdb
+**/Debug/*.obj
 *.pgc
 *.pgd
 *.rsp
