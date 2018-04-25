@@ -71,11 +71,11 @@ int main() {
 	Profiling profiling(eventManager);
 	ResourceManager resourceManager();
 
-	Event * e1 = new Event();
-	Event * e2 = new Event();
-	Event * e3 = new Event();
-	Event * e4 = new Event();
-	Event * e5 = new Event();
+	Event * e1 = new Event(Event::AUDIO_PLAY_SOUND);
+	Event * e2 = new Event(Event::CAMERA_TRACK);
+	Event * e3 = new Event(Event::HUMAN_INTERFACE_CONTROLLER_CONNECTION);
+	Event * e4 = new Event(Event::HUMAN_INTERFACE_INPUT);
+	Event * e5 = new Event(Event::MOVE_DOWN);
 
 	delete e1;
 	delete e2;
