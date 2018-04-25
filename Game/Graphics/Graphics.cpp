@@ -3,14 +3,14 @@
 Graphics::Graphics(EventManager * eventManager, vector<Entity *> * entities) :
 	Subsystem("Graphics", Event::GRAPHICS, eventManager),
 	entities(entities),
-	window("Game Engine", 800, 600, false),
+	window("Game Engine", 1280, 720, false),
 	renderer(window)
 {
 	// Create function map using lambdas to handle events.
 	eventMap[Event::CAMERA_TRACK] = [this](Event * e) { HandleCameraTrackEvent(e); };
 
 	// Renderer settings.
-	renderer.SetProjectionMatrix(Matrix4::Perspective(1, 100, 1.33f, 90.0f));
+	renderer.SetProjectionMatrix(Matrix4::Perspective(1, 100, 1.7f, 90.0f));
 	renderer.SetViewMatrix(Matrix4::BuildViewMatrix(Vector3(0, 10, -15), Vector3(0, 10, -14)));
 }
 

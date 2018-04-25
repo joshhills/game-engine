@@ -27,13 +27,6 @@ PinballEntity::PinballEntity(EventManager * eventManager, int spawnX, int spawnY
 	body->CreateFixture(&fixtureDef);
 
 	physicsData = new PhysicsData(body);
-
-	// Set audio information.
-	// TODO: Don't do audio like this.
-	//audioData = new AudioData();
-	//sf::SoundBuffer * buffer = new sf::SoundBuffer();
-	//buffer->loadFromFile("jump.wav");
-	//audioData->SetSoundBuffer(buffer);
 }
 
 PinballEntity::~PinballEntity()
@@ -42,4 +35,11 @@ PinballEntity::~PinballEntity()
 void PinballEntity::OnMove(EventManager * eventManager, float oldX, float oldY, float newX, float newY)
 {
 	eventManager->AddEvent(new CameraTrackEvent(newX, newY));
+}
+
+void PinballEntity::OnCollisionStart()
+{
+	cout << "\nPinball has collided with something!";
+
+	eventManager->AddEvent(new PlaySoundEvent("jump.wav", true));
 }

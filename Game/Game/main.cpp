@@ -11,7 +11,9 @@
 #include <Profiling/Profiling.h>
 #include <Resources/ResourceManager.h>
 
-#include <Box2D\Box2D.h>
+#include <Box2D/Box2D.h>
+
+#include <Audio/AudioData.h>
 
 #include <Common/Logger.h>
 
@@ -26,23 +28,17 @@ int main() {
 		- Move things there.
 	- Comment properly
 	- Comment extended bits
-	- Make example settings and level files
 	- Overload those constructors for extending.
 	
 	- Profiler:
 	- Toggle on/off
 
-
 	- Memory Management:
 	- Ensure everything is being deleted appropriately
 
 	- Graphics:
-	- Make window resizeable
 	- Extend constructor
 	- Make shaders for different objects
-
-	- File:
-	- Look into the idea of a 'manifest'
 
 	- Game:
 	- Rename to core

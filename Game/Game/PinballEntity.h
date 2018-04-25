@@ -18,15 +18,7 @@ public:
 	 */
 	void OnMove(EventManager * eventManager, float oldX, float oldY, float newX, float newY) override;
 
-	void OnCollisionStart()
-	{
-		cout << "\nPinball has collided with something!";
-		
-		eventManager->AddEvent(new PlaySoundEvent("jump.wav", true));
-	}
+	void OnCollisionStart();
 
-	void OnCollisionEnd()
-	{
-		cout << "\nEnd pinball!";
-	}
+	void OnCollisionEnd() {}
 };

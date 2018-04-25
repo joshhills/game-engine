@@ -7,7 +7,7 @@
 #include <Common/StopSoundEvent.h>
 #include <iostream>
 #include <map>
-//#include "AudioData.h"
+#include "AudioData.h"
 
 using namespace std;
 
@@ -16,22 +16,14 @@ public:
 	Audio(EventManager * eventManager);
 	~Audio();
 
-	void Update() override {
-		Subsystem::Update();
-	}
+	void Update() override;
 private:
 	/* Bespoke Event Handlers */
-	//void HandlePlayMusicEvent(Event * e);
-	//void HandleStopMusicEvent(Event * e);
-
 	void HandlePlaySoundEvent(Event * e);
 	void HandleStopSoundEvent(Event * e);
 
-	//void StopAllSounds();
+	void StopAll();
 
 	// Store a map of all sounds.
-	//map<string, AudioData> sounds;#include <SFML/Audio.hpp>
-
-	// Store a map of all music.
-	//map<string, sf::Sound> music;
+	map<string, AudioData *> sounds;
 };

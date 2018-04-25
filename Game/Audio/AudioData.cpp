@@ -10,13 +10,20 @@ AudioData::AudioData(string relativePathToAudioFile)
 
 AudioData::~AudioData()
 {
+	delete buffer;
 }
 
 void AudioData::LoadSound(string relativePathToAudioFile)
 {
-	buffer.loadFromFile(relativePathToAudioFile);
+	if (buffer != nullptr)
+	{
+		delete buffer;
+	}
 
-	sound.setBuffer(buffer);
+	buffer = new sf::SoundBuffer;
+	buffer->loadFromFile(relativePathToAudioFile);
+
+	sound.setBuffer(*buffer);
 }
 
 void AudioData::Play()
@@ -27,9 +34,4 @@ void AudioData::Play()
 void AudioData::Stop()
 {
 	sound.stop();
-}
-
-sf::SoundBuffer & AudioData::GetBuffer()
-{
-	return buffer;
 }

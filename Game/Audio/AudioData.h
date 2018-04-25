@@ -12,8 +12,6 @@ public:
 	AudioData(string relativePathToAudioFile);
 	~AudioData();
 
-	sf::SoundBuffer & GetBuffer();
-
 	/**
 	* Shortcut method to set the buffer
 	* for the current audio source.
@@ -39,5 +37,5 @@ private:
 	sf::Sound sound;
 
 	// The current sound as a buffer.
-	sf::SoundBuffer buffer;
+	sf::SoundBuffer * buffer;
 };

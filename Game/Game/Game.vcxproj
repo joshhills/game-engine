@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>../Middleware\Physics\Box2D;../Middleware\Graphics\;../;../Middleware\Graphics\GLEW\include;../Middleware\Audio\SFML-2.4.2\include;$(IncludePath)</IncludePath>
+    <IncludePath>../Middleware\Physics\Box2D;../Middleware\Graphics\;../;../Middleware\Graphics\GLEW\include;../Middleware/Audio\SFML-2.4.2/include;$(IncludePath)</IncludePath>
     <LibraryPath>../Middleware\Physics\Box2D\Build\vs2017\bin\Debug;../;../Middleware\Graphics\;../Middleware\Graphics\GLEW\include;../Middleware\Graphics\GLEW\libx64;../Middleware\Audio\SFML-2.4.2\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -93,8 +93,8 @@
       <PreprocessorDefinitions>_MBCS;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>nclgl.lib;sfml-audio-s-d.lib;sfml-system-s-d.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;Graphics.lib;Audio.lib;File.lib;Physics.lib;Box2D.lib;Common.lib;XInput9_1_0.lib;Human Interface.lib;Profiling.lib;Resources.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>nclgl.lib;sfml-audio-d.lib;sfml-system-d.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;Graphics.lib;Audio.lib;File.lib;Physics.lib;Box2D.lib;Common.lib;XInput9_1_0.lib;Human Interface.lib;Profiling.lib;Resources.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../x64/Debug;../Middleware\Audio\SFML-2.4.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
