@@ -6,6 +6,7 @@ Audio::Audio(EventManager * eventManager) :
 	// Create function map using lambdas to handle events.
 	eventMap[Event::AUDIO_PLAY_SOUND] = [this](Event * e) { HandlePlaySoundEvent(e); };
 	eventMap[Event::AUDIO_STOP_SOUND] = [this](Event * e) { HandlePlaySoundEvent(e); };
+	eventMap[Event::AUDIO_STOP_ALL_SOUNDS] = [this](Event * e) { StopAll(); };
 }
 
 Audio::~Audio()

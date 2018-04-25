@@ -7,7 +7,7 @@
 #include <Common/Movement.h>
 #include <Common/LoggerInstance.h>
 #include <Common/EventManager.h>
-#include <Common/InputEvent.h>
+#include <Common/MoveEvent.h>
 #include "ContactListener.h"
 
 using namespace std;

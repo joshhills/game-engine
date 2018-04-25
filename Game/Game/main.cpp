@@ -3,7 +3,8 @@
 #include <nclgl/Window.h>
 
 #include <Common/EventManager.h>
-#include <Common/InputEvent.h>
+#include <Common/MoveEvent.h>
+#include <Common/ToggleProfilingEvent.h>
 #include <Graphics/Graphics.h>
 #include <Human Interface/HumanInterface.h>
 #include <Physics/Physics.h>
@@ -46,15 +47,12 @@ int main() {
 	- Game:
 	- Create a gameplay subsystem
 
-	- Audio:
-	- Sort events.
-
 	*/
 
 	// Set logger settings for debugging purposes.
 	Logger::SetLevel(Logger::INFO);
 	//Logger::SetLevelExclusive(true);
-	Logger::SetFilter("awdawd");
+	//Logger::SetFilter("Physics");
 
 	// Create reference to events system.
 	EventManager * eventManager = new EventManager();
@@ -74,9 +72,7 @@ int main() {
 	Level l = File::LoadLevel(eventManager, "Levels/test.lvl", &entities);
 	SpawnTileEntity * s = dynamic_cast<SpawnTileEntity *>(l.GetSpawnTile());
 	PinballEntity * pinball = new PinballEntity(eventManager, s->gridPositionX, s->gridPositionY);
-
 	entities.push_back(pinball);
-	////
 
 	// Startup
 	humanInterface.StartUp();
@@ -99,10 +95,33 @@ int main() {
 				case Event::HUMAN_INTERFACE_INPUT:
 					InputEvent * t = static_cast<InputEvent *>(e);
 
+					MoveEvent::Direction d;
+					switch (t->input.control)
+					{
+						case Controller::Control::UP:
+							d.x = 0;
+							d.y = 250 * t->input.amount;
+							break;
+						case Controller::Control::DOWN:
+							d.x = 0;
+							d.y = -250 * t->input.amount;
+							break;
+						case Controller::Control::LEFT:
+							d.x = 250 * t->input.amount;
+							d.y = 0;
+							break;
+						case Controller::Control::RIGHT:
+							d.x = -250 * t->input.amount;
+							d.y = 0;
+							break;
+						case Controller::Control::SELECT:
+							newEvents.push_back(
+								new ToggleProfilingEvent()
+							);
+					}
 					newEvents.push_back(
-						(new InputEvent(t->input))->AddEntity(pinball)->AddSubsystem(Event::PHYSICS)
+						(new MoveEvent(d))->AddEntity(pinball)->AddSubsystem(Event::PHYSICS)
 					);
-
 					break;
 			}
 		}
@@ -115,17 +134,17 @@ int main() {
 		physics.Update();
 
 		// Update the audio subsystem.
-		// TODO: Remove.
 		audio.Update();
 
 		// Update the profiling subsystem.
 		profiling.Update();
 
 		eventManager->RemoveFinishedEvents();
-
-		// Handle quitting.
-
 	}
 
-	// TODO: Delete things...
+	// Delete entities.
+	for (Entity * entity : entities)
+	{
+		delete entity;
+	}
 }

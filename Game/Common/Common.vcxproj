@@ -124,12 +124,14 @@
     <ClInclude Include="InputEvent.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LoggerInstance.h" />
+    <ClInclude Include="MoveEvent.h" />
     <ClInclude Include="Movement.h" />
     <ClInclude Include="PlaySoundEvent.h" />
     <ClInclude Include="StopSoundEvent.h" />
     <ClInclude Include="Subsystem.h" />
     <ClInclude Include="SubsystemLifecycle.h" />
     <ClInclude Include="SubsystemUpdateEvent.h" />
+    <ClInclude Include="ToggleProfilingEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />

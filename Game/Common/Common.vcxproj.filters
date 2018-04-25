@@ -66,6 +66,12 @@
     <ClInclude Include="StopSoundEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MoveEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ToggleProfilingEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Event.cpp">

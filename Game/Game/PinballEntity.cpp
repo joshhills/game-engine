@@ -41,5 +41,5 @@ void PinballEntity::OnCollisionStart()
 {
 	cout << "\nPinball has collided with something!";
 
-	eventManager->AddEvent(new PlaySoundEvent("jump.wav", true));
+	eventManager->AddEvent(new PlaySoundEvent("jump.wav", true, gameObject->x, gameObject->y));
 }

@@ -1,8 +1,6 @@
 #include "Physics.h"
 
-Physics::~Physics() {
-	// TODO: Delete function map?...
-}
+Physics::~Physics() {}
 
 // Initialize statically accessible entities.
 // TODO: Comment describe what these are used for.
@@ -16,7 +14,7 @@ Physics::Physics(EventManager * eventManager, vector<Entity *> * entities) :
 	world.SetContactListener(&i);
 
 	// Create function map using lambdas to handle events.
-	eventMap[Event::HUMAN_INTERFACE_INPUT] = [this](Event * e) { HandleMoveEvent(e); };
+	eventMap[Event::MOVE] = [this](Event * e) { HandleMoveEvent(e); };
 }
 
 void Physics::Update() {
@@ -59,26 +57,11 @@ void Physics::Update() {
 
 // TODO: Make this not a human interface event.
 void Physics::HandleMoveEvent(Event * e) {
-	InputEvent * t = static_cast<InputEvent *>(e);
-	Entity * entity = t->entities.at(0);
-
-	// TODO: Magic number, should form part of input payload from game.
-	const float moveSpeed = 250 * t->input.amount;
-
-	switch (t->input.control)
+	MoveEvent * t = static_cast<MoveEvent *>(e);
+	
+	for (Entity * entity : t->entities)
 	{
-		case Controller::Control::UP:
-			Move(entity, b2Vec2(0, moveSpeed));
-			break;
-		case Controller::Control::DOWN:
-			Move(entity, b2Vec2(0, -moveSpeed));
-			break;
-			case Controller::Control::LEFT:
-			Move(entity, b2Vec2(moveSpeed, 0));
-			break;
-		case Controller::Control::RIGHT:
-			Move(entity, b2Vec2(-moveSpeed, 0));
-			break;
+		Move(entity, b2Vec2(t->direction.x, t->direction.y));
 	}
 }
 

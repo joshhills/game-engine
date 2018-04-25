@@ -18,22 +18,18 @@ public:
 		PROFILING = 6
 	};
 
-	// Enum describing kinds of events that may occur.
+	// Enum describing kinds of high-level events that may occur.
 	enum EventType {
 		// Graphics
 		CAMERA_TRACK,
 
 		// Physics
-		MOVE_UP,
-		MOVE_DOWN,
-		MOVE_LEFT, 
-		MOVE_RIGHT,
+		MOVE,
 
 		// Audio
-		AUDIO_PLAY_MUSIC,
-		AUDIO_STOP_MUSIC,
 		AUDIO_PLAY_SOUND,
 		AUDIO_STOP_SOUND,
+		AUDIO_STOP_ALL_SOUNDS,
 
 		// Human Interface
 		HUMAN_INTERFACE_INPUT,
