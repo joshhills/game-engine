@@ -114,7 +114,7 @@ Level File::LoadLevel(EventManager * eventManager, string relativeFilePath, vect
 				Shader * shader = nullptr;
 				Mesh * mesh = nullptr;
 
-				if ((int) shaderType > 0)
+				if (rawShaderType > 0)
 				{
 					try
 					{
@@ -126,13 +126,16 @@ Level File::LoadLevel(EventManager * eventManager, string relativeFilePath, vect
 					}
 				}
 
-				try
+				if (rawMeshType > 0)
 				{
-					mesh = meshTypes.at(meshType);
-				}
-				catch (out_of_range e)
-				{
-					logger.Warn("Undefined mesh type" + to_string((int) meshType) + " for tile");
+					try
+					{
+						mesh = meshTypes.at(meshType);
+					}
+					catch (out_of_range e)
+					{
+						logger.Warn("Undefined mesh type" + to_string((int) meshType) + " for tile");
+					}
 				}
 
 				// Convert this type to a tile type.

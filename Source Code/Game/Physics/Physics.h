@@ -18,7 +18,7 @@ public:
 	Physics(EventManager * eventManager, vector<Entity *> * entities);
 	~Physics();
 
-	void Update();
+	void Update() override;
 
 	// Middleware prerequisite.
 	static b2World world;

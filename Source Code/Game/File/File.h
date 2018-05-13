@@ -7,17 +7,17 @@
 #include <Common/Event.h>
 #include <Common/EventManager.h>
 
-#include <Game/Level.h>
-#include <Game/TileEntity.h>
-#include <Game/BlockTileEntity.h>
-#include <Game/BumperTileEntity.h>
-#include <Game/FinishTileEntity.h>
-#include <Game/FlipperBlockTileEntity.h>
-#include <Game/FlipperWedgeTileEntity.h>
-#include <Game/HoleEnterTileEntity.h>
-#include <Game/HoleExitTileEntity.h>
-#include <Game/SpawnTileEntity.h>
-#include <Game/WedgeTileEntity.h>
+#include <Gameplay/Level.h>
+#include <Gameplay/TileEntity.h>
+#include <Gameplay/BlockTileEntity.h>
+#include <Gameplay/BumperTileEntity.h>
+#include <Gameplay/FinishTileEntity.h>
+#include <Gameplay/FlipperBlockTileEntity.h>
+#include <Gameplay/FlipperWedgeTileEntity.h>
+#include <Gameplay/HoleEnterTileEntity.h>
+#include <Gameplay/HoleExitTileEntity.h>
+#include <Gameplay/SpawnTileEntity.h>
+#include <Gameplay/WedgeTileEntity.h>
 
 using namespace std;
 

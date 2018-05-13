@@ -1,6 +1,6 @@
 #include "ResourceManager.h"
 #include <Common/PlaySoundEvent.h>
-#include <Game/BlockTileEntity.h>
+#include <Gameplay/BlockTileEntity.h>
 
 /*
  * Statically accesible stores for new overrides.

@@ -15,7 +15,8 @@ public:
 		AUDIO = 3,
 		FILE = 4,
 		RESOURCE_MANAGEMENT = 5,
-		PROFILING = 6
+		PROFILING = 6,
+		GAMEPLAY = 7
 	};
 
 	// Enum describing kinds of high-level events that may occur.

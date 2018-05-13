@@ -6,7 +6,7 @@
 class InputEvent : public Event {
 public:
 	InputEvent(Controller::Input input) :
-		Event(Event::HUMAN_INTERFACE_INPUT),
+		Event(Event::HUMAN_INTERFACE_INPUT, Event::GAMEPLAY),
 		input(input)
 	{}
 	
