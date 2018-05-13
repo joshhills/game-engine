@@ -105,8 +105,7 @@ Mesh* Mesh::GenerateTriangle()	{
 }
 
 // Begin modifications to 3rd party code.
-// Josh Hills
-// 140177712
+// CSC3224 NCODE Josh Hills 140177712
 Mesh * Mesh::LoadObjFile(const string &filename)
 {
 	ifstream f(filename);
@@ -166,7 +165,7 @@ Mesh * Mesh::LoadObjFile(const string &filename)
 	m->BufferData();
 	return m;
 }
-// End modifications.
+// CSC3224 NCODE BLOCK ENDS.
 
 Mesh*	Mesh::LoadMeshFile(const string &filename) {
 	ifstream f(filename);

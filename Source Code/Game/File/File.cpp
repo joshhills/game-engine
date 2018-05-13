@@ -3,7 +3,30 @@
 // Initialize statically accessible entities.
 const string File::RESOURCE_ROOT_PATH = "./Resources/";
 
+map<File::ShaderType, Shader *> File::shaderTypes = {};
+map<File::MeshType, Mesh *> File::meshTypes = {};
+
 LoggerInstance File::logger("File");
+
+void File::InitialiseTileGraphicsData()
+{
+	shaderTypes = {
+		{ ShaderType::BLOCK_TILE,	new Shader(RESOURCE_ROOT_PATH + "Shaders/baseTileVert.glsl", RESOURCE_ROOT_PATH + "Shaders/blockTileFrag.glsl") },
+		{ ShaderType::BUMPER_TILE,	new Shader(RESOURCE_ROOT_PATH + "Shaders/baseTileVert.glsl", RESOURCE_ROOT_PATH + "Shaders/bumperTileFrag.glsl") },
+		{ ShaderType::FLIPPER_TILE, new Shader(RESOURCE_ROOT_PATH + "Shaders/baseTileVert.glsl", RESOURCE_ROOT_PATH + "Shaders/flipperTileFrag.glsl") },
+		{ ShaderType::HOLE_TILE,	new Shader(RESOURCE_ROOT_PATH + "Shaders/baseTileVert.glsl", RESOURCE_ROOT_PATH + "Shaders/holeTileFrag.glsl") }
+	};
+
+	meshTypes = {
+		{ MeshType::BLOCK,							Mesh::LoadObjFile(RESOURCE_ROOT_PATH + "Models/block.obj") },
+		{ MeshType::BLOCK_HALF_DIAGONAL,			Mesh::LoadObjFile(RESOURCE_ROOT_PATH + "Models/block-half-diagonal.obj") },
+		{ MeshType::BUMPER,							Mesh::LoadObjFile(RESOURCE_ROOT_PATH + "Models/bumper.obj") },
+		{ MeshType::FLIPPER_BLOCK,					Mesh::LoadObjFile(RESOURCE_ROOT_PATH + "Models/flipper-block.obj") },
+		{ MeshType::FLIPPER_BLOCK_HALF_DIAGONAL,	Mesh::LoadObjFile(RESOURCE_ROOT_PATH + "Models/flipper-block-half-diagonal.obj") },
+		{ MeshType::HOLE_ENTER,						Mesh::LoadObjFile(RESOURCE_ROOT_PATH + "Models/hole-enter.obj") },
+		{ MeshType::HOLE_EXIT,						Mesh::LoadObjFile(RESOURCE_ROOT_PATH + "Models/hole-exit.obj") }
+	};
+}
 
 // Inspired by SO 13262568.
 std::map<int, int> File::LoadControlMap(string relativeFilePath)
@@ -75,52 +98,84 @@ Level File::LoadLevel(EventManager * eventManager, string relativeFilePath, vect
 		{
 			for (int j = 0; j < width; j++)
 			{
-				// Read in the tile type.
-				int tile;
-				file >> tile;
-				TileEntity::TileType type = static_cast<TileEntity::TileType>(tile);
+				// Read in the tile type and shader.
+				int rawTileType;
+				int rawShaderType;
+				int rawMeshType;
+
+				file >> rawTileType;
+				file >> rawShaderType;
+				file >> rawMeshType;
+
+				TileEntity::TileType tileType = static_cast<TileEntity::TileType>(rawTileType);
+				ShaderType shaderType = static_cast<ShaderType>(rawShaderType);
+				MeshType meshType = static_cast<MeshType>(rawMeshType);
+
+				Shader * shader = nullptr;
+				Mesh * mesh = nullptr;
+
+				if ((int) shaderType > 0)
+				{
+					try
+					{
+						shader = shaderTypes.at(shaderType);
+					} 
+					catch (out_of_range e)
+					{
+						logger.Warn("Undefined shader type" + to_string((int) shaderType) + " for tile");
+					}
+				}
+
+				try
+				{
+					mesh = meshTypes.at(meshType);
+				}
+				catch (out_of_range e)
+				{
+					logger.Warn("Undefined mesh type" + to_string((int) meshType) + " for tile");
+				}
 
 				// Convert this type to a tile type.
-				switch (type)
+				switch (tileType)
 				{
 					case TileEntity::TileType::BLOCK:
-						tiles.push_back(new BlockTileEntity(eventManager, type, width - j, height - i));
+						tiles.push_back(new BlockTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i));
 						break;
 					case TileEntity::TileType::BUMPER:
-						tiles.push_back(new BumperTileEntity(eventManager, type, width - j, height - i));
+						tiles.push_back(new BumperTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i));
 						break;
 					case TileEntity::TileType::FINISH:
-						tiles.push_back(new FinishTileEntity(eventManager, type, width - j, height - i));
+						tiles.push_back(new FinishTileEntity(eventManager, tileType, width - j, height - i));
 						break;
 					case TileEntity::TileType::FLIPPER_TOP:
 					case TileEntity::TileType::FLIPPER_LEFT:
 					case TileEntity::TileType::FLIPPER_BOTTOM:
 					case TileEntity::TileType::FLIPPER_RIGHT:
-						tiles.push_back(new FlipperBlockTileEntity(eventManager, type, width - j, height - i));
+						tiles.push_back(new FlipperBlockTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i));
 						break;
 					case TileEntity::TileType::FLIPPER_TOP_LEFT:
 					case TileEntity::TileType::FLIPPER_TOP_RIGHT:
 					case TileEntity::TileType::FLIPPER_BOTTOM_LEFT:
 					case TileEntity::TileType::FLIPPER_BOTTOM_RIGHT:
-						tiles.push_back(new FlipperWedgeTileEntity(eventManager, type, width - j, height - i));
+						tiles.push_back(new FlipperWedgeTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i));
 						break;
 					case TileEntity::TileType::HOLE_ENTER:
-						holeEnterTile = new HoleEnterTileEntity(eventManager, type, width - j, height - i);
+						holeEnterTile = new HoleEnterTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i);
 						tiles.push_back(holeEnterTile);
 						break;
 					case TileEntity::TileType::HOLE_EXIT:
-						holeExitTile = new HoleExitTileEntity(eventManager, type, width - j, height - i);
+						holeExitTile = new HoleExitTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i);
 						tiles.push_back(holeExitTile);
 						break;
 					case TileEntity::TileType::SPAWN:
-						spawnTile = new SpawnTileEntity(eventManager, type, width - j, height - i);
+						spawnTile = new SpawnTileEntity(eventManager, tileType, width - j, height - i);
 						tiles.push_back(spawnTile);
 						break;
 					case TileEntity::TileType::WEDGE_BOTTOM_LEFT:
 					case TileEntity::TileType::WEDGE_BOTTOM_RIGHT:
 					case TileEntity::TileType::WEDGE_TOP_LEFT:
 					case TileEntity::TileType::WEDGE_TOP_RIGHT:
-						tiles.push_back(new WedgeTileEntity(eventManager, type, width - j, height - i));
+						tiles.push_back(new WedgeTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i));
 						break;
 				}
 			}

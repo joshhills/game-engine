@@ -4,11 +4,9 @@
 
 class BlockTileEntity : public TileEntity {
 public:
-	BlockTileEntity(EventManager * eventManager, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY) {
+	BlockTileEntity(EventManager * eventManager, GraphicsData * graphicsData, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY) {
 		// Store default graphical settings.
-		Mesh * mesh = Mesh::LoadObjFile("Resources/Models/block.obj");
-		Shader * shader = new Shader("./Resources/Shaders/basicvert.glsl", "./Resources/Shaders/basicFrag.glsl");
-		graphicsData = new GraphicsData(mesh, shader);
+		this->graphicsData = graphicsData;
 
 		// Store default physical settings.
 		b2BodyDef bodyDef;

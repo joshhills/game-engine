@@ -1,12 +1,11 @@
 #include "PinballEntity.h"
 
-PinballEntity::PinballEntity(EventManager * eventManager, int spawnX, int spawnY)
+PinballEntity::PinballEntity(EventManager * eventManager, Shader * shader, int spawnX, int spawnY)
 	: Entity(eventManager)
 {
 	// Set things up in a bespoke manner for a demo cube.
 	// Create graphical representation.
 	Mesh * mesh = Mesh::LoadObjFile("Resources/Models/pinball.obj");
-	Shader * shader = new Shader("./Resources/Shaders/basicvert.glsl", "./Resources/Shaders/basicFrag.glsl");
 	graphicsData = new GraphicsData(mesh, shader);
 
 	// Create physical representation.

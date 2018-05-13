@@ -4,11 +4,9 @@
 
 class WedgeTileEntity : public TileEntity {
 public:
-	WedgeTileEntity(EventManager * eventManager, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY) {
+	WedgeTileEntity(EventManager * eventManager, GraphicsData * graphicsData, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY) {
 		// Store default graphical settings.
-		Mesh * mesh = Mesh::LoadObjFile("Resources/Models/block-half-diagonal.obj");
-		Shader * shader = new Shader("./Resources/Shaders/basicvert.glsl", "./Resources/Shaders/basicFrag.glsl");
-		graphicsData = new GraphicsData(mesh, shader);
+		this->graphicsData = graphicsData;
 
 		// Store default physical settings.
 		b2BodyDef bodyDef;

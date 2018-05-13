@@ -42,17 +42,6 @@
  *
  */
 int main() {
-	/*
-	TODO:
-	- Miscellaneous:
-	- Remove dependencies that are not needed from this class
-	- Create resources folder for all resources (shaders, audio etc.) X
-
-	- Graphics:
-	- Make shaders for different objects
-
-	*/
-
 	// Set logger settings for debugging purposes.
 	Logger::SetLevel(Logger::WARN);
 	Logger::SetLevelExclusive(true);
@@ -73,9 +62,10 @@ int main() {
 	ResourceManager resourceManager();
 
 	// Create entities.
+	File::InitialiseTileGraphicsData();
 	Level l = File::LoadLevel(eventManager, "Levels/test.lvl", &entities);
 	SpawnTileEntity * s = dynamic_cast<SpawnTileEntity *>(l.GetSpawnTile());
-	PinballEntity * pinball = new PinballEntity(eventManager, s->gridPositionX, s->gridPositionY);
+	PinballEntity * pinball = new PinballEntity(eventManager, new Shader("./Resources/Shaders/basicvert.glsl", "./Resources/Shaders/basicFrag.glsl"), s->gridPositionX, s->gridPositionY);
 	entities.push_back(pinball);
 
 	// Main game loop.
@@ -155,5 +145,6 @@ int main() {
 	for (Entity * entity : entities)
 	{
 		delete entity;
+		entity = nullptr;
 	}
 }

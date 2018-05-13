@@ -10,7 +10,7 @@
 
 class PinballEntity : public Entity, public Movement, public Collider {
 public:
-	PinballEntity(EventManager * eventManager, int spawnX = 0, int spawnY = 0);
+	PinballEntity(EventManager * eventManager, Shader * shader, int spawnX = 0, int spawnY = 0);
 	virtual ~PinballEntity();
 
 	/**
