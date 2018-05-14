@@ -1,0 +1,739 @@
+<html>
+    <head>
+        <title>
+            Level Editor
+        </title>
+    </head>
+    <style>
+        body {
+            margin: 0 !important;
+        }
+        #form-group {
+            position: fixed;
+            width: 20rem;
+            opacity: 0.5;
+        }
+        #form-group:hover {
+            opacity: 1;
+        }
+        #editor-wrapper {
+            display: inline-block;
+            padding: 1rem;
+            padding-left: 21rem;
+            width: calc(100% - 21rem);
+        }
+        .subgroup {
+            background-color: #eee;
+            margin: 1rem;
+            padding: 1rem;
+        }
+        #editor {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            cursor: none;
+        }
+        .tile {
+            outline: 1.5px solid #ddd;
+            outline-offset: -3px;
+            fill: white;
+        }
+        .tile:hover {
+            outline: 5px solid #eee;
+            outline-offset: -7px;
+        }
+        .tile.BLOCK,
+        .tile.WEDGE_BOTTOM_LEFT,
+        .tile.WEDGE_TOP_LEFT,
+        .tile.WEDGE_TOP_RIGHT,
+        .tile.WEDGE_BOTTOM_RIGHT {
+            fill: black;
+        }
+        .tile.FLIPPER_TOP,
+        .tile.FLIPPER_RIGHT,
+        .tile.FLIPPER_BOTTOM,
+        .tile.FLIPPER_LEFT,
+        .tile.FLIPPER_BOTTOM_LEFT,
+        .tile.FLIPPER_TOP_LEFT,
+        .tile.FLIPPER_TOP_RIGHT,
+        .tile.FLIPPER_BOTTOM_RIGHT {
+            fill: orange;
+        }
+        .tile.BUMPER {
+            fill: red;
+        }
+        .tile.SPAWN {
+            fill: yellow;
+        }
+        .tile.FINISH {
+            fill: green;
+        }
+        .tile.HOLE_ENTER {
+            fill: rgb(148, 32, 148);
+        }
+        .tile.HOLE_EXIT {
+            fill: rgb(175, 121, 175);
+        }
+        #tool {
+            position: absolute;
+            opacity: 0.6;
+        }
+    </style>
+    <body>
+        <div id="form-group">
+            <div class="subgroup">
+                <p>Grid</p>
+                <label for="width">Width:</label>
+                <input type="number" id="width" name="width" min="1" value="10" /><br/>
+                <label for="height">Height:</label>
+                <input type="number" id="height" name="height" min="1" value="10" />
+                <br /><br />
+                <button id="draw" onclick="drawGrid()">Draw</button>
+            </div>
+            <div class="subgroup">
+                <p>Tool</p>
+                <select id="tile-type">
+                    <option value="NOTHING">NOTHING</option>
+                    <option value="BLOCK">BLOCK</option>
+                    <option value="WEDGE_BOTTOM_LEFT">WEDGE_BOTTOM_LEFT</option>
+                    <option value="WEDGE_TOP_LEFT">WEDGE_TOP_LEFT</option>
+                    <option value="WEDGE_TOP_RIGHT">WEDGE_TOP_RIGHT</option>
+                    <option value="WEDGE_BOTTOM_RIGHT">WEDGE_BOTTOM_RIGHT</option>
+                    <option value="FLIPPER_TOP">FLIPPER_TOP</option>
+                    <option value="FLIPPER_RIGHT">FLIPPER_RIGHT</option>
+                    <option value="FLIPPER_BOTTOM">FLIPPER_BOTTOM</option>
+                    <option value="FLIPPER_LEFT">FLIPPER_LEFT</option>
+                    <option value="FLIPPER_BOTTOM_LEFT">FLIPPER_BOTTOM_LEFT</option>
+                    <option value="FLIPPER_TOP_LEFT">FLIPPER_TOP_LEFT</option>
+                    <option value="FLIPPER_TOP_RIGHT">FLIPPER_TOP_RIGHT</option>
+                    <option value="FLIPPER_BOTTOM_RIGHT">FLIPPER_BOTTOM_RIGHT</option>
+                    <option value="BUMPER">BUMPER</option>
+                    <option value="HOLE_ENTER">HOLE_ENTER</option>
+                    <option value="HOLE_EXIT">HOLE_EXIT</option>
+                    <option value="SPAWN">SPAWN</option>
+                    <option value="FINISH">FINISH</option>
+                </select>
+                <br /><br />
+                <button id="undo" onclick="undo()">Undo</button>
+                <button id="redo" onclick="redo()">Redo</button>
+            </div>
+            <div class="subgroup">
+                <input id="level-load" name="level-load" type="text" placeholder="Paste level here" />
+                <button id="load" onclick="loadLevel()">Load</button>
+            </div>
+            <div class="subgroup">
+                <label for="level-name">Level Name:</label>
+                <input id="level-name" type="text" value="demo" placeholder="demo" maxlength="30" minlength="0" name="level-name" />
+                <button id="save" onclick="save()">Save</button>
+            </div>
+        </div>
+        <div id="editor-wrapper">
+            <svg id="tool"></svg>
+            <svg id="editor"></svg>
+        </div>
+        <script>
+                var undoList = [];
+                var redoList = [];
+
+                var tileSize = 30;
+
+                var height = 10, width = 10, currentTileType = "NOTHING", levelName = "demo", load="";
+
+                // Singleton tiles.
+                var holeExit = -1, spawn = -1;
+                var lastActive = -1;
+
+                var editor = document.getElementById('editor');
+                var tileTypeElement = document.getElementById('tile-type');
+                var widthElement = document.getElementById('width');
+                var heightElement = document.getElementById('height');
+                var levelNameElement = document.getElementById('level-name');
+                var levelLoadElement = document.getElementById('level-load');
+
+                var tool = document.getElementById('tool');
+                tool.width = tileSize;
+                tool.height = tileSize;
+
+                tileTypeElement.addEventListener('change', function(e) { 
+                    currentTileType = e.target.value;
+                    
+                    updateToolType();
+                });
+
+                function updateToolType() {
+                    var points = [];
+                    var origin = new Point(0, 0);
+
+                    switch(currentTileType) {
+                        case "NOTHING":
+                        case "BLOCK":
+                        case "FINISH":
+                            points = generateBlockPointArray(origin);
+                            break;
+                        case "WEDGE_BOTTOM_LEFT":
+                        case "FLIPPER_BOTTOM_LEFT":
+                            points = generateTrianglePointArray(origin);
+                            break;
+                        case "WEDGE_TOP_LEFT":
+                        case "FLIPPER_TOP_LEFT":
+                            points = generateTrianglePointArray(origin, 90);
+                            break;
+                        case "WEDGE_TOP_RIGHT":
+                        case "FLIPPER_TOP_RIGHT":
+                            points = generateTrianglePointArray(origin, 180);
+                            break;
+                        case "WEDGE_BOTTOM_RIGHT":
+                        case "FLIPPER_BOTTOM_RIGHT":
+                            points = generateTrianglePointArray(origin, 270);
+                            break;
+                        case "FLIPPER_TOP":
+                            points = generateFlipperBlockPointArray(origin);
+                            break;
+                        case "FLIPPER_RIGHT":
+                            points = generateFlipperBlockPointArray(origin, 90);
+                            break;
+                        case "FLIPPER_BOTTOM":
+                            points = generateFlipperBlockPointArray(origin, 180);
+                            break;
+                        case "FLIPPER_LEFT":
+                            points = generateFlipperBlockPointArray(origin, 270);
+                            break;
+                        case "BUMPER":
+                            points = generateCirclePointArray(origin, 4);
+                            break;
+                        case "SPAWN":
+                            points = generateCirclePointArray(origin, 8);
+                            break;
+                        case "HOLE_ENTER":
+                            points = generateCirclePointArray(origin, 6);
+                            break;
+                        case "HOLE_EXIT":
+                            points = generateCirclePointArray(origin, 6);
+                            break;
+                    }
+                    var graphic = document.createElementNS('http://www.w3.org/2000/svg','g');
+                    var polygon = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+
+                    graphic.setAttribute('class', "tile " + currentTileType);
+                    polygon.setAttribute('points', convertPointsToString(points));
+                    clearElementOfChildren(tool);
+                    graphic.appendChild(polygon);
+                    tool.appendChild(graphic);
+                }
+                
+                widthElement.addEventListener('change', function(e) { width = e.target.value; });
+                heightElement.addEventListener('change', function(e) { height = e.target.value; });
+                levelNameElement.addEventListener('change', function(e) { levelName = e.target.value });
+                levelLoadElement.addEventListener('change', function(e) { levelLoad = e.target.value });
+
+                editor.addEventListener('click', function(e) { changeTile(e); });
+                var mouseDown = false;
+                editor.addEventListener('mousedown', function(e) {
+                    mouseDown = true;
+                });
+                editor.addEventListener('mouseup', function(e) {
+                    mouseDown = false;
+                });
+                editor.addEventListener('mousemove', function(e) {
+                    updateToolPosition(e);
+
+                    if(mouseDown) {
+                        var offset = getOffset(editor);
+                        var p = new Point(e.clientX - offset.x, e.clientY - offset.y);
+                        p = pixelToTile(p);
+                        if(p == -1 || p.x != lastActive.x || p.y != lastActive.y) {
+                            changeTile(e);
+                        }
+                        lastActive = p;
+                    }
+                });
+                editor.addEventListener('mouseout', function(e) {
+                    tool.style = "pointer-events: none";
+                });
+
+                function updateToolPosition(e) {
+                    tool.style = "top: " + (e.clientY - (tileSize / 2)) + "px; left: " + (e.clientX - (tileSize / 2)) + "px; pointer-events: none;";
+                }
+
+                function undo() {
+                    if(undoList.length > 0) {
+                        var action = undoList.pop();
+                        changeTile(action.e, action.before, false, false);
+                        redoList.push(action);
+                    }
+                }
+
+                function redo() {
+                    if(redoList.length > 0) {
+                        var action = redoList.pop();
+                        changeTile(action.e, action.after, true, false);
+                    }
+                }
+
+                function Point(x, y) {
+                    return {x: x, y: y};
+                }
+
+                function pixelToTile(p) {
+                    return new Point(Math.floor(p.x / tileSize), Math.floor(p.y / tileSize));
+                }
+
+                function GridTile(point, tileType, meshType, shaderType) {
+                    this.tileType = tileType;
+                    this.meshType = meshType;
+                    this.shaderType = shaderType;
+                }
+
+                function changeTile(e, override = -1, record = true, resetRedo = true) {
+                    if (resetRedo) {
+                        redoList = [];
+                    }
+
+                    var p;
+                    if (e.clientX) {
+                        var offset = getOffset(editor);
+                        p = new Point(e.clientX - offset.x, e.clientY - offset.y);
+                        p = pixelToTile(p);
+                    } else {
+                        p = e;
+                    }
+                    
+                    var tileTypeToChangeTo = currentTileType;
+                    if (override != -1) {
+                        tileTypeToChangeTo = override;
+                    }
+
+                    var element = document.getElementById(p.x.toString() + '-' + p.y.toString());
+
+                    var tileTypeAsString = element.classList[1];
+                    if(tileTypeAsString == tileTypeToChangeTo)
+                    {
+                        return;
+                    }
+                    if(tileTypeAsString == "SPAWN") {
+                        spawn = -1;
+                    }
+                    if(tileTypeAsString == "HOLE_EXIT") {
+                        holeExit = -1;
+                    }
+
+                    // Record what the tile state was.
+                    if(record) {
+                        undoList.push({
+                            e: p,
+                            before: tileTypeAsString,
+                            after: tileTypeToChangeTo
+                        });
+                    }
+
+                    element.setAttribute('class', 'tile ' + tileTypeToChangeTo);
+
+                    clearElementOfChildren(element);
+                    
+                    var origin = new Point(p.x * tileSize, p.y * tileSize);
+                    var points = [];
+
+                    switch(tileTypeToChangeTo) {
+                        case "NOTHING":
+                        case "BLOCK":
+                        case "FINISH":
+                            points = generateBlockPointArray(origin);
+                            break;
+                        case "WEDGE_BOTTOM_LEFT":
+                        case "FLIPPER_BOTTOM_LEFT":
+                            points = generateTrianglePointArray(origin);
+                            break;
+                        case "WEDGE_TOP_LEFT":
+                        case "FLIPPER_TOP_LEFT":
+                            points = generateTrianglePointArray(origin, 90);
+                            break;
+                        case "WEDGE_TOP_RIGHT":
+                        case "FLIPPER_TOP_RIGHT":
+                            points = generateTrianglePointArray(origin, 180);
+                            break;
+                        case "WEDGE_BOTTOM_RIGHT":
+                        case "FLIPPER_BOTTOM_RIGHT":
+                            points = generateTrianglePointArray(origin, 270);
+                            break;
+                        case "FLIPPER_TOP":
+                            points = generateFlipperBlockPointArray(origin);
+                            break;
+                        case "FLIPPER_RIGHT":
+                            points = generateFlipperBlockPointArray(origin, 90);
+                            break;
+                        case "FLIPPER_BOTTOM":
+                            points = generateFlipperBlockPointArray(origin, 180);
+                            break;
+                        case "FLIPPER_LEFT":
+                            points = generateFlipperBlockPointArray(origin, 270);
+                            break;
+                        case "BUMPER":
+                            points = generateCirclePointArray(origin, 4);
+                            break;
+                        case "SPAWN":
+                            // Enforce singleton instance.
+                            if (spawn != -1) 
+                            {
+                                changeTile(spawn, "NOTHING", false);
+                            }
+                            spawn = p;
+
+                            points = generateCirclePointArray(origin, 8);
+                            break;
+                        case "HOLE_ENTER":
+                            points = generateCirclePointArray(origin, 6);
+                            break;
+                        case "HOLE_EXIT":
+                            // Enforce singleton instance.
+                            if (holeExit != -1) 
+                            {
+                                changeTile(holeExit, "NOTHING", false);
+                            }
+                            holeExit = p;
+
+                            points = generateCirclePointArray(origin, 6);
+                            break;
+                    }
+
+                    var polygon = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+                    polygon.setAttribute('points', convertPointsToString(points));
+                    element.appendChild(polygon);
+                }
+
+                function generateBlockPointArray(origin) {
+                    return [
+                        new Point(origin.x, origin.y),
+                        new Point(origin.x + tileSize, origin.y),
+                        new Point(origin.x + tileSize, origin.y + tileSize),
+                        new Point(origin.x, origin.y + tileSize)
+                    ];
+                }
+                
+                function generateCirclePointArray(origin, resolution = 20) {
+                    var points = [];
+                    var step = 2 * Math.PI / resolution;
+                    var r = tileSize / 2;
+                    for(var theta = 0; theta < 2 * Math.PI; theta += step) {
+                        points.push(new Point(
+                            origin.x + tileSize / 2 + r * Math.cos(theta),
+                            origin.y + tileSize / 2 - r * Math.sin(theta)
+                        ));
+                    }
+                    return points;
+                }
+
+                function generateFlipperBlockPointArray(origin, rotate = 0) {
+                    var points = [];
+                    
+                    switch(rotate) {
+                        case 90:
+                            points = [
+                                new Point(origin.x, origin.y),
+                                new Point(origin.x + tileSize, origin.y),
+                                new Point(origin.x + tileSize, origin.y + tileSize / 5),
+                                new Point(origin.x + tileSize - tileSize / 5, origin.y + tileSize / 5),
+                                new Point(origin.x + tileSize - tileSize / 5, origin.y + (tileSize / 5 * 4)),
+                                new Point(origin.x + tileSize, origin.y + (tileSize / 5 * 4)),
+                                new Point(origin.x + tileSize, origin.y + tileSize),
+                                new Point(origin.x, origin.y + tileSize)
+                            ];
+                            break;
+                        case 180:
+                            points = [
+                                new Point(origin.x, origin.y),
+                                new Point(origin.x + tileSize, origin.y),
+                                new Point(origin.x + tileSize, origin.y + tileSize),
+                                new Point(origin.x + tileSize - tileSize / 5, origin.y + tileSize),
+                                new Point(origin.x + tileSize - tileSize / 5, origin.y + tileSize - tileSize / 5),
+                                new Point(origin.x + tileSize - (tileSize / 5 * 4), origin.y + tileSize - tileSize / 5),
+                                new Point(origin.x + tileSize - (tileSize / 5 * 4), origin.y + tileSize),
+                                new Point(origin.x, origin.y + tileSize)
+                            ];
+                            break;
+                        case 270:
+                            points = [
+                                new Point(origin.x, origin.y),
+                                new Point(origin.x + tileSize, origin.y),
+                                new Point(origin.x + tileSize, origin.y + tileSize),
+                                new Point(origin.x, origin.y + tileSize),
+                                new Point(origin.x, origin.y + tileSize - tileSize / 5),
+                                new Point(origin.x + tileSize / 5, origin.y + tileSize - tileSize / 5),
+                                new Point(origin.x + tileSize / 5, origin.y + tileSize - (tileSize / 5 * 4)),
+                                new Point(origin.x, origin.y + tileSize - (tileSize / 5 * 4)),
+                            ];
+                            break;
+                        default:
+                            points = [
+                                new Point(origin.x, origin.y),
+                                new Point(origin.x + tileSize / 5, origin.y),
+                                new Point(origin.x + tileSize / 5, origin.y + tileSize / 5),
+                                new Point(origin.x + (tileSize / 5 * 4), origin.y + tileSize / 5),
+                                new Point(origin.x + (tileSize / 5 * 4), origin.y),
+                                new Point(origin.x + tileSize, origin.y),
+                                new Point(origin.x + tileSize, origin.y + tileSize),
+                                new Point(origin.x, origin.y + tileSize)
+                            ];
+                            break;
+                    }
+
+                    return points;
+                }
+
+                function generateTrianglePointArray(origin, rotate = 0) {
+                    var points = [];
+
+                    switch(rotate) {
+                        case 90:
+                            points = [
+                                new Point(origin.x, origin.y),
+                                new Point(origin.x + tileSize, origin.y),
+                                new Point(origin.x, origin.y + tileSize)
+                            ];
+                            break;
+                        case 180:
+                            points = [
+                                new Point(origin.x, origin.y),
+                                new Point(origin.x + tileSize, origin.y),
+                                new Point(origin.x + tileSize, origin.y + tileSize)
+                            ];
+                            break;
+                        case 270:
+                            points = [
+                                new Point(origin.x, origin.y + tileSize),
+                                new Point(origin.x + tileSize, origin.y),
+                                new Point(origin.x + tileSize, origin.y + tileSize)
+                            ];
+                            break;
+                        default:
+                            points = [
+                                new Point(origin.x, origin.y),
+                                new Point(origin.x + tileSize, origin.y + tileSize),
+                                new Point(origin.x, origin.y + tileSize)
+                            ];
+                            break;
+                    }
+
+                    return points;
+                }
+
+                function getOffset(e) {
+                    e = e.getBoundingClientRect();
+                    return new Point(e.left, e.top);
+                }
+       
+                function drawGrid() {
+                    clearElementOfChildren(editor);
+                    
+                    editor.setAttribute('width', width * tileSize);
+                    editor.setAttribute('height', height * tileSize);
+
+                    for(var i = 0; i < height; i++) {
+                       for(var j = 0; j < width; j++) {
+                            // Make points.
+                            points = generateBlockPointArray(new Point(j * tileSize, i * tileSize));
+
+                            // Create the necessary elements.
+                            var graphic = document.createElementNS('http://www.w3.org/2000/svg','g');
+                            var polygon = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    
+                            // Tag the graphic appropriately.
+                            graphic.setAttribute('id', j.toString() + '-' + i.toString());
+                            graphic.setAttribute('class', 'tile NOTHING');
+                            polygon.setAttribute('points', convertPointsToString(points));
+
+                            // Add the elements to the DOM.
+                            graphic.appendChild(polygon);
+                            editor.appendChild(graphic);
+                       }
+                    }
+                }
+
+                function clearElementOfChildren(c) {
+                    while(c.firstChild) {
+                        c.removeChild(c.firstChild);
+                    }
+                }
+
+                function convertPointsToString(p) {
+                    var pointsString = '';
+                    for(var i = 0; i < p.length; i++) {
+                        pointsString += p[i].x + ',' + p[i].y + " ";
+                    }
+                    return pointsString;
+                }
+
+                function save() {
+                    var file = width.toString() + "\n" + height.toString() + "\n";
+                    for(var i = 0; i < editor.children.length; i++) {
+                        var child = editor.children[i];
+                        var tileTypeAsString = child.classList[1];
+                        
+                        switch(tileTypeAsString) {
+                            case "NOTHING":
+                                file += "0 0 0";
+                                break;
+                            case "BLOCK":
+                                file += "1 1 1";
+                                break;
+                            case "WEDGE_BOTTOM_LEFT":
+                                file += "2 1 2";
+                                break;
+                            case "WEDGE_TOP_LEFT":
+                                file += "3 1 2";
+                                break;
+                            case "WEDGE_TOP_RIGHT":
+                                file += "4 1 2";
+                                break;
+                            case "WEDGE_BOTTOM_RIGHT":
+                                file += "5 1 2";
+                                break;
+                            case "FLIPPER_TOP":
+                                file += "6 3 4";
+                                break;
+                            case "FLIPPER_RIGHT":
+                                file += "7 3 4";
+                                break;
+                            case "FLIPPER_BOTTOM":
+                                file += "8 3 4";
+                                break;
+                            case "FLIPPER_LEFT":
+                                file += "9 3 4";
+                                break;
+                            case "FLIPPER_BOTTOM_LEFT":
+                                file += "10 3 5";
+                                break;
+                            case "FLIPPER_TOP_LEFT":
+                                file += "11 3 5";
+                                break;
+                            case "FLIPPER_TOP_RIGHT":
+                                file += "12 3 5";
+                                break;
+                            case "FLIPPER_BOTTOM_RIGHT":
+                                file += "13 3 5";
+                                break;
+                            case "BUMPER":
+                                file += "14 2 3";
+                                break;
+                            case "HOLE_ENTER":
+                                file += "15 4 6";
+                                break;
+                            case "HOLE_EXIT":
+                                file += "16 4 7";
+                                break;
+                            case "SPAWN":
+                                file += "17 0 0";
+                                break;
+                            case "FINISH":
+                                file += "18 0 0";
+                                break;
+                        }
+
+                        if (i != 0 && (i + 1) % width == 0) {
+                            file += "\n";
+                        } else {
+                            file += "\t";
+                        }
+                    }
+
+                    var blob = new Blob([file], {type: "text;charset=utf-8"});
+                    var a = document.createElement("a");
+                    a.href = URL.createObjectURL(blob);
+                    if (levelName.length == 0) {
+                        levelName = "demo";
+                    }
+                    a.download = levelName + ".lvl";
+                    a.click();
+                }
+
+                function loadLevel() {
+                    try {
+                        var contents = levelLoad.match(/\d+/g).map(Number);
+
+                        if(contents.length > 3) {
+                            var w = +contents[0];
+                            var h = +contents[1];
+
+                            if (contents.length < ((w * h) * 3) + 2) {
+                                throw "Error";
+                            }
+
+                            width = w;
+                            widthElement.value = w;
+                            height = h;
+                            heightElement.value = h;
+
+                            drawGrid();
+
+                            for(var i = 0; i < w * h; i++) {
+                                var p = new Point(i % width, Math.floor(i / width));
+                                switch(contents[(i * 3) + 2]) {
+                                    case 0:
+                                        changeTile(p, "NOTHING");
+                                        break;
+                                    case 1:
+                                        changeTile(p, "BLOCK");
+                                        break;
+                                    case 2:
+                                        changeTile(p, "WEDGE_BOTTOM_LEFT");
+                                        break;
+                                    case 3:
+                                        changeTile(p, "WEDGE_TOP_LEFT");
+                                        break;
+                                    case 4:
+                                        changeTile(p, "WEDGE_TOP_RIGHT");
+                                        break;
+                                    case 5:
+                                        changeTile(p, "WEDGE_BOTTOM_RIGHT");
+                                        break;
+                                    case 6:
+                                        changeTile(p, "FLIPPER_TOP");
+                                        break;
+                                    case 7:
+                                        changeTile(p, "FLIPPER_RIGHT");
+                                        break;
+                                    case 8:
+                                        changeTile(p, "FLIPPER_BOTTOM");
+                                        break;
+                                    case 9:
+                                        changeTile(p, "FLIPPER_LEFT");
+                                        break;
+                                    case 10:
+                                        changeTile(p, "FLIPPER_BOTTOM_LEFT");
+                                        break;
+                                    case 11:
+                                        changeTile(p, "FLIPPER_TOP_LEFT");
+                                        break;
+                                    case 12:
+                                        changeTile(p, "FLIPPER_TOP_RIGHT");
+                                        break;
+                                    case 13:
+                                        changeTile(p, "FLIPPER_BOTTOM_RIGHT");
+                                        break;
+                                    case 14:
+                                        changeTile(p, "BUMPER");
+                                        break;
+                                    case 15:
+                                        changeTile(p, "HOLE_ENTER");
+                                        break;
+                                    case 16:
+                                        changeTile(p, "HOLE_EXIT");
+                                        break;
+                                    case 17:
+                                        changeTile(p, "SPAWN");
+                                        break;
+                                    case 18:
+                                        changeTile(p, "FINISH");
+                                        break;
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        alert("Invalid level format");
+                    }
+                }
+
+                drawGrid();
+                updateToolType();
+           </script>
+    </body>
+</html>
