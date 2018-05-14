@@ -524,6 +524,9 @@
                 function drawGrid() {
                     clearElementOfChildren(editor);
                     
+                    undoList = [];
+                    redoList = [];
+
                     editor.setAttribute('width', width * tileSize);
                     editor.setAttribute('height', height * tileSize);
 
