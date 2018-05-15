@@ -10,7 +10,7 @@
 
 class PinballEntity : public Entity, public Movement, public Collider {
 public:
-	PinballEntity(EventManager * eventManager, int spawnX = 0, int spawnY = 0);
+	PinballEntity(EventManager * eventManager);
 	virtual ~PinballEntity();
 
 	/**
@@ -18,7 +18,15 @@ public:
 	*/
 	void OnMove(EventManager * eventManager, float oldX, float oldY, float newX, float newY) override;
 
-	void OnCollisionStart();
+	void OnCollisionStart(Entity * e);
 
-	void OnCollisionEnd() {}
+	void OnCollisionEnd(Entity * e);
+
+	void UpdateShaderBasedOnBumpAbility(bool canBump);
+private:
+	Shader * bumpShader;
+	Shader * noBumpShader;
+
+	const float COLLISION_SOUND_THRESHOLD = 300;
+	float lastFinishedColliding = 0;
 };

@@ -7,8 +7,11 @@
 
 class FinishTileEntity : public TileEntity {
 public:
-	FinishTileEntity(EventManager * eventManager, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY)
+	FinishTileEntity(EventManager * eventManager, GraphicsData * graphicsData, TileType type, int gridPositionX, int gridPositionY) : TileEntity(eventManager, type, gridPositionX, gridPositionY)
 	{
+		// Store default graphical settings.
+		this->graphicsData = graphicsData;
+
 		// Store default physical settings.
 		b2BodyDef bodyDef;
 		bodyDef.position.Set(this->gridPositionX, this->gridPositionY);

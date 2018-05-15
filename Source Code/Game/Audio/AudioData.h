@@ -24,7 +24,7 @@ public:
 	* Shortcut method to play the sound
 	* loaded into the audio source.
 	*/
-	void Play();
+	void Play(float x = 0, float y = 0);
 
 	/**
 	 * Shortcut method to stop the
@@ -32,7 +32,6 @@ public:
 	 */
 	void Stop();
 private:
-
 	// The positional audio source.
 	sf::Sound sound;
 

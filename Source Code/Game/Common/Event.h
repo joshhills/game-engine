@@ -30,6 +30,7 @@ public:
 		// Audio
 		AUDIO_PLAY_SOUND,
 		AUDIO_STOP_SOUND,
+		AUDIO_PLAY_MUSIC,
 		AUDIO_STOP_ALL_SOUNDS,
 
 		// Human Interface
@@ -40,6 +41,10 @@ public:
 		PROFILING_TOGGLE,
 		PROFILING_FPS,
 		PROFILING_SUBSYSTEM_UPDATE,
+
+		// Gameplay
+		GAMEPLAY_LEVEL_COMPLETE,
+		GAMEPLAY_HOLE_ENTER,
 	};
 
 	Event();

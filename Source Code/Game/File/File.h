@@ -32,7 +32,8 @@ public:
 		BLOCK_TILE = 1,
 		BUMPER_TILE = 2,
 		FLIPPER_TILE = 3,
-		HOLE_TILE = 4
+		HOLE_TILE = 4,
+		FINISH_TILE = 5
 	};
 
 	enum class MeshType
@@ -63,7 +64,7 @@ public:
 	/**
 	 * Load a game level's tiles.
 	 */
-	static Level LoadLevel(EventManager * eventManager, string relativeFilePath, vector<Entity *> * entities);
+	static Level * LoadLevel(EventManager * eventManager, string relativeFilePath, vector<Entity *> * entities);
 
 	static void WriteToFile(string relativeFilePath, string contents, size_t maxFileSize = 30000);
 private:

@@ -46,56 +46,56 @@ vector<Controller::Input> KeyboardController::ComputeInputSnapshot()
 	inputSnapshot.push_back(
 		SetInput(
 			KeyboardController::Control::Z,
-			Window::GetKeyboard()->KeyDown(KEYBOARD_Z)
+			Keyboard::KeyDown(KeyboardKeys::KEY_Z)
 		)
 	);
 
 	inputSnapshot.push_back(
 		SetInput(
 			KeyboardController::Control::X,
-			Window::GetKeyboard()->KeyDown(KEYBOARD_X)
+			Keyboard::KeyDown(KeyboardKeys::KEY_X)
 		)
 	);
 
 	inputSnapshot.push_back(
 		SetInput(
 			KeyboardController::Control::ESC,
-			Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)
+			Keyboard::KeyDown(KeyboardKeys::KEY_ESCAPE)
 		)
 	);
 
 	inputSnapshot.push_back(
 		SetInput(
 			KeyboardController::Control::RETURN,
-			Window::GetKeyboard()->KeyDown(KEYBOARD_RETURN)
+			Keyboard::KeyDown(KeyboardKeys::KEY_RETURN)
 		)
 	);
 
 	inputSnapshot.push_back(
 		SetInput(
 			KeyboardController::Control::UP_ARROW,
-			Window::GetKeyboard()->KeyDown(KEYBOARD_UP)
+			Keyboard::KeyDown(KeyboardKeys::KEY_UP)
 		)
 	);
 
 	inputSnapshot.push_back(
 		SetInput(
 			KeyboardController::Control::DOWN_ARROW,
-			Window::GetKeyboard()->KeyDown(KEYBOARD_DOWN)
+			Keyboard::KeyDown(KeyboardKeys::KEY_DOWN)
 		)
 	);
 
 	inputSnapshot.push_back(
 		SetInput(
 			KeyboardController::Control::LEFT_ARROW,
-			Window::GetKeyboard()->KeyDown(KEYBOARD_LEFT)
+			Keyboard::KeyDown(KeyboardKeys::KEY_LEFT)
 		)
 	);
 
 	inputSnapshot.push_back(
 		SetInput(
 			KeyboardController::Control::RIGHT_ARROW,
-			Window::GetKeyboard()->KeyDown(KEYBOARD_RIGHT)
+			Keyboard::KeyDown(KeyboardKeys::KEY_RIGHT)
 		)
 	);
 

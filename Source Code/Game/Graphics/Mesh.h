@@ -53,6 +53,8 @@ public:
 	// Begin modifications to 3rd party code.
 	// Josh Hills
 	// 140177712
+	static Mesh*	GenerateQuad(float width, float height);
+
 	static Mesh*	LoadObjFile(const string &filename);
 	// End modifications to 3rd party code.
 

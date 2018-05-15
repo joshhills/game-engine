@@ -37,8 +37,7 @@ public:
 
 		b2Body* body = Physics::world.CreateBody(&bodyDef);
 		body->CreateFixture(&tile, 0.0f);
+		body->SetUserData(this);
 		physicsData = new PhysicsData(body);
 	}
-private:
-
 };

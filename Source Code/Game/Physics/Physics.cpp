@@ -29,7 +29,7 @@ void Physics::Update() {
 	for (Entity * entity : *entities)
 	{
 		// If there is physics data to enact upon.
-		if (entity->GetPhysicsData() != nullptr)
+		if (entity->IsEnabled() && entity->GetPhysicsData() != nullptr)
 		{
 			GameObject * gameObject = entity->GetGameObject();
 			PhysicsData * physicsData = entity->GetPhysicsData();

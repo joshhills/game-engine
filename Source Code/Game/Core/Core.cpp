@@ -13,6 +13,9 @@ Core::Core() :
 	Logger::SetLevel(Logger::WARN);
 	Logger::SetLevelExclusive(true);
 	Logger::SetFilter("Profiling");
+
+	// Initialise objects into positons once.
+	physics.Update();
 }
 
 Core::~Core()
@@ -25,14 +28,24 @@ Core::~Core()
 	}
 }
 
-void Core::Step()
+bool Core::Step()
 {
 	graphics.Update();
 	humanInterface.Update();
 	gameplay.Update();
-	physics.Update();
-	audio.Update();
-	profiling.Update();
 
-	eventManager->RemoveFinishedEvents();
+	if (!gameplay.IsPaused() && !gameplay.IsFinished() && !gameplay.IsCompleted())
+	{
+		physics.Update();
+	}
+
+	if (!gameplay.IsFinished())
+	{
+		audio.Update();
+		profiling.Update();
+
+		eventManager->RemoveFinishedEvents();
+	}
+
+	return !(gameplay.IsFinished() || graphics.IsFinished());
 }

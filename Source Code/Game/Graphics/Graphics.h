@@ -24,12 +24,17 @@ public:
 
 	const Window & GetWindow() const;
 	const Renderer & GetRenderer() const;
+
+	bool IsFinished() const;
 private:
 	// Store engine state.
 	vector<Entity*> * entities;
 
 	Window window;
 	Renderer renderer;
+
+	// Check if the window has been closed.
+	bool finished = false;
 
 	/**
 	 * Find out the framerate using ms elapsed.

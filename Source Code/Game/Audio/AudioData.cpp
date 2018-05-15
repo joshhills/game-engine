@@ -26,8 +26,9 @@ void AudioData::LoadSound(string relativePathToAudioFile)
 	sound.setBuffer(*buffer);
 }
 
-void AudioData::Play()
+void AudioData::Play(float x, float y)
 {
+	sound.setPosition(x, y, 0);
 	sound.play();
 }
 

@@ -14,7 +14,8 @@ void File::InitialiseTileGraphicsData()
 		{ ShaderType::BLOCK_TILE,	new Shader(RESOURCE_ROOT_PATH + "Shaders/baseTileVert.glsl", RESOURCE_ROOT_PATH + "Shaders/blockTileFrag.glsl") },
 		{ ShaderType::BUMPER_TILE,	new Shader(RESOURCE_ROOT_PATH + "Shaders/baseTileVert.glsl", RESOURCE_ROOT_PATH + "Shaders/bumperTileFrag.glsl") },
 		{ ShaderType::FLIPPER_TILE, new Shader(RESOURCE_ROOT_PATH + "Shaders/baseTileVert.glsl", RESOURCE_ROOT_PATH + "Shaders/flipperTileFrag.glsl") },
-		{ ShaderType::HOLE_TILE,	new Shader(RESOURCE_ROOT_PATH + "Shaders/baseTileVert.glsl", RESOURCE_ROOT_PATH + "Shaders/holeTileFrag.glsl") }
+		{ ShaderType::HOLE_TILE,	new Shader(RESOURCE_ROOT_PATH + "Shaders/baseTileVert.glsl", RESOURCE_ROOT_PATH + "Shaders/holeTileFrag.glsl") },
+		{ ShaderType::FINISH_TILE,	new Shader(RESOURCE_ROOT_PATH + "Shaders/baseTileVert.glsl", RESOURCE_ROOT_PATH + "Shaders/finishTileFrag.glsl") }
 	};
 
 	meshTypes = {
@@ -70,7 +71,7 @@ std::map<int, int> File::LoadControlMap(string relativeFilePath)
 	return controlMap;
 }
 
-Level File::LoadLevel(EventManager * eventManager, string relativeFilePath, vector<Entity *> * entities)
+Level * File::LoadLevel(EventManager * eventManager, string relativeFilePath, vector<Entity *> * entities)
 {
 	vector<TileEntity *> tiles;
 
@@ -78,7 +79,7 @@ Level File::LoadLevel(EventManager * eventManager, string relativeFilePath, vect
 
 	if (!file) {
 		logger.Error("Could not load level file " + relativeFilePath + ".");
-		return Level(tiles);
+		return new Level(tiles, entities);
 	}
 
 	// Store references to singleton tiles.
@@ -148,7 +149,7 @@ Level File::LoadLevel(EventManager * eventManager, string relativeFilePath, vect
 						tiles.push_back(new BumperTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i));
 						break;
 					case TileEntity::TileType::FINISH:
-						tiles.push_back(new FinishTileEntity(eventManager, tileType, width - j, height - i));
+						tiles.push_back(new FinishTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i));
 						break;
 					case TileEntity::TileType::FLIPPER_TOP:
 					case TileEntity::TileType::FLIPPER_LEFT:
@@ -163,8 +164,7 @@ Level File::LoadLevel(EventManager * eventManager, string relativeFilePath, vect
 						tiles.push_back(new FlipperWedgeTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i));
 						break;
 					case TileEntity::TileType::HOLE_ENTER:
-						holeEnterTile = new HoleEnterTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i);
-						tiles.push_back(holeEnterTile);
+						tiles.push_back(new HoleEnterTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i));
 						break;
 					case TileEntity::TileType::HOLE_EXIT:
 						holeExitTile = new HoleExitTileEntity(eventManager, new GraphicsData(mesh, shader), tileType, width - j, height - i);
@@ -189,20 +189,11 @@ Level File::LoadLevel(EventManager * eventManager, string relativeFilePath, vect
 		logger.Warn("Level file " + relativeFilePath + " is invalid.");
 	}
 
-	if (entities != nullptr)
-	{
-		for (Entity * tile : tiles)
-		{
-			entities->push_back(tile);
-		}
-	}
-
-	Level l = Level(tiles);
+	Level * l = new Level(tiles, entities);
 	if (spawnTile != nullptr)
 	{
-		l.SetSpawnTile(spawnTile);
-		l.SetHoleEnterTile(holeEnterTile);
-		l.SetHoleExitTile(holeExitTile);
+		l->SetSpawnTile(spawnTile);
+		l->SetHoleExitTile(holeExitTile);
 	}
 
 	return l;

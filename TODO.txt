@@ -1,8 +1,4 @@
-- Fix shader issue (Done!)
 - Change elasticity of ball
-- Get rid of comments
-- Make game class
-- Make the game class work in a loop the same way
-- Find out a way to display a start screen
 - Make it shunt the ball
-- Make the ball display that it has been shunted
+- Get rid of comments
+- Find out a way to display a start screen

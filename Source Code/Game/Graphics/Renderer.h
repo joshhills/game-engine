@@ -28,7 +28,7 @@ public:
 	}
 	// End edit
 
-	GLuint LoadTexture(const string& filename);
+	static GLuint LoadTexture(const string& filename);
 
 protected:
 	float time;

@@ -21,6 +21,6 @@ private:
 	int lastFPS = -1;
 
 	// Toggle profiling state (for debug).
-	bool isPrintEnabled = true;
-	bool isFileEnabled = true;
+	bool isPrintEnabled = false;
+	bool isFileEnabled = false;
 };

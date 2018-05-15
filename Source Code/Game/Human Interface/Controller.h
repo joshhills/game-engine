@@ -23,7 +23,7 @@ public:
 		PAUSE = 6,
 		SELECT = 7,
 		MAX = 8,
-		NUM_CONTROLS = 9
+		NUM_CONTROLS = 8
 	};
 
 	// Variations of engine-wide controls.

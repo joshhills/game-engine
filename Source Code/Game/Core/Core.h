@@ -27,9 +27,9 @@ public:
 	~Core();
 	
 	/**
-	 * Main update loop.
+	 * Main update loop, returns true if there is more to do.
 	 */
-	void Step();
+	bool Step();
 
 	/* Accessor methods. */
 

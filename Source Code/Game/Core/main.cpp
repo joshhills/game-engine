@@ -3,14 +3,9 @@
 #include "Core.h"
 
 int main() {
-	// Create engine and game.
+	// Create engine and attached game.
 	Core c = Core();
 
-	// TODO: More sophisticated conditions
-	// e.g. game logic not finished or window not finished.
-	// Main game loop.
-	while (true)
-	{
-		c.Step();
-	}
+	// Run game until it is finished.
+	while (c.Step()) {}
 }

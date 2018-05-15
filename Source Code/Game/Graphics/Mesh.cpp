@@ -106,6 +106,48 @@ Mesh* Mesh::GenerateTriangle()	{
 
 // Begin modifications to 3rd party code.
 // CSC3224 NCODE Josh Hills 140177712
+Mesh * Mesh::GenerateQuad(float width, float height)
+{
+	Mesh*m = new Mesh();
+	m->numVertices = 6;
+
+	float hW = width * 0.5f;
+	float hH = height * 0.5f;
+
+	float minX = -hW;
+	float maxX = hW;
+	float minY = -hH;
+	float maxY = hH;
+
+	m->vertices = new Vector3[m->numVertices];
+	m->vertices[0] = Vector3(minX, maxY, 0.0f);
+	m->vertices[1] = Vector3(maxX, maxY, 0.0f);
+	m->vertices[2] = Vector3(maxX, minY, 0.0f);
+	m->vertices[3] = Vector3(minX, maxY, 0.0f);
+	m->vertices[4] = Vector3(maxX, minY, 0.0f);
+	m->vertices[5] = Vector3(minX, minY, 0.0f);
+
+	m->textureCoords = new Vector2[m->numVertices];
+	m->textureCoords[0] = Vector2(1.0f, 0.0f);
+	m->textureCoords[1] = Vector2(0.0f, 0.0f);
+	m->textureCoords[2] = Vector2(0.0f, 1.0f);
+	m->textureCoords[3] = Vector2(1.0f, 0.0f);
+	m->textureCoords[4] = Vector2(0.0f, 1.0f);
+	m->textureCoords[5] = Vector2(1.0f, 1.0f);
+
+	m->colours = new Vector4[m->numVertices];
+	m->colours[0] = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+	m->colours[1] = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+	m->colours[2] = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+	m->colours[3] = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+	m->colours[4] = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+	m->colours[5] = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+
+	m->BufferData();
+
+	return m;
+}
+
 Mesh * Mesh::LoadObjFile(const string &filename)
 {
 	ifstream f(filename);

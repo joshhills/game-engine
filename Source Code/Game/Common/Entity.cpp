@@ -37,3 +37,23 @@ void Entity::operator delete(void * ptr)
 {
 	ResourceManager::entityStore.Remove(ptr);
 }
+
+void Entity::SetEnabled(bool enabled)
+{
+	this->enabled = enabled;
+}
+
+bool Entity::IsEnabled()
+{
+	return enabled;
+}
+
+void Entity::SetTransparent(bool transparent)
+{
+	this->transparent = transparent;
+}
+
+bool Entity::IsTransparent()
+{
+	return transparent;
+}

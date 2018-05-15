@@ -1,6 +1,6 @@
 #include "ResourceManager.h"
 #include <Common/PlaySoundEvent.h>
-#include <Gameplay/BlockTileEntity.h>
+#include <Gameplay/PinballEntity.h>
 
 /*
  * Statically accesible stores for new overrides.
@@ -8,7 +8,7 @@
  * never be reached in this simulation.
  */
 Store ResourceManager::eventStore = Store(sizeof(PlaySoundEvent), 200);
-Store ResourceManager::entityStore = Store(sizeof(BlockTileEntity), 500);
+Store ResourceManager::entityStore = Store(sizeof(PinballEntity), 500);
 
 ResourceManager::ResourceManager() {}
 

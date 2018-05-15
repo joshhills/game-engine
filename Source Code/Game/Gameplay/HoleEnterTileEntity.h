@@ -19,6 +19,7 @@ public:
 
 		b2Body* body = Physics::world.CreateBody(&bodyDef);
 		body->CreateFixture(&fixtureDef);
+		body->SetUserData(this);
 		physicsData = new PhysicsData(body);
 	}
 };

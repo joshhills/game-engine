@@ -116,8 +116,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BackgroundEntity.h" />
     <ClInclude Include="BlockTileEntity.h" />
     <ClInclude Include="BumperTileEntity.h" />
+    <ClInclude Include="FinishEntity.h" />
     <ClInclude Include="FinishTileEntity.h" />
     <ClInclude Include="FlipperBlockTileEntity.h" />
     <ClInclude Include="FlipperWedgeTileEntity.h" />
@@ -125,13 +127,17 @@
     <ClInclude Include="HoleEnterTileEntity.h" />
     <ClInclude Include="HoleExitTileEntity.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="PauseEntity.h" />
     <ClInclude Include="PinballEntity.h" />
     <ClInclude Include="SpawnTileEntity.h" />
     <ClInclude Include="TileEntity.h" />
     <ClInclude Include="WedgeTileEntity.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BackgroundEntity.cpp" />
+    <ClCompile Include="FinishEntity.cpp" />
     <ClCompile Include="Gameplay.cpp" />
+    <ClCompile Include="PauseEntity.cpp" />
     <ClCompile Include="PinballEntity.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

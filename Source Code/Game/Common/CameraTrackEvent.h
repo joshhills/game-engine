@@ -8,7 +8,9 @@ public:
 		Event(Event::CAMERA_TRACK, Event::Subsystem::GRAPHICS),
 		x(x),
 		y(y)
-	{}
+	{
+		AddSubsystem(Event::Subsystem::GAMEPLAY);
+	}
 
 	float x, y;
 };

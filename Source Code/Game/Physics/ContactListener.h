@@ -22,7 +22,7 @@ class ContactListener : public b2ContactListener
 			Collider * c = dynamic_cast<Collider *>(bodyUserDataA);
 			if (c != nullptr)
 			{
-				c->OnCollisionStart();
+				c->OnCollisionStart(bodyUserDataB);
 			}
 		}
 
@@ -31,7 +31,7 @@ class ContactListener : public b2ContactListener
 			Collider * c = dynamic_cast<Collider *>(bodyUserDataB);
 			if (c != nullptr)
 			{
-				c->OnCollisionStart();
+				c->OnCollisionStart(bodyUserDataA);
 			}
 		}
 	}
@@ -47,7 +47,7 @@ class ContactListener : public b2ContactListener
 			Collider * c = dynamic_cast<Collider *>(bodyUserDataA);
 			if (c != nullptr)
 			{
-				c->OnCollisionEnd();
+				c->OnCollisionEnd(bodyUserDataB);
 			}
 		}
 
@@ -56,7 +56,7 @@ class ContactListener : public b2ContactListener
 			Collider * c = dynamic_cast<Collider *>(bodyUserDataB);
 			if (c != nullptr)
 			{
-				c->OnCollisionEnd();
+				c->OnCollisionEnd(bodyUserDataA);
 			}
 		}
 	}

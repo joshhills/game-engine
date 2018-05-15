@@ -1,18 +1,19 @@
 #include "PinballEntity.h"
 
-PinballEntity::PinballEntity(EventManager * eventManager, int spawnX, int spawnY)
+PinballEntity::PinballEntity(EventManager * eventManager)
 	: Entity(eventManager)
 {
 	// Set things up in a bespoke manner for a demo cube.
 	// Create graphical representation.
 	Mesh * mesh = Mesh::LoadObjFile("./Resources/Models/pinball.obj");
-	Shader * shader = new Shader("./Resources/Shaders/basicTileVert.glsl", "./Resources/Shaders/pinballFrag.glsl");
-	graphicsData = new GraphicsData(mesh, shader);
+	bumpShader = new Shader("./Resources/Shaders/baseTileVert.glsl", "./Resources/Shaders/pinballFragBump.glsl");
+	noBumpShader = new Shader("./Resources/Shaders/baseTileVert.glsl", "./Resources/Shaders/pinballFragNoBump.glsl");
+	graphicsData = new GraphicsData(mesh, bumpShader);
 
 	// Create physical representation.
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(spawnX, spawnY);
+	bodyDef.position.Set(0, 0);
 	b2Body* body = Physics::world.CreateBody(&bodyDef);
 	body->SetUserData(this);
 
@@ -21,8 +22,9 @@ PinballEntity::PinballEntity(EventManager * eventManager, int spawnX, int spawnY
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &circle;
-	fixtureDef.density = 5.0f;
-	fixtureDef.friction = 0.3f;
+	fixtureDef.density = 10.0f;
+	fixtureDef.restitution = 0.4f;
+	fixtureDef.friction = 0.1f;
 
 	body->CreateFixture(&fixtureDef);
 
@@ -37,9 +39,33 @@ void PinballEntity::OnMove(EventManager * eventManager, float oldX, float oldY, 
 	eventManager->AddEvent(new CameraTrackEvent(newX, newY));
 }
 
-void PinballEntity::OnCollisionStart()
+void PinballEntity::OnCollisionStart(Entity * e)
 {
-	cout << "\nPinball has collided with something!";
+	float newCollisionTime = clock();
 
-	eventManager->AddEvent(new PlaySoundEvent("./Resources/Audio/jump.wav", true, gameObject->x, gameObject->y));
+	std::cout << newCollisionTime << '\n';
+	std::cout << lastFinishedColliding << "\n\n\n";
+
+	if (newCollisionTime - lastFinishedColliding > COLLISION_SOUND_THRESHOLD)
+	{
+		eventManager->AddEvent(new PlaySoundEvent("./Resources/Audio/collide-wall.wav", true, gameObject->x, gameObject->y));
+	}
 }
+
+void PinballEntity::OnCollisionEnd(Entity * e)
+{
+	lastFinishedColliding = clock();
+}
+
+void PinballEntity::UpdateShaderBasedOnBumpAbility(bool canBump)
+{
+	if (canBump)
+	{
+		graphicsData->ChangeShader(bumpShader);
+	}
+	else 
+	{
+		graphicsData->ChangeShader(noBumpShader);
+	}
+}
+

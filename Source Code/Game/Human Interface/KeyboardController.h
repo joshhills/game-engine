@@ -17,7 +17,8 @@ public:
 		DOWN_ARROW = 4,
 		RIGHT_ARROW = 5,
 		ESC = 6,
-		RETURN = 7
+		RETURN = 7,
+		P = 8
 	};
 
 	KeyboardController();
